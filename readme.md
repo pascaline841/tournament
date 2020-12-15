@@ -16,7 +16,7 @@ DateTime<br>
 ## INSTALLATION 
 Start by closing the repository :
 ```
-git clone https://github.com/pascaline841/p2
+git clone https://github.com/pascaline841/tournament
 ```
 - Start access the project folder
 - Create a virtual environment
