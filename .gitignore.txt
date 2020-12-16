@@ -1,0 +1,8 @@
+.git
+/__pycache__
+/__mon_env__
+.gitignore
+/view/__pycache__
+/models/__pycache__
+/.vscode
+/controllers/__pycache__
