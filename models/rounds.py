@@ -112,8 +112,8 @@ class Round:
         del players[0]
         return players
 
-    def get_opponent_match2(players): 
-         """
+    def get_opponent_match2(players):
+        """
         The player meets the player below him in the score_game ranking.
         If they have already met, it goes on to the next one.
         """
@@ -151,7 +151,7 @@ class Round:
         return players
 
     def get_opponent_match3(players):
-         """
+        """
         The player meets the player below him in the score_game ranking.
         If they have already met, it goes on to the next one.
         """
@@ -188,7 +188,7 @@ class Round:
         return players
 
     def get_opponent_match4(players):
-         """
+        """
         The player meets the player below him in the score_game ranking.
         If they have already met, it goes on to the next one.
         """
@@ -197,8 +197,8 @@ class Round:
         print(f"{players[0].first_name} vs {players[1].first_name}")
         return players
 
-    def display_list_match(self, players ): 
-         """Next Round : The players are ranked by score_game.
+    def display_list_match(self, players):
+        """Next Round : The players are ranked by score_game.
         The matches are :
         player[0] vs players[1]
         player[2] vs players[3]
