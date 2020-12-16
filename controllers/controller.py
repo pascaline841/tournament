@@ -147,16 +147,15 @@ elif choice == 2:
         round = create_next_round(players)
         players = players_copy[:]
 
-    players = sorted(
-        players, key=lambda player: (player.score_game, player.score), reverse=True
-    )
-    print(f"FINAL RANKING :\n {players}")
+    players = sorted(players, key=lambda (player.score_game, player.score), reverse=True)
+    print(f"TOURNAMENT RANKING :\n {players}")
+
     for player in players:
         player.add_final_score(player.score_game, player.score)
         player.delete_score_game(player)
         player.delete_opponent(player)
-    end_tournament = back_menu()
 
+    end_tournament = back_menu()
 
 elif choice == 3:
     # Choice = Continue an existing tournament

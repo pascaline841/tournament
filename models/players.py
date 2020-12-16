@@ -38,9 +38,9 @@ class Player:
         self.score_game = 0
         return self.score_game
 
-    def delete_opponent(self):  # round 4
+    def delete_opponent(self, opponent):  # round 4
         """Clear list of opponents."""
-        self.opponent = []
+        del self.opponent[:]
         return self.opponent
 
     def __repr__(self):
