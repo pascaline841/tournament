@@ -2,7 +2,7 @@ from datetime import date
 
 
 class Round:
-    """ Define a round. """
+    """Define a round."""
 
     def __init__(self, name, start, end=0):
         """
@@ -17,11 +17,12 @@ class Round:
         self.end = end
 
     def __repr__(self):
-        """ Display : ROUND[], START : [date/time] END :[date/time]"""
+        """Display : ROUND[], START : [date/time] END :[date/time]"""
         return " {} START : {} END : {} \n".format(self.name, self.start, self.end)
 
     def get_first_opponent(players):
-        """First Round : The players are ranked by best ranking.
+        """
+        First Round : The players are ranked by best ranking.
         Add oppponent's name to the player's opponent list.
         """
         players[0].opponent.append(players[4].first_name)
@@ -35,12 +36,13 @@ class Round:
         return players
 
     def display_first_round(self, players):
-        """First Round : The players are ranked by best ranking.
+        """
+        First Round : The players are ranked by best ranking.
         The matches are :
         player[0] vs players[4]
         player[1] vs players[5]
         player[2] vs players[6]
-        player[3] vs players[5]
+        player[3] vs players[5].
         """
         self.list_match = []
         match1 = (
@@ -198,12 +200,13 @@ class Round:
         return players
 
     def display_list_match(self, players):
-        """Next Round : The players are ranked by score_game.
+        """
+        Next Round : The players are ranked by score_game.
         The matches are :
         player[0] vs players[1]
         player[2] vs players[3]
         player[4] vs players[5]
-        player[6] vs players[7]
+        player[6] vs players[7].
         """
         # trouver comment afficher le score du 2e joueur
         self.list_match = []

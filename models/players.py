@@ -44,7 +44,7 @@ class Player:
         return self.opponent
 
     def __repr__(self):
-        """Rank:[] [First Name], [Last Name], Score : []."""
-        return "Rank : {} {} {}, Score : {}\n".format(
-            self.rank, self.first_name, self.last_name, self.score_game
+        """Rank:[] [First Name], [Last Name], Score : [], Opponnents :[]."""
+        return "Rank : {} {} {}, Score : {}, Opponnents :{}\n".format(
+            self.rank, self.first_name, self.last_name, self.score_game, self.opponent
         )

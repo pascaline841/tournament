@@ -23,6 +23,7 @@ class Tournament:
         self.players = players
 
     def __repr__(self):
+
         """
         Display :
         NAME :[] LOCATION : [] MODE : [] DATE : [] DESCRIPTION : [] PLAYERS[].
