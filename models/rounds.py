@@ -169,23 +169,24 @@ class Round:
                 print(f"{players[0].first_name} vs {players[3].first_name}")
                 del players[3]
 
-        if players[0].opponent not in players[3].opponent:
-            players[0].opponent.append(players[1].first_name)
-            players[1].opponent.append(players[0].first_name)
-            print(f"{players[0].first_name} vs {players[1].first_name}")
-            del players[1]
-
-        elif players[1].first_name in players[0].opponent:
-            players[0].opponent.append(players[2].first_name)
-            players[2].opponent.append(players[0].first_name)
-            print(f"{players[0].first_name} vs {players[2].first_name}")
-            del players[2]
-
         else:
-            players[0].opponent.append(players[3].first_name)
-            players[3].opponent.append(players[0].first_name)
-            print(f"{players[0].first_name} vs {players[3].first_name}")
-            del players[3]
+            if players[1].first_name not in players[0].opponent:
+                players[0].opponent.append(players[1].first_name)
+                players[1].opponent.append(players[0].first_name)
+                print(f"{players[0].first_name} vs {players[1].first_name}")
+                del players[1]
+
+            elif players[1].first_name in players[0].opponent:
+                players[0].opponent.append(players[2].first_name)
+                players[2].opponent.append(players[0].first_name)
+                print(f"{players[0].first_name} vs {players[2].first_name}")
+                del players[2]
+
+            else:
+                players[0].opponent.append(players[3].first_name)
+                players[3].opponent.append(players[0].first_name)
+                print(f"{players[0].first_name} vs {players[3].first_name}")
+                del players[3]
         del players[0]
         return players
 

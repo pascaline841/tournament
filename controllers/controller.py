@@ -3,12 +3,12 @@ from models.tournaments import Tournament
 from models.rounds import Round
 from models.reports import Reports
 
-from view.mainview import MainView
+from view.menu import MainView
 from view.newplayer import NewPlayer
 from view.newtournament import NewTournament
 from view.report import Report
 from view.score import Score
-from view.displayRround import DisplayRound
+from view.displayround import DisplayRound
 
 import datetime
 
@@ -101,7 +101,6 @@ def create_next_round(players):
         "Round" + str(len(rounds) + 1),
         str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")),
     )
-
     add_opponent(players)
     for player in players_copy:
         add_point = Score.player_add_score_match(player)
@@ -135,17 +134,16 @@ elif choice == 2:
 
     tournament = create_tournament(players)
     print(tournament)
-
     rounds = []
     round1 = create_first_round(players)
     rounds.append(round1)
     print(round1)
-    print(players)
     players_copy = new_list(players)
     while len(rounds) < 4:
         players = sorted(
             players, key=lambda player: (player.score_game, player.score), reverse=True
         )
+        print(players)
         round = create_next_round(players)
         players = players_copy[:]
 
