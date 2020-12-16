@@ -8,7 +8,7 @@ class Score:
         """
         try:
             add_point = float(input(f"Please enter {self.first_name}'s score : "))
-            if add_point != [0, 0.5, 1]:
+            if add_point != 0 and add_point != 0.5 and add_point != 1:
                 raise ValueError
             print("Score entered successfully...")
             return add_point
