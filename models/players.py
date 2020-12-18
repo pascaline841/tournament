@@ -2,8 +2,9 @@ class Player:
     """Define the characteristics of a player."""
 
     def __init__(
-        self, first_name, last_name, birth_date, gender, rank, score, score_game=0
-    ):
+        self, first_name, last_name, birth_date, gender, rank, score, score_game=0, 
+        point=0, opponent_point = 0
+        ):
         """
         First name :
         Last Name :
@@ -21,7 +22,9 @@ class Player:
         self.rank = rank
         self.score = score
         self.score_game = score_game
+        self.point = point
         self.opponent = []
+        self.opponent_point = opponent_point
 
     def add_score_game(self, score_game, add_point):  # round 1 2 3 4
         """Add match score to player's score_game."""
@@ -32,16 +35,6 @@ class Player:
         """Add tournament score to player's total score."""
         self.score = score_game + score
         return self.score
-
-    def delete_score_game(self, score_game):  # round 4
-        """Clear tournament score."""
-        self.score_game = 0
-        return self.score_game
-
-    def delete_opponent(self, opponent):  # round 4
-        """Clear list of opponents."""
-        del self.opponent[:]
-        return self.opponent
 
     def __repr__(self):
         """Rank:[] [First Name], [Last Name], Score : [], Opponnents :[]."""

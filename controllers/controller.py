@@ -78,8 +78,7 @@ def create_first_round(players):
     list_match = round1.display_first_round(players)
     print(list_match)
     round1.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-    return round1
-
+    return round1 
 
 def add_opponent(players):
     """Add oppponent's name to the player's opponent list."""
@@ -87,7 +86,6 @@ def add_opponent(players):
     Round.get_opponent_match2(players)
     Round.get_opponent_match3(players)
     Round.get_opponent_match4(players)
-
 
 def new_list(players):
     players_copy = players[:]
@@ -99,14 +97,18 @@ def create_next_round(players):
     print(f"\n*******************ROUND {len(rounds)+1}******************\n")
     round = Round(
         "Round" + str(len(rounds) + 1),
-        str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")),
+        str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     )
     add_opponent(players)
     for player in players_copy:
         add_point = Score.player_add_score_match(player)
         player.add_score_game(player.score_game, add_point)
-    # list_match = round.display_list_match(players_score) # s
-    # print(list_match)
+        if add_point == 0:
+            opponent_point = 1
+        elif add_point == 1:
+            opponent_point = 0
+        else:
+            opponent_point = 0.5
     round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     rounds.append(round)
     print(round)
@@ -146,15 +148,17 @@ elif choice == 2:
         print(players)
         round = create_next_round(players)
         players = players_copy[:]
-
-    players = sorted(players, key=lambda (player.score_game, player.score), reverse=True)
+        print(round)
+    players = sorted(
+        players, key=lambda player: (player.score_game, player.score), reverse=True
+    )
     print(f"TOURNAMENT RANKING :\n {players}")
 
     for player in players:
         player.add_final_score(player.score_game, player.score)
-        player.delete_score_game(player)
-        player.delete_opponent(player)
-
+        player.score_game = 0
+        del player.opponent[:]
+    print(rounds)
     end_tournament = back_menu()
 
 elif choice == 3:

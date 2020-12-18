@@ -26,7 +26,7 @@ class NewPlayer:
             gender = input(
                 "Please enter player's gender (format = 'Male' / 'Female') : "
             )
-            if gender != "Male" and gender != "Female":
+            if gender not in ["Male", "Female"]:
                 raise ValueError
             print("Gender entered successfully...")
             return gender
@@ -38,22 +38,35 @@ class NewPlayer:
     def player_rank():
         try:
             rank = int(input("Please enter player's rank : "))
-            if rank < 0:
-                raise ValueError
             print("Rank entered successfully...")
             return rank
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
             return NewPlayer.player_rank()
-
+            """
+            try:
+                ranking = int(input("Please enter player's rank : "))
+                if ranking > 0:
+                    if Player.search_by_rank(ranking) is None:
+                        print("Rank entered successfully...")
+                        return rank
+                    else:
+                        print(
+                            f'\nRank already taken by the player ID:'
+                            f'{Player.search_by_rank(ranking).doc_id} '
+                            f'NAME : {Player.search_by_rank(ranking)["first name"]}'
+                        )
+                        return NewPlayer.player_rank()
+            except ValueError:
+                print('Incorrect value, it has to be a positive number !')
+                return NewPlayer.player_rank()
+            """
     @staticmethod
     def player_score():
         try:
             score = int(input("Please enter player's total score : "))
             print("Score entered successfully...")
             return score
-            if score < 0:
-                raise ValueError
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
             return NewPlayer.player_score()

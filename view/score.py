@@ -7,11 +7,11 @@ class Score:
         0 point for the loser.
         """
         try:
-            add_point = float(input(f"Please enter {self.first_name}'s score : "))
-            if add_point != 0 and add_point != 0.5 and add_point != 1:
+            self.add_point = float(input(f"Please enter {self.first_name}'s score : "))
+            if self.add_point not in [0, 0.5, 1]:
                 raise ValueError
             print("Score entered successfully...")
-            return add_point
+            return self.add_point
         except ValueError:
             print(
                 "Incorrect score, it has to be 1 point for the winner, 0.5 point if draw, 0 point for the loser!"

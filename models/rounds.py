@@ -47,19 +47,19 @@ class Round:
         self.list_match = []
         match1 = (
             (players[0].first_name, players[0].score_game),
-            (players[4].first_name, players[4].score_game),
+            (players[4].first_name, players[4].score_game,),
         )
         match2 = (
-            (players[1].first_name, players[1].score_game),
-            (players[5].first_name, players[5].score_game),
+            (players[1].first_name, players[1].score_game,),
+            (players[5].first_name, players[5].score_game,),
         )
         match3 = (
-            (players[2].first_name, players[2].score_game),
-            (players[6].first_name, players[6].score_game),
+            (players[2].first_name, players[2].score_game,),
+            (players[6].first_name, players[6].score_game,),
         )
         match4 = (
-            (players[3].first_name, players[3].score_game),
-            (players[7].first_name, players[7].score_game),
+            (players[3].first_name, players[3].score_game,),
+            (players[7].first_name, players[7].score_game,),
         )
         self.list_match.extend([match1, match2, match3, match4])
         return self.list_match
@@ -201,6 +201,7 @@ class Round:
         return players
 
     def display_list_match(self, players):
+
         """
         Next Round : The players are ranked by score_game.
         The matches are :
@@ -212,20 +213,21 @@ class Round:
         # trouver comment afficher le score du 2e joueur
         self.list_match = []
         match1 = (
-            (players[0].first_name, players[0].score_game),
-            (players[0].opponent[-1]),
+            (players[0].first_name, players[0].point),
+            (players[0].opponent[-1], players[0].opponent_point),
         )
         match2 = (
-            (players[2].first_name, players[2].score_game),
-            (players[2].opponent[-1]),
+            (players[2].first_name, players[2].point),
+            (players[2].opponent[-1], players[2].opponent_point),
         )
         match3 = (
-            (players[4].first_name, players[4].score_game),
-            (players[4].opponent[-1]),
+            (players[4].first_name, players[4].point),
+            (players[4].opponent[-1], players[4].opponent_point),
         )
         match4 = (
-            (players[6].first_name, players[6].score_game),
-            (players[6].opponent[-1]),
+            (players[6].first_name, players[6].point),
+            (players[6].opponent[-1], players[6].opponent_point),
         )
         self.list_match.extend([match1, match2, match3, match4])
         return self.list_match
+
