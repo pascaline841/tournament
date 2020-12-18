@@ -6,11 +6,12 @@ class MainView:
         print("1 - Create a new player\n")
         print("2 - Create a new tournament\n")
         print("3 - Continue an existing tournament\n")
-        print("4 -  Edit reports\n")
-        print("5 - End the program\n")
+        print("4 - Change the ranking from a player ? \n")
+        print("5 -  Edit reports\n")
+        print("6 - End the program\n")
         try:
-            choice = int(input("Enter your choice (1, 2, 3, 4) : \n"))
-            if choice > 5:
+            choice = int(input("Enter your choice (1, 2, 3, 4, 5) : \n"))
+            if choice > 7:
                 raise ValueError
             print(
                 "\n Your choice ({}) has been successfully entered...\n".format(choice)
@@ -25,10 +26,11 @@ class MainView:
         print("\n==================================================")
         print("What would you like to do ?\n")
         print("1 - Back to the Main Menu\n")
-        print("2 - End the program\n")
+        print("2 - Change the ranking from a player ? \n")
+        print("3 - End the program\n")
         try:
-            choice = int(input("Enter your choice (1, 2) : \n"))
-            if choice > 3:
+            choice = int(input("Enter your choice (1, 2, 3) : \n"))
+            if choice > 4:
                 raise ValueError
             print(
                 "\nYour choice ({}) has been successfully entered...\n".format(choice)
