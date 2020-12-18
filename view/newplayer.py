@@ -43,24 +43,7 @@ class NewPlayer:
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
             return NewPlayer.player_rank()
-            """
-            try:
-                ranking = int(input("Please enter player's rank : "))
-                if ranking > 0:
-                    if Player.search_by_rank(ranking) is None:
-                        print("Rank entered successfully...")
-                        return rank
-                    else:
-                        print(
-                            f'\nRank already taken by the player ID:'
-                            f'{Player.search_by_rank(ranking).doc_id} '
-                            f'NAME : {Player.search_by_rank(ranking)["first name"]}'
-                        )
-                        return NewPlayer.player_rank()
-            except ValueError:
-                print('Incorrect value, it has to be a positive number !')
-                return NewPlayer.player_rank()
-            """
+           
     @staticmethod
     def player_score():
         try:
@@ -70,3 +53,18 @@ class NewPlayer:
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
             return NewPlayer.player_score()
+
+    @staticmethod
+    def change_rank():
+        """
+        Menu to change the player's rank. 
+        """
+        choice_last_name = input("Please enter player's last name : ")
+        print("Last name entered successfully...")
+        try:
+            rank = int(input("Please enter player's rank : "))
+            print("Rank entered successfully...")
+            return rank
+        except ValueError:
+            print("Incorrect value, it has to be a positive number !")
+            return NewPlayer.change_rank()
