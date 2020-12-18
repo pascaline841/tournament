@@ -166,9 +166,13 @@ elif choice == 3:
     print("BUILDING")
 
 elif choice == 4:
-    display_reports = display_reports()
+    # Choice = Change a player's rank
+    print("BUILDING")
 
 elif choice == 5:
+    display_reports = display_reports()
+
+elif choice == 6:
     print("Program ended ! See you soon !")
 
 else:
