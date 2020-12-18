@@ -22,3 +22,10 @@ class Score:
                 "Incorrect score, it has to be 1 point for the winner, 0.5 point if draw, 0 point for the loser!"
             )
             return Score.player_add_score_match(self)
+
+    @staticmethod
+    def display_results(self):
+        print(f" Finale results of {self.name} :")
+        print(rounds)
+        for player in players:
+            print(f"RANK : {player.rank}, {player.first_name} {player.first_name}\n")
