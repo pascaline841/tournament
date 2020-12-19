@@ -103,7 +103,7 @@ def create_next_round(players):
     """Create Round 2, 3 , 4."""
     print(f"\n*******************ROUND {len(rounds)+1}******************\n")
     round = Round(
-        "Round" + str(len(rounds) + 1),
+        "Round " + str(len(rounds) + 1),
         str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     )
     print(players)
@@ -112,11 +112,11 @@ def create_next_round(players):
         add_point = Score.player_add_score_match(player)
         player.add_score_game(player.score_game, add_point)
         if add_point == 0:
-            opponent_point = 1
+            player.opponent_point = 1
         elif add_point == 1:
-            opponent_point = 0
+            player.opponent_point = 0
         else:
-            opponent_point = 0.5
+            player.opponent_point = 0.5
     round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     rounds.append(round)
     print(f"\n{round}")
@@ -151,6 +151,7 @@ elif choice == 2:
     while len(rounds) < 4:
         round = create_next_round(players)
         players = players_copy[:]
+        list_match = display_list_match(players)
         players = sorted(
         players, key=lambda player: (player.score_game, player.score), reverse=True
     )
