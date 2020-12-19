@@ -15,7 +15,9 @@ class Round:
 
     def __repr__(self):
         """Display : ROUND[], START : [date/time] END :[date/time]"""
-        return " {} START : {} END : {} \n MATCH : {} ".format(self.name, self.start, self.end, self.list_match)
+        return " {} START : {} END : {} \n MATCH : {} ".format(
+            self.name, self.start, self.end, self.list_match
+        )
 
     def get_first_opponent(players):
         """
@@ -44,19 +46,40 @@ class Round:
         self.list_match = []
         match1 = (
             (players[0].first_name, players[0].score_game),
-            (players[4].first_name, players[4].score_game,),
+            (
+                players[4].first_name,
+                players[4].score_game,
+            ),
         )
         match2 = (
-            (players[1].first_name, players[1].score_game,),
-            (players[5].first_name, players[5].score_game,),
+            (
+                players[1].first_name,
+                players[1].score_game,
+            ),
+            (
+                players[5].first_name,
+                players[5].score_game,
+            ),
         )
         match3 = (
-            (players[2].first_name, players[2].score_game,),
-            (players[6].first_name, players[6].score_game,),
+            (
+                players[2].first_name,
+                players[2].score_game,
+            ),
+            (
+                players[6].first_name,
+                players[6].score_game,
+            ),
         )
         match4 = (
-            (players[3].first_name, players[3].score_game,),
-            (players[7].first_name, players[7].score_game,),
+            (
+                players[3].first_name,
+                players[3].score_game,
+            ),
+            (
+                players[7].first_name,
+                players[7].score_game,
+            ),
         )
         self.list_match.extend([match1, match2, match3, match4])
         return self.list_match
@@ -71,9 +94,9 @@ class Round:
             players[0].opponent.append(players[1].first_name)
             players[1].opponent.append(players[0].first_name)
             match1 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[1].first_name, players[1].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[1].first_name, players[1].opponent_point),
+            )
             self.list_match.append(match1)
             print(f"{players[0].first_name} vs {players[1].first_name}")
             del players[1]
@@ -82,9 +105,9 @@ class Round:
             players[0].opponent.append(players[2].first_name)
             players[2].opponent.append(players[0].first_name)
             match1 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[2].first_name, players[2].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[2].first_name, players[2].opponent_point),
+            )
             self.list_match.append(match1)
             print(f"{players[0].first_name} vs {players[2].first_name}")
             del players[2]
@@ -93,9 +116,9 @@ class Round:
             players[0].opponent.append(players[3].first_name)
             players[3].opponent.append(players[0].first_name)
             match1 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[3].first_name, players[3].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[3].first_name, players[3].opponent_point),
+            )
             self.list_match.append(match1)
             print(f"{players[0].first_name} vs {players[3].first_name}")
             del players[3]
@@ -104,9 +127,9 @@ class Round:
             players[0].opponent.append(players[4].first_name)
             players[4].opponent.append(players[0].first_name)
             match1 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[4].first_name, players[4].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[4].first_name, players[4].opponent_point),
+            )
             self.list_match.append(match1)
             print(f"{players[0].first_name} vs {players[4].first_name}")
             del players[4]
@@ -115,9 +138,9 @@ class Round:
             players[0].opponent.append(players[5].first_name)
             players[5].opponent.append(players[0].first_name)
             match1 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[5].first_name, players[5].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[5].first_name, players[5].opponent_point),
+            )
             self.list_match.append(match1)
             print(f"{players[0].first_name} vs {players[5].first_name}")
             del players[5]
@@ -135,9 +158,9 @@ class Round:
             players[0].opponent.append(players[1].first_name)
             players[1].opponent.append(players[0].first_name)
             match2 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[1].first_name, players[1].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[1].first_name, players[1].opponent_point),
+            )
             self.list_match.append(match2)
             print(f"{players[0].first_name} vs {players[1].first_name}")
             del players[1]
@@ -146,9 +169,9 @@ class Round:
             players[0].opponent.append(players[2].first_name)
             players[2].opponent.append(players[0].first_name)
             match2 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[2].first_name, players[2].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[2].first_name, players[2].opponent_point),
+            )
             self.list_match.append(match2)
             print(f"{players[0].first_name} vs {players[2].first_name}")
             del players[2]
@@ -157,9 +180,9 @@ class Round:
             players[0].opponent.append(players[3].first_name)
             players[3].opponent.append(players[0].first_name)
             match2 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[3].first_name, players[3].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[3].first_name, players[3].opponent_point),
+            )
             self.list_match.append(match2)
             print(f"{players[0].first_name} vs {players[3].first_name}")
             del players[3]
@@ -168,9 +191,9 @@ class Round:
             players[0].opponent.append(players[4].first_name)
             players[4].opponent.append(players[0].first_name)
             match2 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[4].first_name, players[4].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[4].first_name, players[4].opponent_point),
+            )
             self.list_match.append(match2)
             print(f"{players[0].first_name} vs {players[4].first_name}")
             del players[4]
@@ -179,9 +202,9 @@ class Round:
             players[0].opponent.append(players[5].first_name)
             players[5].opponent.append(players[0].first_name)
             match2 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[5].first_name, players[5].opponent_point)
-        )
+                (players[0].first_name, players[0].opponent_point),
+                (players[5].first_name, players[5].opponent_point),
+            )
             self.list_match.append(match2)
             print(f"{players[0].first_name} vs {players[5].first_name}")
             del players[5]
@@ -200,9 +223,9 @@ class Round:
                 players[0].opponent.append(players[2].first_name)
                 players[2].opponent.append(players[0].first_name)
                 match3 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[1].first_name, players[1].opponent_point)
-        )
+                    (players[0].first_name, players[0].opponent_point),
+                    (players[1].first_name, players[1].opponent_point),
+                )
                 self.list_match.append(match3)
                 print(f"{players[0].first_name} vs {players[2].first_name}")
                 del players[2]
@@ -210,9 +233,9 @@ class Round:
                 players[0].opponent.append(players[3].first_name)
                 players[3].opponent.append(players[0].first_name)
                 match3 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[3].first_name, players[3].opponent_point)
-        )
+                    (players[0].first_name, players[0].opponent_point),
+                    (players[3].first_name, players[3].opponent_point),
+                )
                 self.list_match.append(match3)
                 print(f"{players[0].first_name} vs {players[3].first_name}")
                 del players[3]
@@ -222,9 +245,9 @@ class Round:
                 players[0].opponent.append(players[1].first_name)
                 players[1].opponent.append(players[0].first_name)
                 match3 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[1].first_name, players[1].opponent_point)
-        )
+                    (players[0].first_name, players[0].opponent_point),
+                    (players[1].first_name, players[1].opponent_point),
+                )
                 self.list_match.append(match3)
                 print(f"{players[0].first_name} vs {players[1].first_name}")
                 del players[1]
@@ -233,9 +256,9 @@ class Round:
                 players[0].opponent.append(players[2].first_name)
                 players[2].opponent.append(players[0].first_name)
                 match3 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[2].first_name, players[2].opponent_point)
-        )
+                    (players[0].first_name, players[0].opponent_point),
+                    (players[2].first_name, players[2].opponent_point),
+                )
                 self.list_match.append(match3)
                 print(f"{players[0].first_name} vs {players[2].first_name}")
                 del players[2]
@@ -244,9 +267,9 @@ class Round:
                 players[0].opponent.append(players[3].first_name)
                 players[3].opponent.append(players[0].first_name)
                 match3 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[3].first_name, players[3].opponent_point)
-        )
+                    (players[0].first_name, players[0].opponent_point),
+                    (players[3].first_name, players[3].opponent_point),
+                )
                 self.list_match.append(match3)
                 print(f"{players[0].first_name} vs {players[3].first_name}")
                 del players[3]
@@ -263,7 +286,7 @@ class Round:
         players[1].opponent.append(players[0].first_name)
         match4 = (
             (players[0].first_name, players[0].opponent_point),
-            (players[1].first_name, players[1].opponent_point)
+            (players[1].first_name, players[1].opponent_point),
         )
         self.list_match.append(match4)
         print(f"{players[0].first_name} vs {players[1].first_name}")
@@ -282,3 +305,13 @@ class Round:
         # trouver comment afficher les score match 2 3 4
         self.list_match = []
 
+    def serialized_round(self, r_tab):
+        """serialized round's data"""
+        serialized_round = {
+            "name": self.name,
+            "start": self.start,
+            "list match": self.list_match,
+            "end": self.end,
+        }
+        search_round = self.name
+        return serialized_round, search_round

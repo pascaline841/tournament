@@ -36,3 +36,17 @@ class Tournament:
             self.description,
             self.players,
         )
+
+    def serial_t(self, t_tab):
+        """serialized tournament's data"""
+        serial_p = {"name": self.name,
+                    "location": self.location, 
+                    "date": self.date,
+                    "mode": self.mode, 
+                    "rounds": self.rounds,
+                    "description": self.description,
+                    "players": self.players}
+        search_n = self.name
+        search_loc = self.location
+        search_m = self.mode
+        return serial_t, search_n, search_loc, search_m

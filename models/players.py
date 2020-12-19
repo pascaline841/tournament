@@ -2,9 +2,17 @@ class Player:
     """Define the characteristics of a player."""
 
     def __init__(
-                self, first_name, last_name, birth_date, gender, rank, score, 
-                score_game=0, point=0, opponent_point=0
-                ):
+        self,
+        first_name,
+        last_name,
+        birth_date,
+        gender,
+        rank,
+        score,
+        score_game=0,
+        point=0,
+        opponent_point=0,
+    ):
         """
         First name :
         Last Name :
@@ -41,3 +49,18 @@ class Player:
         return "Rank : {} {} {}, Score : {}, Opponnents :{}\n".format(
             self.rank, self.first_name, self.last_name, self.score_game, self.opponent
         )
+
+    def serial_p(self, p_tab):
+        """serialized player's data"""
+        serial_p = {
+            "firt name": self.first_name,
+            "last name": self.last_name,
+            "birth date": self.birth_date,
+            "gender": self.gender,
+            "rank": self.rank,
+            "score": self.score,
+        }
+        search_f = self.first_name
+        search_l = self.last_name
+        search_r = self.rank
+        return serial_p, search_f, search_l, search_r
