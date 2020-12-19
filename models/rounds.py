@@ -1,6 +1,3 @@
-from datetime import date
-
-
 class Round:
     """Define a round."""
 

@@ -56,9 +56,8 @@ class NewPlayer:
 
     @staticmethod
     def change_rank():
-        """
-        Menu to change the player's rank. 
-        """
+        """Menu to change the player's rank.  """
+
         choice_last_name = input("Please enter player's last name : ")
         print("Last name entered successfully...")
         try:

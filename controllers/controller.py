@@ -76,23 +76,15 @@ def create_first_round(players):
     for player in players:
         add_point = Score.player_add_score_match(player)
         player.add_score_game(0, add_point)
-    list_match = round1.display_first_round(players)
+    round1.list_match = round1.display_first_round(players)
     players = sorted(
             players, key=lambda player: (player.score_game, player.score), reverse=True
         )
     round1.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     rounds.append(round1)
     print(f"\n{round1}")
-
-    print(list_match)
     return round1 
-
-def add_opponent(players):
-    """Add oppponent's name to the player's opponent list."""
-    Round.get_opponent_match1(players)
-    Round.get_opponent_match2(players)
-    Round.get_opponent_match3(players)
-    Round.get_opponent_match4(players)
+  
 
 def new_list(players):
     players_copy = players[:]
@@ -107,7 +99,10 @@ def create_next_round(players):
         str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     )
     print(players)
-    add_opponent(players)
+    round.get_opponent_match1(players)
+    round.get_opponent_match2(players)
+    round.get_opponent_match3(players)
+    round.get_opponent_match4(players)
     for player in players_copy:
         add_point = Score.player_add_score_match(player)
         player.add_score_game(player.score_game, add_point)
@@ -121,7 +116,6 @@ def create_next_round(players):
     rounds.append(round)
     print(f"\n{round}")
     return round
-
 
 # def start_program():
 """Run the program"""
@@ -150,11 +144,11 @@ elif choice == 2:
     
     while len(rounds) < 4:
         round = create_next_round(players)
-        players = players_copy[:]
-        list_match = display_list_match(players)
+        players = players_copy[:] 
         players = sorted(
-        players, key=lambda player: (player.score_game, player.score), reverse=True
-    )
+                        players, key=lambda player: (player.score_game, player.score), 
+                        reverse=True
+                        )
     
     print(f" Finale results of {tournament.name} :")
     print(rounds)

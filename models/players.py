@@ -2,9 +2,9 @@ class Player:
     """Define the characteristics of a player."""
 
     def __init__(
-        self, first_name, last_name, birth_date, gender, rank, score, score_game=0, 
-        point=0, opponent_point = 0
-        ):
+                self, first_name, last_name, birth_date, gender, rank, score, 
+                score_game=0, point=0, opponent_point=0
+                ):
         """
         First name :
         Last Name :

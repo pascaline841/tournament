@@ -1,6 +1,3 @@
-import datetime
-
-
 class NewTournament:
     @staticmethod
     def tournament_name():
