@@ -23,9 +23,4 @@ class Score:
             )
             return Score.player_add_score_match(self)
 
-    @staticmethod
-    def display_results(self):
-        print(f" Finale results of {self.name} :")
-        print(rounds)
-        for player in players:
-            print(f"RANK : {player.rank}, {player.first_name} {player.first_name}\n")
+   
