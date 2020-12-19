@@ -50,9 +50,9 @@ class Player:
             self.rank, self.first_name, self.last_name, self.score_game, self.opponent
         )
 
-    def serial_p(self, p_tab):
+    def serialized_player(self, p_tab):
         """serialized player's data"""
-        serial_p = {
+        serialized_player = {
             "firt name": self.first_name,
             "last name": self.last_name,
             "birth date": self.birth_date,
@@ -60,7 +60,7 @@ class Player:
             "rank": self.rank,
             "score": self.score,
         }
-        search_f = self.first_name
-        search_l = self.last_name
-        search_r = self.rank
-        return serial_p, search_f, search_l, search_r
+        search_firstn = self.first_name
+        search_lastn = self.last_name
+        search_rank = self.rank
+        return serialized_player, search_firstn, search_lastn, search_rank
