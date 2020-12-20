@@ -1,7 +1,10 @@
+import datetime
+
+
 class Round:
     """Define a round."""
 
-    def __init__(self, name, start, end=0):
+    def __init__(self, name, end=0):
         """
         Name : Round 1, Round 2, Round 3, Round 4
         Start date and time :  AUTO
@@ -9,12 +12,12 @@ class Round:
         List of matchs : 4 by Round.
         """
         self.name = name
-        self.start = start
-        self.list_match = []
+        self.start = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+        self.list_match = []  # matches.append(list_match)
         self.end = end
 
     def __repr__(self):
-        """Display : ROUND[], START : [date/time] END :[date/time]"""
+        """Display : ROUND[], START : [date/time] END :[date/time]."""
         return " {} START : {} END : {} \n MATCH : {} ".format(
             self.name, self.start, self.end, self.list_match
         )
@@ -293,7 +296,6 @@ class Round:
         return players
 
     def display_list_match(self, players):
-
         """
         Next Round : The players are ranked by score_game.
         The matches are :
@@ -306,7 +308,7 @@ class Round:
         self.list_match = []
 
     def serialized_round(self, r_tab):
-        """serialized round's data"""
+        """serialized round's data."""
         serialized_round = {
             "name": self.name,
             "start": self.start,

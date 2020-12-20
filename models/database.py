@@ -79,6 +79,26 @@ class Data:
             sorted_list = sorted(list_players, key=lambda colonnes: colonnes[5])
         # print(sorted_list)
 
+    def display_all_tournaments(
+        self, tournaments_table
+    ):  # afficher/add rounds + matches
+        """Display all tournaments' report."""
+        print("Display all tournaments' report. ")
+        all_data_tournaments = tournaments_table.all()
+        list_tournaments = []
+        for nb in range(len(all_data_tournaments)):
+            data_tournaments = (
+                all_data_tournaments[nb].get("name"),
+                all_data_tournaments[nb].get("location"),
+                all_data_tournaments[nb].get("date"),
+                all_data_tournaments[nb].get("mode"),
+                all_data_tournaments[nb].get("rounds"),
+                all_data_tournaments[nb].get("description"),
+                all_data_tournaments[nb].get("players"),
+            )
+            list_tournaments.append(data_tournaments)
+        # print(list_tournaments)
+
 
 """
 tournament = create_tournament(players)
