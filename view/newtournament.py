@@ -20,7 +20,7 @@ class NewTournament:
             print("Mode entered successfully...")
             return mode
         except ValueError:
-            print("Incorrect timer type, it has to be Bullet / Blitz / Fast !")
+            print("Incorrect timer type, it has to be bullet / blitz / fast !")
             return NewTournament.tournament_mode()
 
     @staticmethod
