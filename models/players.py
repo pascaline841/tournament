@@ -1,3 +1,6 @@
+from tinydb import TinyDB, Query
+
+
 class Player:
     """Define the characteristics of a player."""
 
@@ -50,7 +53,7 @@ class Player:
             self.rank, self.first_name, self.last_name, self.score_game, self.opponent
         )
 
-    def serialized_player(self, p_tab):
+    def serialized_player(self):
         """serialized player's data"""
         serialized_player = {
             "firt name": self.first_name,

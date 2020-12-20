@@ -37,7 +37,7 @@ class Tournament:
             self.players,
         )
 
-    def serialized_tournament(self, t_tab):
+    def serialized_tournament(self):
         """serialized tournament's data"""
         serialized_tournament = {
             "name": self.name,

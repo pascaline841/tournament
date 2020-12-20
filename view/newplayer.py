@@ -1,6 +1,3 @@
-from datetime import date
-
-
 class NewPlayer:
     @staticmethod
     def player_first_name():
@@ -43,7 +40,7 @@ class NewPlayer:
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
             return NewPlayer.player_rank()
-           
+
     @staticmethod
     def player_score():
         try:
