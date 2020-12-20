@@ -58,6 +58,27 @@ class Data:
             self["first name"] == first_name and self["last name"] == last_name,
         )
 
+    def sorted_players(self, players_table):
+        """Sort players by alphabetic order or by rank."""
+        sorted_players = input("Sorted by Last Name (1) or by Rank (2) ? ")
+        all_data_players = players_table.all()
+        list_players = []
+        for nb in range(len(all_data_players)):
+            data_players = (
+                all_data_players[nb].get("last name"),
+                all_data_players[nb].get("first name"),
+                all_data_players[nb].get("birth date"),
+                all_data_players[nb].get("gender"),
+                all_data_players[nb].get("rank"),
+                all_data_players[nb].get("score"),
+            )
+            list_players.append(data_players)
+        if sorted_players == "1":
+            sorted_list = sorted(list_players, key=lambda colonnes: colonnes[1])
+        else:
+            sorted_list = sorted(list_players, key=lambda colonnes: colonnes[5])
+        # print(sorted_list)
+
 
 """
 tournament = create_tournament(players)
