@@ -68,23 +68,22 @@ def create_first_round(players):
     print("*******************ROUND 1 ******************\n")
     players = sorted(players, key=lambda player: player.rank)
     print(players)
-    round1 = Round(
-        "Round 1", str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-    )
+    round1 = Round("Round 1")
     DisplayRound.display_first_round(players)
     Round.get_first_opponent(players)
     for player in players:
         add_point = Score.player_add_score_match(player)
         player.add_score_game(0, add_point)
     round1.list_match = round1.display_first_round(players)
+    tournament.matches.append(round1.list_match)
     players = sorted(
-            players, key=lambda player: (player.score_game, player.score), reverse=True
-        )
+        players, key=lambda player: (player.score_game, player.score), reverse=True
+    )
     round1.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     rounds.append(round1)
     print(f"\n{round1}")
-    return round1 
-  
+    return round1
+
 
 def new_list(players):
     players_copy = players[:]
@@ -94,10 +93,7 @@ def new_list(players):
 def create_next_round(players):
     """Create Round 2, 3 , 4."""
     print(f"\n*******************ROUND {len(rounds)+1}******************\n")
-    round = Round(
-        "Round " + str(len(rounds) + 1),
-        str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-    )
+    round = Round("Round " + str(len(rounds) + 1))
     print(players)
     round.get_opponent_match1(players)
     round.get_opponent_match2(players)
@@ -116,6 +112,7 @@ def create_next_round(players):
     rounds.append(round)
     print(f"\n{round}")
     return round
+
 
 # def start_program():
 """Run the program"""
@@ -141,15 +138,14 @@ elif choice == 2:
     rounds = []
     round1 = create_first_round(players)
     players_copy = new_list(players)
-    
+
     while len(rounds) < 4:
         round = create_next_round(players)
-        players = players_copy[:] 
+        players = players_copy[:]
         players = sorted(
-                        players, key=lambda player: (player.score_game, player.score), 
-                        reverse=True
-                        )
-    
+            players, key=lambda player: (player.score_game, player.score), reverse=True
+        )
+
     print(f" Finale results of {tournament.name} :")
     print(rounds)
     for player in players:
@@ -157,7 +153,7 @@ elif choice == 2:
         player.add_final_score(player.score_game, player.score)
         player.score_game = 0
         del player.opponent[:]
-    
+
     end_tournament = back_menu()
 
 elif choice == 3:
