@@ -23,7 +23,7 @@ class MainView:
 
     @staticmethod
     def back_menu():
-        print("\n==================================================")
+        print("==================================================")
         print("What would you like to do ?\n")
         print("1 - Back to the Main Menu\n")
         print("2 - Change the ranking from a player ? \n")
@@ -40,7 +40,7 @@ class MainView:
 
     @staticmethod
     def interround_menu():
-        print("\n==================================================")
+        print("==================================================")
         print("What would you like to do ?\n")
         print("1 - Back to the Main Menu\n")
         print("2 - Change the ranking from a player ? \n")

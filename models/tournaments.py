@@ -37,7 +37,7 @@ class Tournament:
 
     def serialized_tournament(self):
         """serialized tournament's data"""
-        serialized_tournament = {
+        ser_tournament = {
             "name": self.name,
             "location": self.location,
             "date": self.date,
@@ -46,7 +46,4 @@ class Tournament:
             "description": self.description,
             "players": self.players,
         }
-        search_name = self.name
-        search_location = self.location
-        search_mode = self.mode
-        return serialized_tournament, search_name, search_location, search_mode
+        return ser_tournament

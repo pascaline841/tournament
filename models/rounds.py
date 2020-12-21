@@ -307,13 +307,12 @@ class Round:
         # trouver comment afficher les score match 2 3 4
         self.list_match = []
 
-    def serialized_round(self, r_tab):
+    def serialized_round(self):
         """serialized round's data."""
-        serialized_round = {
+        ser_round = {
             "name": self.name,
             "start": self.start,
-            "list match": self.list_match,
+            # "list match": self.list_match,
             "end": self.end,
         }
-        search_round = self.name
-        return serialized_round, search_round
+        return ser_round
