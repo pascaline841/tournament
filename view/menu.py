@@ -32,10 +32,26 @@ class MainView:
             choice = int(input("Enter your choice (1, 2, 3) : \n"))
             if choice > 4:
                 raise ValueError
-            print(
-                "\nYour choice ({}) has been successfully entered...\n".format(choice)
-            )
+            print("Your choice ({}) has been successfully entered...".format(choice))
             return choice
         except ValueError:
             print("\nThe value entered doesn't match the possible choices !\n")
             return MainView.back_menu()
+
+    @staticmethod
+    def interround_menu():
+        print("\n==================================================")
+        print("What would you like to do ?\n")
+        print("1 - Back to the Main Menu\n")
+        print("2 - Change the ranking from a player ? \n")
+        print("3 - CONTINUE THE TOURNAMENT\n")
+        print("4 - End the program\n")
+        try:
+            choice = int(input("Enter your choice (1, 2, 3, 4) : \n"))
+            if choice > 5:
+                raise ValueError
+            print("Your choice ({}) has been successfully entered...".format(choice))
+            return choice
+        except ValueError:
+            print("\nThe value entered doesn't match the possible choices !\n")
+            return MainView.interround_menu()

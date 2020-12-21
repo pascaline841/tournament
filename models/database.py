@@ -5,7 +5,7 @@ from tinydb import TinyDB, Query
 
 
 class Data:
-    def tournaments_data(self):
+    def data_tournaments(self):
         db = TinyDB("tournaments.json")
         tournaments_table = db.table("TOURNAMENTS")
         tournaments_table.insert(
@@ -14,10 +14,16 @@ class Data:
                 "location": self.location,
                 "date": self.date,
                 "mode": self.mode,
-                "nb rounds": self.nb_round,
                 "rounds": self.rounds,
                 "matches": self.matches,
                 "description": self.description,
+                "players": self.players,
+            }
+        )
+        tournaments_table.update(
+            {
+                "rounds": self.rounds,
+                "matches": self.matches,
                 "players": self.players,
             }
         )
@@ -38,16 +44,22 @@ class Data:
         )
         return actors_table
 
-    def update_rank(self, actors_table):
+    def update_rank():
         """update rank."""
-        self = Query()
+        db = TinyDB("actor.json")
+        actors_table = db.table("PLAYER")
+        user = Query()
+        print(
+            "\n================================================== \n Update ranking : \n"
+        )
         first_name = input("First name ? ")
         last_name = input("Last name ? ")
         new_rank = int(input("New rank ? "))
         actors_table.update(
             {"rank": new_rank},
-            self["first name"] == first_name and self["last name"] == last_name,
+            user["first name"] == first_name and user["last name"] == last_name,
         )
+        print("The new rank has been successfully updated...")
 
     def update_score(self, actors_table):
         """update score."""
@@ -124,6 +136,7 @@ class Data:
             choice[0].get("players")
             list_players = choice[0].get("players")
             sorted_list = sorted(list_players, key=lambda colonnes: colonnes[1])
+        # changer le colonne[] par celui correspondant au rank ou last_name
         print(sorted_list)
 
 

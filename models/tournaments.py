@@ -25,7 +25,7 @@ class Tournament:
         self.players = players
 
     def __repr__(self):
-        return " NAME : {}\n LOCATION : {}\n MODE : {}\n DATE : {}\n ROUNDS : {}\nDESCRIPTION : {}\n PLAYERS :{}\n".format(
+        return " NAME : {}\n LOCATION : {}\n MODE : {}\n DATE : {}\n ROUNDS : {}\n DESCRIPTION : {}\n PLAYERS :{}\n".format(
             self.name,
             self.location,
             self.mode,

@@ -20,15 +20,13 @@ class NewPlayer:
     @staticmethod
     def player_gender():
         try:
-            gender = input(
-                "Please enter player's gender (format = 'Male' / 'Female') : "
-            )
-            if gender not in ["Male", "Female"]:
+            gender = input("Please enter player's gender (format = 'm' / 'f') : ")
+            if gender not in ["m", "f"]:
                 raise ValueError
             print("Gender entered successfully...")
             return gender
         except ValueError:
-            print("Incorrect gender, it has to be 'Male' / 'Female' !")
+            print("Incorrect gender, it has to be 'm' / 'f' !")
             return NewPlayer.player_gender()
 
     @staticmethod

@@ -63,7 +63,4 @@ class Player:
             "rank": self.rank,
             "score": self.score,
         }
-        search_firstn = self.first_name
-        search_lastn = self.last_name
-        search_rank = self.rank
-        return serialized_player, search_firstn, search_lastn, search_rank
+        return serialized_player

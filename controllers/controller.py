@@ -2,7 +2,7 @@ from models.players import Player
 from models.tournaments import Tournament
 from models.rounds import Round
 from models.reports import Reports
-
+from models.database import Data
 from view.menu import MainView
 from view.newplayer import NewPlayer
 from view.newtournament import NewTournament
@@ -48,9 +48,30 @@ def back_menu():
     if choice == 1:
         choice = MainView.welcome()
     elif choice == 2:
+        choice == Data.update_rank()
+        return back_menu()
+    elif choice == 3:
         print("Program ended ! See you soon !")
     else:
         print("An error occurred.")
+        return back_menu()
+
+
+def inter_menu():
+    """Display menu to go back to the Main Menu."""
+    choice = MainView.interround_menu()
+    if choice == 1:
+        choice = MainView.welcome()
+    elif choice == 2:
+        choice == Data.update_rank()
+        return inter_menu()
+    elif choice == 3:
+        pass
+    elif choice == 4:
+        print("Program ended ! See you soon !")
+    else:
+        print("An error occurred.")
+        return back_menu()
 
 
 def create_tournament(players):
@@ -108,6 +129,7 @@ def create_next_round(players):
             player.opponent_point = 0
         else:
             player.opponent_point = 0.5
+    tournament.matches.append(round.list_match)
     round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     rounds.append(round)
     print(f"\n{round}")
@@ -119,7 +141,8 @@ def create_next_round(players):
 choice = MainView.welcome()
 if choice == 1:
     player = create_player()
-    print("\n A player has been created \n")  # A CHANGER
+    Data.data_players(player)
+    print("\n A player has been created \n")
     end_player = back_menu()
 elif choice == 2:
     print("\n==================================================")
@@ -134,36 +157,40 @@ elif choice == 2:
     players.append(Player("Julie", "Stefen", "Female", "14/05/1993", 8, 986))
 
     tournament = create_tournament(players)
+    # Data.data_tournaments(tournament)
     print(tournament)
-    rounds = []
+    rounds = tournament.rounds
     round1 = create_first_round(players)
+    # Data.data_tournaments(tournament) update les infos du tournois
+    inter_menu()
     players_copy = new_list(players)
-
-    while len(rounds) < 4:
+    nb_rounds = tournament.nb_rounds
+    while nb_rounds > 1:
+        nb_rounds -= 1
         round = create_next_round(players)
         players = players_copy[:]
         players = sorted(
             players, key=lambda player: (player.score_game, player.score), reverse=True
         )
+        # Data.data_tournaments(tournament) update les infos du tournois
+        inter_menu()
 
-    print(f" Finale results of {tournament.name} :")
-    print(rounds)
+    print(f"\n FINAL RESULTS OF {tournament.name} :")
     for player in players:
-        print(f"SCORE : {player.score_game}, {player.first_name} {player.last_name}")
+        print(f"SCORE : {player.score_game}, {player.first_name} {player.last_name}\n")
         player.add_final_score(player.score_game, player.score)
         player.score_game = 0
         del player.opponent[:]
-
-    end_tournament = back_menu()
+    print(rounds)
+    back_menu()
 
 elif choice == 3:
     # Choice = Continue an existing tournament
     print("BUILDING")
 
 elif choice == 4:
-    # Choice = Change a player's rank
-    print("BUILDING")
-
+    choice == Data.update_rank()
+    back_menu()
 elif choice == 5:
     display_reports = display_reports()
 
