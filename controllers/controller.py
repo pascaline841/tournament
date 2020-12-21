@@ -3,6 +3,7 @@ from models.tournaments import Tournament
 from models.rounds import Round
 from models.reports import Reports
 from models.database import Data
+
 from view.menu import MainView
 from view.newplayer import NewPlayer
 from view.newtournament import NewTournament
@@ -11,6 +12,7 @@ from view.score import Score
 from view.displayround import DisplayRound
 
 import datetime
+from tinydb import TinyDB, Query
 
 
 def display_reports():
@@ -31,7 +33,7 @@ def display_reports():
 
 
 def create_player():
-    """ Create a new player. """
+    """Create a new player."""
     print("\n\n\n\n************CREATE A NEW PLAYER **************\n\n\n\n")
     first_name = NewPlayer.player_first_name()
     last_name = NewPlayer.player_last_name()
@@ -40,6 +42,19 @@ def create_player():
     rank = NewPlayer.player_rank()
     score = NewPlayer.player_score()
     return Player(first_name, last_name, birth_date, gender, rank, score)
+
+
+def create_auto_players():
+    """Auto generate 8 players."""
+    players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
+    players.append(Player("William", "Smith", "m", "03/11/1980", 2, 998))
+    players.append(Player("Damien", "Billard", "m", "10/08/1978", 3, 996))
+    players.append(Player("Mickael", "Fitz", "m", "25/06/2000", 4, 994))
+    players.append(Player("Ricardo", "Gagnon", "m", "29/02/1988", 5, 992))
+    players.append(Player("Manon", "Tremblay", "f", "13/06/1999", 6, 990))
+    players.append(Player("Claire", "Beaulieu", "f", "17/11/1992", 7, 988))
+    players.append(Player("Julie", "Stefen", "f", "14/05/1993", 8, 986))
+    return players
 
 
 def back_menu():
@@ -58,7 +73,7 @@ def back_menu():
 
 
 def inter_menu():
-    """Display menu to go back to the Main Menu."""
+    """Display menu between rounds."""
     choice = MainView.interround_menu()
     if choice == 1:
         choice = MainView.welcome()
@@ -75,7 +90,7 @@ def inter_menu():
 
 
 def create_tournament(players):
-    """Create a new tournament. """
+    """Create a new tournament."""
     print("************CREATE A NEW TOURNAMENT**************\n\n\n\n")
     name = NewTournament.tournament_name()
     location = NewTournament.tournament_location()
@@ -88,14 +103,13 @@ def create_first_round(players):
     """Create the first round of a tournament. """
     print("*******************ROUND 1 ******************\n")
     players = sorted(players, key=lambda player: player.rank)
-    print(players)
     round1 = Round("Round 1")
     DisplayRound.display_first_round(players)
     Round.get_first_opponent(players)
     for player in players:
         add_point = Score.player_add_score_match(player)
         player.add_score_game(0, add_point)
-    round1.list_match = round1.display_first_round(players)
+    round1.list_match = round1.display_first_score(players)
     tournament.matches.append(round1.list_match)
     players = sorted(
         players, key=lambda player: (player.score_game, player.score), reverse=True
@@ -140,25 +154,18 @@ def create_next_round(players):
 """Run the program"""
 choice = MainView.welcome()
 if choice == 1:
+    players = []
     player = create_player()
-    Data.data_players(player)
+    Data.data_actors(player)
     print("\n A player has been created \n")
     end_player = back_menu()
 elif choice == 2:
     print("\n==================================================")
-    players = []
-    players.append(Player("Romain", "Turgeon", "Male", "01/12/1989", 1, 1000))
-    players.append(Player("William", "Smith", "Male", "03/11/1980", 2, 998))
-    players.append(Player("Damien", "Billard", "Male", "10/08/1978", 3, 996))
-    players.append(Player("Mickael", "Fitz", "Male", "25/06/2000", 4, 994))
-    players.append(Player("Ricardo", "Gagnon", "Male", "29/02/1988", 5, 992))
-    players.append(Player("Manon", "Tremblay", "Female", "13/06/1999", 6, 990))
-    players.append(Player("Claire", "Beaulieu", "Female", "17/11/1992", 7, 988))
-    players.append(Player("Julie", "Stefen", "Female", "14/05/1993", 8, 986))
-
+    players = create_auto_players()
     tournament = create_tournament(players)
-    # Data.data_tournaments(tournament)
+    Data.data_tournaments(tournament, players)
     print(tournament)
+
     rounds = tournament.rounds
     round1 = create_first_round(players)
     # Data.data_tournaments(tournament) update les infos du tournois
