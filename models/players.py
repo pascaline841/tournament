@@ -54,8 +54,8 @@ class Player:
         )
 
     def serialized_player(self):
-        """serialized player's data"""
-        serialized_player = {
+        """Serialized player's data."""
+        ser_player = {
             "firt name": self.first_name,
             "last name": self.last_name,
             "birth date": self.birth_date,
@@ -63,4 +63,4 @@ class Player:
             "rank": self.rank,
             "score": self.score,
         }
-        return serialized_player
+        return ser_player

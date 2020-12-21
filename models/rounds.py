@@ -37,7 +37,7 @@ class Round:
         players[7].opponent.append(players[3].first_name)
         return players
 
-    def display_first_round(self, players):
+    def display_first_score(self, players):
         """
         First Round : The players are ranked by best ranking.
         The matches are :
