@@ -11,10 +11,13 @@ class Data:
         actors_table = db.table("ACTORS")
         players_by_tournament = db.table("PLAYERS")
         tournament_table = db.table("TOURNAMENTS")
+        Tournament.serialized_tournament(self)
+        list_players = []
         for player in players:
-            ser_player = player.serialized_player()
+            ser_player = Player.serialized_player(player)
             if ser_player not in actors_table:
                 actors_table.insert(ser_player)
+            list_players.append(ser_player)
             players_by_tournament.insert(ser_player)
         tournament_table.insert(
             {
@@ -25,9 +28,10 @@ class Data:
                 "rounds": self.rounds,
                 "matches": self.matches,
                 "description": self.description,
-                "players": self.players,
+                "players": list_players,
             }
         )
+        return tournament_table
 
     def data_actors(self):
         """ Enter actor's informations in the database."""
@@ -48,40 +52,76 @@ class Data:
         )
         return actors_table
 
-    def update_rank(self, actors_table):
+    def update_tournament(rounds):
+        """ Update tournament's rounds and matches in the database."""
+        db = TinyDB("db.json")
+        tournament_table = db.table("TOURNAMENTS")
+        players_by_tournament = db.table("PLAYERS")
+        list_ser_rounds = []
+        list_ser_matches = []
+        list_players = players_by_tournament.all()
+        for round in rounds:
+            ser_round = Round.serialized_round(round)
+            list_ser_rounds.append(ser_round)
+            """for match in round.list_match:
+                ser_player1 = match[0][0].serialized_player()
+                ser_player2 = match[1][0].serialized_player()
+                ser_match = {
+                    "player1": ser_player1.first_name,
+                    "score_player1": ser_player1.score_game,
+                    "player2": ser_player2.first_name,
+                    "score_player2": ser_player2.score_game,
+                }
+                list_ser_matches.append(ser_match)
+                """
+        tournament = tournament_table.all()
+        id_tournament = len(tournament)
+        tournament_table.update(
+            {
+                "rounds": list_ser_rounds,
+                "matches": list_ser_matches,
+                "players": list_players,
+            },
+            doc_ids=[id_tournament],
+        )
+
+    def update_rank():
         """Update actor/player rank in the datatbase."""
         db = TinyDB("db.json")
+        actors_table = db.table("ACTORS")
         players_by_tournament = db.table("PLAYERS")
-        self = Query()
+        user = Query()
         first_name = input("First name ? ")
         last_name = input("Last name ? ")
         new_rank = int(input("New rank ? "))
         actors_table.update(
             {"rank": new_rank},
-            self["first name"] == first_name and self["last name"] == last_name,
+            user["first name"] == first_name and user["last name"] == last_name,
         )
         players_by_tournament.update(
             {"rank": new_rank},
-            self["first name"] == first_name and self["last name"] == last_name,
+            user["first name"] == first_name and user["last name"] == last_name,
         )
 
-    def update_score(self, actors_table):
+    def update_score():
         """Update actor/player score in the database."""
         db = TinyDB("db.json")
+        actors_table = db.table("ACTORS")
         players_by_tournament = db.table("PLAYERS")
-        self = Query()
+        user = Query()
         first_name = input("First name ?")
         last_name = input("Last name ?")
         new_score = int(input("New score ? "))
 
         players_by_tournament.update(
             {"score": new_score},
-            self["first name"] == first_name and self["last name"] == last_name,
+            user["first name"] == first_name and user["last name"] == last_name,
         )
 
-    def sorted_actors(self, actors_table):
+    def sorted_actors():
         """Sort all actors by alphabetic order or by rank."""
         db = TinyDB("db.json")
+        actors_table = db.table("ACTORS")
         sorted_actors = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
         all_data_actors = actors_table.all()
         list_actors = []
@@ -101,7 +141,7 @@ class Data:
             sorted_list = sorted(list_actors, key=lambda colonnes: colonnes[5])
         print(sorted_list)
 
-    def sorted_players(self):
+    def sorted_players():
         """Sort all players by alphabetic order or by rank."""
         db = TinyDB("db.json")
         players_by_tournament = db.table("PLAYERS")
@@ -124,7 +164,7 @@ class Data:
             sorted_list = sorted(list_players, key=lambda colonnes: colonnes[5])
         print(sorted_list)
 
-    def display_all_tournaments(self):
+    def display_all_tournaments():
         """Display all tournaments" report."""
         print("Display all tournaments' report. ")
         db = TinyDB("db.json")
@@ -144,13 +184,13 @@ class Data:
             list_tournaments.append(data_tournaments)
         print(list_tournaments)
 
-    def request_tournament(self):
+    def request_tournament():
         """Request for a tournament to display its rounds or matches."""
         db = TinyDB("db.json")
         tournament_table = db.table("TOURNAMENTS")
-        self = Query()
+        user = Query()
         date = input("Tournament's date ? (format : DD/MM/YYYY)")
-        choice = tournament_table.search(self["date"] == date)
+        choice = tournament_table.search(user["date"] == date)
         print(choice)
         request_tournament = int(input("Display ROUNDS (1) or MATCHES (2) ? "))
         if request_tournament == 1:
@@ -158,13 +198,13 @@ class Data:
         else:
             print(choice[0].get("matches"))
 
-    def request_players(self):
+    def request_players():
         """Request for a tournament to display its players by alphabetic order or rank."""
         db = TinyDB("db.json")
         tournament_table = db.table("TOURNAMENTS")
-        self = Query()
+        user = Query()
         date = input("Tournament's date ? (format : DD/MM/YYYY) ")
-        choice = tournament_table.search(self["date"] == date)
+        choice = tournament_table.search(user["date"] == date)
         print(choice)
         sorted_players = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
         if sorted_players == 1:

@@ -33,7 +33,7 @@ def display_reports():
 
 
 def create_player():
-    """Create a new player."""
+    """ Create a new player. """
     print("\n\n\n\n************CREATE A NEW PLAYER **************\n\n\n\n")
     first_name = NewPlayer.player_first_name()
     last_name = NewPlayer.player_last_name()
@@ -45,7 +45,6 @@ def create_player():
 
 
 def create_auto_players():
-    """Auto generate 8 players."""
     players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
     players.append(Player("William", "Smith", "m", "03/11/1980", 2, 998))
     players.append(Player("Damien", "Billard", "m", "10/08/1978", 3, 996))
@@ -90,7 +89,7 @@ def inter_menu():
 
 
 def create_tournament(players):
-    """Create a new tournament."""
+    """Create a new tournament. """
     print("************CREATE A NEW TOURNAMENT**************\n\n\n\n")
     name = NewTournament.tournament_name()
     location = NewTournament.tournament_location()
@@ -160,15 +159,14 @@ if choice == 1:
     print("\n A player has been created \n")
     end_player = back_menu()
 elif choice == 2:
-    print("\n==================================================")
+    print("==================================================")
     players = create_auto_players()
     tournament = create_tournament(players)
-    Data.data_tournaments(tournament, players)
+    tournament_table = Data.data_tournaments(tournament, players)
     print(tournament)
-
     rounds = tournament.rounds
     round1 = create_first_round(players)
-    # Data.data_tournaments(tournament) update les infos du tournois
+    Data.update_tournament(rounds)
     inter_menu()
     players_copy = new_list(players)
     nb_rounds = tournament.nb_rounds
@@ -179,16 +177,20 @@ elif choice == 2:
         players = sorted(
             players, key=lambda player: (player.score_game, player.score), reverse=True
         )
-        # Data.data_tournaments(tournament) update les infos du tournois
+        Data.update_tournament(rounds)
         inter_menu()
 
-    print(f"\n FINAL RESULTS OF {tournament.name} :")
+    print("==================================================")
+    print(f"FINAL RESULTS OF {tournament.name} :")
     for player in players:
-        print(f"SCORE : {player.score_game}, {player.first_name} {player.last_name}\n")
+        print(f"SCORE : {player.score_game}, {player.first_name} {player.last_name}")
         player.add_final_score(player.score_game, player.score)
         player.score_game = 0
         del player.opponent[:]
     print(rounds)
+    db = TinyDB("db.json")
+    players_by_tournament = db.table("PLAYERS")
+    players_by_tournament.truncate()
     back_menu()
 
 elif choice == 3:
