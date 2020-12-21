@@ -1,7 +1,7 @@
 CHESS TOURNAMENT -  SWISS PAIRING SYSTEM <br>
 <br>
 ## OVERVIEW
-Beta version of a system for tracking book prices at Books to Scrape, an on-demand runtime application aimed at retrieving prices at runtime.
+Beta version of a chess tournament program (Swiss system).
 <br>
 <br>
 ## REQUISITORIES <br>
