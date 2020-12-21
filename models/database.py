@@ -111,6 +111,21 @@ class Data:
         else:
             print(choice[0].get("matches"))
 
+    def request_players(self, tournament_table):
+        self = Query()
+        date = input("Tournament's date ? (format : DD/MM/YYYY) ")
+        choice = tournaments_table.search(self["date"] == date)
+        print(choice)
+        sorted_players = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
+        if sorted_players == 1:
+            list_players = choice[0].get("players")
+            sorted_list = sorted(list_players, key=lambda colonnes: colonnes[0])
+        else:
+            choice[0].get("players")
+            list_players = choice[0].get("players")
+            sorted_list = sorted(list_players, key=lambda colonnes: colonnes[1])
+        print(sorted_list)
+
 
 """
 tournament = create_tournament(players)
