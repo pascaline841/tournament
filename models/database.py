@@ -109,7 +109,10 @@ class Data:
         first_name = input("First name ?").capitalize()
         last_name = input("Last name ?").capitalize()
         new_score = int(input("New score ? "))
-
+        actors_table.update(
+            {"score": new_score},
+            user["first name"] == first_name and user["last name"] == last_name,
+        )
         players_by_tournament.update(
             {"score": new_score},
             user["first name"] == first_name and user["last name"] == last_name,

@@ -22,5 +22,3 @@ class Score:
                 "Incorrect score, it has to be 1 point for the winner, 0.5 point if draw, 0 point for the loser!"
             )
             return Score.player_add_score_match(self)
-
-   

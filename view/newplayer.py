@@ -56,6 +56,7 @@ class NewPlayer:
         """Menu to change the player's rank.  """
         choice_last_name = input("Please enter player's last name : ").capitalize()
         print("Last name entered successfully...")
+        return choice_last_name
         try:
             rank = int(input("Please enter player's rank : "))
             print("Rank entered successfully...")

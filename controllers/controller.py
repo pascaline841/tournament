@@ -12,7 +12,8 @@ from view.score import Score
 from view.displayround import DisplayRound
 
 import datetime
-from tinydb import TinyDB, Query
+
+from tinydb import TinyDB
 
 
 def display_reports():
@@ -111,7 +112,9 @@ def create_first_round(players):
     round1.list_match = round1.display_first_score(players)
     tournament.matches.append(round1.list_match)
     players = sorted(
-        players, key=lambda player: (player.score_game, player.score), reverse=True
+        players,
+        key=lambda player: (player.score_game, player.score),
+        reverse=True,
     )
     round1.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     rounds.append(round1)
@@ -175,7 +178,9 @@ elif choice == 2:
         round = create_next_round(players)
         players = players_copy[:]
         players = sorted(
-            players, key=lambda player: (player.score_game, player.score), reverse=True
+            players,
+            key=lambda player: (player.score_game, player.score),
+            reverse=True,
         )
         Data.update_tournament(rounds)
         inter_menu()
