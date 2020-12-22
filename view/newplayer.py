@@ -1,13 +1,13 @@
 class NewPlayer:
     @staticmethod
     def player_first_name():
-        first_name = input("Please enter player's first name : ")
+        first_name = input("Please enter player's first name : ").capitalize()
         print("First name entered successfully...")
         return first_name
 
     @staticmethod
     def player_last_name():
-        last_name = input("Please enter player's last name : ")
+        last_name = input("Please enter player's last name : ").capitalize()
         print("Last name entered successfully...")
         return last_name
 
@@ -20,7 +20,9 @@ class NewPlayer:
     @staticmethod
     def player_gender():
         try:
-            gender = input("Please enter player's gender (format = 'm' / 'f') : ")
+            gender = input(
+                "Please enter player's gender (format = 'm' / 'f') : "
+            ).lower()
             if gender not in ["m", "f"]:
                 raise ValueError
             print("Gender entered successfully...")
@@ -52,8 +54,7 @@ class NewPlayer:
     @staticmethod
     def change_rank():
         """Menu to change the player's rank.  """
-
-        choice_last_name = input("Please enter player's last name : ")
+        choice_last_name = input("Please enter player's last name : ").capitalize()
         print("Last name entered successfully...")
         try:
             rank = int(input("Please enter player's rank : "))

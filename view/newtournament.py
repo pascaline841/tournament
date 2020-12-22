@@ -14,7 +14,9 @@ class NewTournament:
     @staticmethod
     def tournament_mode():
         try:
-            mode = input("How would you like to play ? bullet / blitz / fast : ")
+            mode = input(
+                "How would you like to play ? bullet / blitz / fast : "
+            ).lower()
             if mode not in ["bullet", "blitz", "fast"]:
                 raise ValueError
             print("Mode entered successfully...")
