@@ -1,41 +1,30 @@
 from models.players import Player
 from models.tournaments import Tournament
 from models.rounds import Round
-from models.reports import Reports
+
 from models.database import Data
 
 from view.menu import MainView
 from view.newplayer import NewPlayer
 from view.newtournament import NewTournament
-from view.report import Report
 from view.score import Score
 from view.displayround import DisplayRound
+from view.report import DisplayReport
+
 
 import datetime
+from tinydb import TinyDB, Query
 
-from tinydb import TinyDB
-
-
-def display_reports():
-    choice = int(Report.menu_report())
-    if choice == 1:
-        choice = Reports.display_actors()
-    elif choice == 2:
-        choice = Reports.display_players()
-    elif choice == 3:
-        choice = Reports.display_tournaments()
-    elif choice == 4:
-        choice = Reports.display_rounds()
-    elif choice == 5:
-        choice = Reports.display_matchs()
-    elif choice == 6:
-        choice = MainView.welcome()
-    back_menu()
+# a enlever pour DataBase __init__
+db = TinyDB("db.json")
+tournament_table = db.table("TOURNAMENTS")
+players_by_tournament = db.table("PLAYERS")
+actors_table = db.table("ACTORS")
+user = Query()
 
 
 def create_player():
     """ Create a new player. """
-    print("\n\n\n\n************CREATE A NEW PLAYER **************\n\n\n\n")
     first_name = NewPlayer.player_first_name()
     last_name = NewPlayer.player_last_name()
     birth_date = NewPlayer.player_birth_date()
@@ -61,9 +50,9 @@ def back_menu():
     """Display menu to go back to the Main Menu."""
     choice = MainView.back_menu()
     if choice == 1:
-        choice = MainView.welcome()
+        MainView.welcome()
     elif choice == 2:
-        choice == Data.update_rank()
+        Data.update_rank(actors_table, players_by_tournament, user)
         return back_menu()
     elif choice == 3:
         print("Program ended ! See you soon !")
@@ -76,22 +65,45 @@ def inter_menu():
     """Display menu between rounds."""
     choice = MainView.interround_menu()
     if choice == 1:
-        choice = MainView.welcome()
+        pass
     elif choice == 2:
-        choice == Data.update_rank()
+        Data.update_rank(actors_table, players_by_tournament, user)
         return inter_menu()
     elif choice == 3:
-        pass
+        MainView.welcome()
     elif choice == 4:
         print("Program ended ! See you soon !")
     else:
         print("An error occurred.")
-        return back_menu()
+        return inter_menu()
+
+
+def display_reports():
+    # a enlever pour DataBase __init__
+    db = TinyDB("db.json")
+    tournament_table = db.table("TOURNAMENTS")
+    actors_table = db.table("ACTORS")
+    user = Query()
+    report = DisplayReport.menu_report()
+    if report == 1:
+        display_report = Data.sorted_actors(actors_table)
+        DisplayReport.report_1(display_report)
+    elif report == 2:
+        display_report = tournament_table.all()
+        DisplayReport.report_2(display_report)
+    elif report == 3:
+        display_report = Data.request_tournament(tournament_table, user)
+        DisplayReport.report_3(display_report)
+    elif report == 4:
+        display_report = Data.request_players(tournament_table, user)
+        DisplayReport.report_4(display_report)
+    else:
+        MainView.welcome()
+    DisplayReport.menu_report()
 
 
 def create_tournament(players):
     """Create a new tournament. """
-    print("************CREATE A NEW TOURNAMENT**************\n\n\n\n")
     name = NewTournament.tournament_name()
     location = NewTournament.tournament_location()
     mode = NewTournament.tournament_mode()
@@ -101,7 +113,6 @@ def create_tournament(players):
 
 def create_first_round(players):
     """Create the first round of a tournament. """
-    print("*******************ROUND 1 ******************\n")
     players = sorted(players, key=lambda player: player.rank)
     round1 = Round("Round 1")
     DisplayRound.display_first_round(players)
@@ -112,9 +123,7 @@ def create_first_round(players):
     round1.list_match = round1.display_first_score(players)
     tournament.matches.append(round1.list_match)
     players = sorted(
-        players,
-        key=lambda player: (player.score_game, player.score),
-        reverse=True,
+        players, key=lambda player: (player.score_game, player.score), reverse=True
     )
     round1.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     rounds.append(round1)
@@ -123,8 +132,7 @@ def create_first_round(players):
 
 
 def new_list(players):
-    players_copy = players[:]
-    return players_copy
+    return players[:]
 
 
 def create_next_round(players):
@@ -158,18 +166,19 @@ choice = MainView.welcome()
 if choice == 1:
     players = []
     player = create_player()
-    Data.data_actors(player)
+    Data.data_actors(player, actors_table)
     print("\n A player has been created \n")
-    end_player = back_menu()
+
 elif choice == 2:
-    print("==================================================")
     players = create_auto_players()
     tournament = create_tournament(players)
-    tournament_table = Data.data_tournaments(tournament, players)
+    Data.data_tournaments(
+        tournament, players, actors_table, players_by_tournament, tournament_table
+    )
     print(tournament)
     rounds = tournament.rounds
     round1 = create_first_round(players)
-    Data.update_tournament(rounds)
+    Data.update_tournament(rounds, tournament_table)
     inter_menu()
     players_copy = new_list(players)
     nb_rounds = tournament.nb_rounds
@@ -178,38 +187,28 @@ elif choice == 2:
         round = create_next_round(players)
         players = players_copy[:]
         players = sorted(
-            players,
-            key=lambda player: (player.score_game, player.score),
-            reverse=True,
+            players, key=lambda player: (player.score_game, player.score), reverse=True
         )
         Data.update_tournament(rounds)
         inter_menu()
 
-    print("==================================================")
-    print(f"FINAL RESULTS OF {tournament.name} :")
+    MainView.display_final(tournament, players)
     for player in players:
-        print(f"SCORE : {player.score_game}, {player.first_name} {player.last_name}")
-        player.add_final_score(player.score_game, player.score)
+        score = player.add_final_score(player.score_game, player.score)
+        Data.update_score(actors_table, players_by_tournament, score)
         player.score_game = 0
         del player.opponent[:]
-    print(rounds)
-    db = TinyDB("db.json")
-    players_by_tournament = db.table("PLAYERS")
     players_by_tournament.truncate()
-    back_menu()
 
 elif choice == 3:
     # Choice = Continue an existing tournament
     print("BUILDING")
-
 elif choice == 4:
-    choice == Data.update_rank()
-    back_menu()
+    Data.update_rank()
 elif choice == 5:
-    display_reports = display_reports()
-
+    display_reports()
 elif choice == 6:
     print("Program ended ! See you soon !")
-
 else:
     print("An error occurred.")
+back_menu()
