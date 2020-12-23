@@ -10,6 +10,8 @@ class Data:
         self.tournament_table = db.table("TOURNAMENTS")
         self.actors_table = db.table("ACTORS")
         self.players_by_tournament = db.table("PLAYERS")
+        self.rounds_table = db.table("ROUNDS")
+        self.matches_table = db.table("MATCHES")
         self.user = Query()
 
     def data_tournaments(
@@ -53,21 +55,41 @@ class Data:
             }
         )
 
-    def update_tournament(rounds, tournament_table, players_by_tournement):
+    def update_tournament(
+        rounds,
+        tournament_table,
+        players_by_tournement,
+        rounds_table,
+        matches_table,
+    ):
         """ Update tournament's rounds and matches in the database."""
-        ser_rounds = []
-        ser_matches = []
-        er_players = players_by_tournement.all()
+        ser_players = players_by_tournement.all()
+        ser_match = matches_table.all()
         tournament = tournament_table.all()
         for round in rounds:
             ser_round = Round.serialized_round(round)
-            list_ser_rounds.append(ser_round)
+            rounds_table.insert(ser_round)
+            """for match in round.list_match:
+                ser_match = {
+                    "player 1": player.first_name,
+                    "score payer 1": player.score_game,
+                    "player 2": player.first_name,
+                    "score payer 2": player.score_game,
+                }
+                matches_table.insert(ser_match)
+        for player in ser_players:
+            players_by_tournement.update(
+                {
+                    "rank": self.rank,
+                    "score game": self.score_game,
+                },
+            )"""
 
         id_tournament = len(tournament)
         tournament_table.update(
             {
-                "rounds": ser_rounds,
-                "matches": ser_matches,
+                "rounds": ser_round,
+                "matches": ser_match,
                 "players": ser_players,
             },
             doc_ids=[id_tournament],
@@ -112,7 +134,7 @@ class Data:
             return choice[0].get("matches")
 
     def request_players(tournament_table, user):
-        """Request for a tournament to display its players by alphabetic order or rank."""
+        """Request for a tournament to display its players by alpha order or rank."""
         date = input("Tournament's date ? (format : DD/MM/YYYY) ")
         choice = tournament_table.search(user["date"] == date)
         players = choice[0].get("players")
@@ -121,3 +143,8 @@ class Data:
             return sorted(players, key=lambda players: players["last name"])
         else:
             return sorted(players, key=lambda players: players["rank"])
+
+    def truncate_data(players_by_tournament, matches_table, rounds_table):
+        players_by_tournament.truncate()
+        matches_table.truncate()
+        rounds_table.truncate()

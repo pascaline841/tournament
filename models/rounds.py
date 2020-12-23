@@ -13,12 +13,13 @@ class Round:
         """
         self.name = name
         self.start = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-        self.list_match = []  # matches.append(list_match)
+        self.list_match = []
+        self.players_paired = []
         self.end = end
 
     def __repr__(self):
         """Display : ROUND[], START : [date/time] END :[date/time]."""
-        return " {} START : {} END : {} \n MATCH : {} ".format(
+        return " {} START : {} END : {} \n MATCHES : {} ".format(
             self.name, self.start, self.end, self.list_match
         )
 
@@ -46,273 +47,86 @@ class Round:
         player[2] vs players[6]
         player[3] vs players[5].
         """
-        self.list_match = []
+        players_sorted = sorted(players, key=lambda player: player.rank)
         match1 = (
-            (players[0].first_name, players[0].score_game),
             (
-                players[4].first_name,
-                players[4].score_game,
+                players_sorted[0].first_name,
+                players_sorted[0].score_game,
+            ),
+            (
+                players_sorted[4].first_name,
+                players_sorted[4].score_game,
             ),
         )
         match2 = (
             (
-                players[1].first_name,
-                players[1].score_game,
+                players_sorted[1].first_name,
+                players_sorted[1].score_game,
             ),
             (
-                players[5].first_name,
-                players[5].score_game,
+                players_sorted[5].first_name,
+                players_sorted[5].score_game,
             ),
         )
         match3 = (
             (
-                players[2].first_name,
-                players[2].score_game,
+                players_sorted[2].first_name,
+                players_sorted[2].score_game,
             ),
             (
-                players[6].first_name,
-                players[6].score_game,
+                players_sorted[6].first_name,
+                players_sorted[6].score_game,
             ),
         )
         match4 = (
             (
-                players[3].first_name,
-                players[3].score_game,
+                players_sorted[3].first_name,
+                players_sorted[3].score_game,
             ),
             (
-                players[7].first_name,
-                players[7].score_game,
+                players_sorted[7].first_name,
+                players_sorted[7].score_game,
             ),
         )
         self.list_match.extend([match1, match2, match3, match4])
         return self.list_match
 
-    def get_opponent_match1(self, players):
+    def get_opponent(self, players):
         """
-        The player meets the player below him in the score_game ranking.
-        If they have already met, it goes on to the next one.
-        """
-        self.list_match = []
-        if players[1].first_name not in players[0].opponent:
-            players[0].opponent.append(players[1].first_name)
-            players[1].opponent.append(players[0].first_name)
-            match1 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[1].first_name, players[1].opponent_point),
-            )
-            self.list_match.append(match1)
-            print(f"{players[0].first_name} vs {players[1].first_name}")
-            del players[1]
-
-        elif players[1].first_name in players[0].opponent:
-            players[0].opponent.append(players[2].first_name)
-            players[2].opponent.append(players[0].first_name)
-            match1 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[2].first_name, players[2].opponent_point),
-            )
-            self.list_match.append(match1)
-            print(f"{players[0].first_name} vs {players[2].first_name}")
-            del players[2]
-
-        elif players[2].first_name in players[0].opponent:
-            players[0].opponent.append(players[3].first_name)
-            players[3].opponent.append(players[0].first_name)
-            match1 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[3].first_name, players[3].opponent_point),
-            )
-            self.list_match.append(match1)
-            print(f"{players[0].first_name} vs {players[3].first_name}")
-            del players[3]
-
-        elif players[3].first_name in players[0].opponent:
-            players[0].opponent.append(players[4].first_name)
-            players[4].opponent.append(players[0].first_name)
-            match1 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[4].first_name, players[4].opponent_point),
-            )
-            self.list_match.append(match1)
-            print(f"{players[0].first_name} vs {players[4].first_name}")
-            del players[4]
-
-        else:
-            players[0].opponent.append(players[5].first_name)
-            players[5].opponent.append(players[0].first_name)
-            match1 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[5].first_name, players[5].opponent_point),
-            )
-            self.list_match.append(match1)
-            print(f"{players[0].first_name} vs {players[5].first_name}")
-            del players[5]
-
-        del players[0]
-        return players
-
-    def get_opponent_match2(self, players):
-        """
-        The player meets the player below him in the score_game ranking.
-        If they have already met, it goes on to the next one.
-        """
-        self.list_match = []
-        if players[1].first_name not in players[0].opponent:
-            players[0].opponent.append(players[1].first_name)
-            players[1].opponent.append(players[0].first_name)
-            match2 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[1].first_name, players[1].opponent_point),
-            )
-            self.list_match.append(match2)
-            print(f"{players[0].first_name} vs {players[1].first_name}")
-            del players[1]
-
-        elif players[1].first_name in players[0].opponent:
-            players[0].opponent.append(players[2].first_name)
-            players[2].opponent.append(players[0].first_name)
-            match2 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[2].first_name, players[2].opponent_point),
-            )
-            self.list_match.append(match2)
-            print(f"{players[0].first_name} vs {players[2].first_name}")
-            del players[2]
-
-        elif players[2].first_name in players[0].opponent:
-            players[0].opponent.append(players[3].first_name)
-            players[3].opponent.append(players[0].first_name)
-            match2 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[3].first_name, players[3].opponent_point),
-            )
-            self.list_match.append(match2)
-            print(f"{players[0].first_name} vs {players[3].first_name}")
-            del players[3]
-
-        elif players[3].first_name in players[0].opponent:
-            players[0].opponent.append(players[4].first_name)
-            players[4].opponent.append(players[0].first_name)
-            match2 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[4].first_name, players[4].opponent_point),
-            )
-            self.list_match.append(match2)
-            print(f"{players[0].first_name} vs {players[4].first_name}")
-            del players[4]
-
-        else:
-            players[0].opponent.append(players[5].first_name)
-            players[5].opponent.append(players[0].first_name)
-            match2 = (
-                (players[0].first_name, players[0].opponent_point),
-                (players[5].first_name, players[5].opponent_point),
-            )
-            self.list_match.append(match2)
-            print(f"{players[0].first_name} vs {players[5].first_name}")
-            del players[5]
-
-        del players[0]
-        return players
-
-    def get_opponent_match3(self, players):
-        """
-        The player meets the player below him in the score_game ranking.
-        If they have already met, it goes on to the next one.
-        """
-        self.list_match = []
-        if players[2].first_name in players[3].opponent:
-            if players[0].first_name not in players[2].opponent:
-                players[0].opponent.append(players[2].first_name)
-                players[2].opponent.append(players[0].first_name)
-                match3 = (
-                    (players[0].first_name, players[0].opponent_point),
-                    (players[1].first_name, players[1].opponent_point),
-                )
-                self.list_match.append(match3)
-                print(f"{players[0].first_name} vs {players[2].first_name}")
-                del players[2]
-            else:
-                players[0].opponent.append(players[3].first_name)
-                players[3].opponent.append(players[0].first_name)
-                match3 = (
-                    (players[0].first_name, players[0].opponent_point),
-                    (players[3].first_name, players[3].opponent_point),
-                )
-                self.list_match.append(match3)
-                print(f"{players[0].first_name} vs {players[3].first_name}")
-                del players[3]
-
-        else:
-            if players[1].first_name not in players[0].opponent:
-                players[0].opponent.append(players[1].first_name)
-                players[1].opponent.append(players[0].first_name)
-                match3 = (
-                    (players[0].first_name, players[0].opponent_point),
-                    (players[1].first_name, players[1].opponent_point),
-                )
-                self.list_match.append(match3)
-                print(f"{players[0].first_name} vs {players[1].first_name}")
-                del players[1]
-
-            elif players[1].first_name in players[0].opponent:
-                players[0].opponent.append(players[2].first_name)
-                players[2].opponent.append(players[0].first_name)
-                match3 = (
-                    (players[0].first_name, players[0].opponent_point),
-                    (players[2].first_name, players[2].opponent_point),
-                )
-                self.list_match.append(match3)
-                print(f"{players[0].first_name} vs {players[2].first_name}")
-                del players[2]
-
-            else:
-                players[0].opponent.append(players[3].first_name)
-                players[3].opponent.append(players[0].first_name)
-                match3 = (
-                    (players[0].first_name, players[0].opponent_point),
-                    (players[3].first_name, players[3].opponent_point),
-                )
-                self.list_match.append(match3)
-                print(f"{players[0].first_name} vs {players[3].first_name}")
-                del players[3]
-        del players[0]
-        return players
-
-    def get_opponent_match4(self, players):
-        """
-        The player meets the player below him in the score_game ranking.
-        If they have already met, it goes on to the next one.
-        """
-        self.list_match = []
-        players[0].opponent.append(players[1].first_name)
-        players[1].opponent.append(players[0].first_name)
-        match4 = (
-            (players[0].first_name, players[0].opponent_point),
-            (players[1].first_name, players[1].opponent_point),
-        )
-        self.list_match.append(match4)
-        print(f"{players[0].first_name} vs {players[1].first_name}")
-        return players
-
-    def display_list_match(self, players):
-        """
-        Next Round : The players are ranked by score_game.
+        Rounds 2 3 4 : The players are ranked by best score
         The matches are :
         player[0] vs players[1]
         player[2] vs players[3]
         player[4] vs players[5]
         player[6] vs players[7].
         """
-        # trouver comment afficher les score match 2 3 4
-        self.list_match = []
+        for i in range(7):
+            while players[i].first_name not in self.players_paired:
+                j = i + 1
+                while (
+                    j < 7
+                    and players[j].first_name in players[i].opponent
+                    and players[i].first_name in players[j].opponent
+                ):
+                    j += 1
+                players[i].opponent.append(players[j].first_name)
+                players[j].opponent.append(players[i].first_name)
+                match = (
+                    (players[i].first_name, players[i].opponent_point),
+                    (players[j].first_name, players[j].opponent_point),
+                )
+                self.players_paired.append(players[i].first_name)
+                self.players_paired.append(players[j].first_name)
+                self.list_match.append(match)
+                print(f"{players[i].first_name} vs {players[j].first_name}")
+            i += 1
+        return self.list_match
 
     def serialized_round(self):
         """serialized round's data."""
-        ser_round = {
+        return {
             "name": self.name,
             "start": self.start,
-            # "list match": self.list_match,
+            "matches": self.list_match,
             "end": self.end,
         }
-        return ser_round

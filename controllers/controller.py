@@ -20,6 +20,8 @@ db = TinyDB("db.json")
 tournament_table = db.table("TOURNAMENTS")
 players_by_tournament = db.table("PLAYERS")
 actors_table = db.table("ACTORS")
+rounds_table = db.table("ROUNDS")
+matches_table = db.table("MATCHES")
 user = Query()
 
 
@@ -83,6 +85,8 @@ def display_reports():
     db = TinyDB("db.json")
     tournament_table = db.table("TOURNAMENTS")
     actors_table = db.table("ACTORS")
+    rounds_table = db.table("ROUNDS")
+    matches_table = db.table("MATCHES")
     user = Query()
     report = DisplayReport.menu_report()
     if report == 1:
@@ -120,6 +124,12 @@ def create_first_round(players):
     for player in players:
         add_point = Score.player_add_score_match(player)
         player.add_score_game(0, add_point)
+        if add_point == 0:
+            player.opponent_point = 1
+        elif add_point == 1:
+            player.opponent_point = 0
+        else:
+            player.opponent_point = 0.5
     round1.list_match = round1.display_first_score(players)
     tournament.matches.append(round1.list_match)
     players = sorted(
@@ -131,20 +141,14 @@ def create_first_round(players):
     return round1
 
 
-def new_list(players):
-    return players[:]
-
-
 def create_next_round(players):
     """Create Round 2, 3 , 4."""
     print(f"\n*******************ROUND {len(rounds)+1}******************\n")
     round = Round("Round " + str(len(rounds) + 1))
+    players = sorted(players, key=lambda player: player.score_game, reverse=True)
     print(players)
-    round.get_opponent_match1(players)
-    round.get_opponent_match2(players)
-    round.get_opponent_match3(players)
-    round.get_opponent_match4(players)
-    for player in players_copy:
+    round.get_opponent(players)
+    for player in players:
         add_point = Score.player_add_score_match(player)
         player.add_score_game(player.score_game, add_point)
         if add_point == 0:
@@ -178,18 +182,26 @@ elif choice == 2:
     print(tournament)
     rounds = tournament.rounds
     round1 = create_first_round(players)
-    Data.update_tournament(rounds, tournament_table)
+    Data.update_tournament(
+        rounds,
+        tournament_table,
+        players_by_tournament,
+        rounds_table,
+        matches_table,
+    )
     inter_menu()
-    players_copy = new_list(players)
     nb_rounds = tournament.nb_rounds
+
     while nb_rounds > 1:
         nb_rounds -= 1
         round = create_next_round(players)
-        players = players_copy[:]
-        players = sorted(
-            players, key=lambda player: (player.score_game, player.score), reverse=True
+        Data.update_tournament(
+            rounds,
+            tournament_table,
+            players_by_tournament,
+            rounds_table,
+            matches_table,
         )
-        Data.update_tournament(rounds)
         inter_menu()
 
     MainView.display_final(tournament, players)
@@ -198,7 +210,7 @@ elif choice == 2:
         Data.update_score(actors_table, players_by_tournament, score)
         player.score_game = 0
         del player.opponent[:]
-    players_by_tournament.truncate()
+    Data.truncate_data(players_by_tournament, matches_table, rounds_table)
 
 elif choice == 3:
     # Choice = Continue an existing tournament
