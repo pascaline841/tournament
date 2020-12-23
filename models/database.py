@@ -53,30 +53,22 @@ class Data:
             }
         )
 
-    def update_tournament(rounds, tournament_table):
+    def update_tournament(rounds, tournament_table, players_by_tournement):
         """ Update tournament's rounds and matches in the database."""
-        list_ser_rounds = []
-        list_ser_matches = []
+        ser_rounds = []
+        ser_matches = []
+        er_players = players_by_tournement.all()
+        tournament = tournament_table.all()
         for round in rounds:
             ser_round = Round.serialized_round(round)
             list_ser_rounds.append(ser_round)
-            """for match in round.list_match:
-                ser_player1 = match[0][0].serialized_player()
-                ser_player2 = match[1][0].serialized_player()
-                ser_match = {
-                    "player1": ser_player1.first_name,
-                    "score_player1": ser_player1.score_game,
-                    "player2": ser_player2.first_name,
-                    "score_player2": ser_player2.score_game,
-                }
-                list_ser_matches.append(ser_match)
-                """
-        tournament = tournament_table.all()
+
         id_tournament = len(tournament)
         tournament_table.update(
             {
-                "rounds": list_ser_rounds,
-                "matches": list_ser_matches,
+                "rounds": ser_rounds,
+                "matches": ser_matches,
+                "players": ser_players,
             },
             doc_ids=[id_tournament],
         )
@@ -109,20 +101,11 @@ class Data:
         else:
             return sorted(actors, key=lambda actor: actor["rank"])
 
-    def sorted_players(players_by_tournament):
-        """Sort all players by alphabetic order or by rank for the current tournamen."""
-        players = players_by_tournament.all()
-        sorted_choice = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
-        if sorted_choice == 1:
-            return sorted(players, key=lambda player: player["last name"])
-        else:
-            return sorted(players, key=lambda player: player["rank"], reverse=True)
-
     def request_tournament(tournament_table, user):
         """Request for a tournament to display its rounds or matches."""
         date = input("Tournament's date ? (format : DD/MM/YYYY)")
         choice = tournament_table.search(user["date"] == date)
-        request_tournament = int(input("Display ROUNDS (1) or MATCHES (2) ? "))
+        request_tournament = int(input("Display ROUNDS(1) or MATCHES(2) ? "))
         if request_tournament == 1:
             return choice[0].get("rounds")
         else:
