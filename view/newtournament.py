@@ -1,6 +1,8 @@
 class NewTournament:
     @staticmethod
     def tournament_name():
+        print("\n==================================================")
+        print("************CREATE A NEW TOURNAMENT**************\n")
         name = input("Please enter tournament's name : ")
         print("Name entered successfully...")
         return name

@@ -1,6 +1,7 @@
 class NewPlayer:
     @staticmethod
     def player_first_name():
+        print("\n************CREATE A NEW PLAYER **************\n")
         first_name = input("Please enter player's first name : ").capitalize()
         print("First name entered successfully...")
         return first_name

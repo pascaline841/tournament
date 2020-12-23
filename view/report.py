@@ -17,3 +17,30 @@ class DisplayReport:
         except ValueError:
             print("The value entered doesn't match the possible choices !\n")
             return DisplayReport.menu_report
+
+    @staticmethod
+    def report_1(display_report):
+        for actor in display_report:
+            print(f"{actor['first name']} {actor['last name']} RANK : {actor['rank']}")
+
+    @staticmethod
+    def report_2(display_report):
+        for tournament in display_report:
+            print(
+                f"{tournament['name']} {tournament['date']} {tournament['location']} {tournament['mode']}"
+            )
+
+    @staticmethod
+    def report_3(display_report):
+        for round in display_report:
+            print(f"{round['name']} {round['start']} {round['end']}")
+
+        for match in display_report:
+            print(match)
+
+    @staticmethod
+    def report_4(display_report):
+        for player in display_report:
+            print(
+                f"{player['first name']} {player['last name']} RANK : {player['rank']}"
+            )

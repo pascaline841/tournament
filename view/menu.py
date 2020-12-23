@@ -40,9 +40,9 @@ class MainView:
     def interround_menu():
         print("==================================================")
         print("What would you like to do ?")
-        print("1 - Back to the Main Menu")
+        print("1 - CONTINUE THE TOURNAMENT")
         print("2 - Change the ranking from a player ?")
-        print("3 - CONTINUE THE TOURNAMENT")
+        print("3 - Back to the Main Menu")
         print("4 - End the program")
         try:
             choice = int(input("Enter your choice (1, 2, 3, 4): \n"))
@@ -53,3 +53,11 @@ class MainView:
         except ValueError:
             print("The value entered doesn't match the possible choices !\n")
             return MainView.interround_menu()
+
+    def display_final(self, players):
+        print("==================================================")
+        print(f"FINAL RESULTS OF {self.name} :")
+        for player in players:
+            print(
+                f"SCORE : {player.score_game}, {player.first_name} {player.last_name}"
+            )
