@@ -4,7 +4,7 @@ class DisplayReport:
         print("************REPORTS**************")
         print("1 - List of all actors")
         print("2 - List of all tournaments")
-        print("3 - List of all rounds and matches for a tournament")
+        print("3 - List of all rounds or matches for a tournament")
         print("4 - List of all players for a tournament")
         print("5 - return to the general menu")
         try:
@@ -34,9 +34,6 @@ class DisplayReport:
     def report_3(display_report):
         for round in display_report:
             print(f"{round['name']} {round['start']} {round['end']}")
-
-        for match in display_report:
-            print(match)
 
     @staticmethod
     def report_4(display_report):

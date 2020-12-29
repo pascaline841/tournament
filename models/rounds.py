@@ -91,7 +91,11 @@ class Round:
         self.list_match.extend([match1, match2, match3, match4])
         return self.list_match
 
-    def get_opponent(self, players):
+    def swap_players(self, i, j, players):
+
+        return self.swap_players
+
+ def get_opponent(self, players):
         """
         Rounds 2 3 4 : The players are ranked by best score
         The matches are :
@@ -112,8 +116,8 @@ class Round:
                 players[i].opponent.append(players[j].first_name)
                 players[j].opponent.append(players[i].first_name)
                 match = (
-                    (players[i].first_name, players[i].opponent_point),
-                    (players[j].first_name, players[j].opponent_point),
+                    (players[i].first_name, players[i].score_game),
+                    (players[j].first_name, players[j].score_game,
                 )
                 self.players_paired.append(players[i].first_name)
                 self.players_paired.append(players[j].first_name)

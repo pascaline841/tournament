@@ -5,7 +5,7 @@ from tinydb import TinyDB, Query
 
 
 class Data:
-    def __init__(self, db, tournament_table, actors_table, players_by_tournament, user):
+    def __init__(self, db):
         self.db = TinyDB("db.json")
         self.tournament_table = db.table("TOURNAMENTS")
         self.actors_table = db.table("ACTORS")
@@ -26,6 +26,7 @@ class Data:
                 actors_table.insert(ser_player)
             list_players.append(ser_player)
             players_by_tournament.insert(ser_player)
+
         tournament_table.insert(
             {
                 "name": self.name,
@@ -44,18 +45,7 @@ class Data:
         ser_player = Player.serialized_player(self)
         if ser_player not in actors_table:
             actors_table.insert(ser_player)
-        actors_table.insert(
-            {
-                "first name": self.first_name,
-                "last name": self.last_name,
-                "birth date": self.birth_date,
-                "gender": self.gender,
-                "rank": self.rank,
-                "score": self.score,
-            }
-        )
-    def update_players():
-            
+
     def update_tournament(
         rounds,
         tournament_table,

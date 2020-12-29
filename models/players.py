@@ -63,4 +63,8 @@ class Player:
             "gender": self.gender,
             "rank": self.rank,
             "score": self.score,
+            "score game": self.score_game,
+            "point": self.point,
+            "opponents": self.opponent,
+            "opponent_point": self.opponent_point,
         }

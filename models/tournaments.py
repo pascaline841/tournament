@@ -37,13 +37,13 @@ class Tournament:
 
     def serialized_tournament(self):
         """serialized tournament's data"""
-        ser_tournament = {
+        return {
             "name": self.name,
             "location": self.location,
             "date": self.date,
             "mode": self.mode,
             "rounds": self.rounds,
+            "matches": self.matches,
             "description": self.description,
             "players": self.players,
         }
-        return ser_tournament
