@@ -14,7 +14,7 @@ class Data:
         self.matches_table = db.table("MATCHES")
         self.user = Query()
 
-    def data_tournaments(
+    def data_tournament(
         self, players, actors_table, players_by_tournament, tournament_table
     ):
         """ Enter players and tournament informations in the database."""
@@ -54,7 +54,8 @@ class Data:
                 "score": self.score,
             }
         )
-
+    def update_players():
+            
     def update_tournament(
         rounds,
         tournament_table,
@@ -145,6 +146,7 @@ class Data:
             return sorted(players, key=lambda players: players["rank"])
 
     def truncate_data(players_by_tournament, matches_table, rounds_table):
-        players_by_tournament.truncate()
-        matches_table.truncate()
-        rounds_table.truncate()
+        """Allows you to delete the tables from the database"""
+        players_by_tournament.truncate("PLAYERS")
+        matches_table.truncate("MATCHES")
+        rounds_table.truncate("ROUNDS")

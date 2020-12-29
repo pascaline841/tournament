@@ -1,3 +1,4 @@
+import sys
 from models.players import Player
 from models.tournaments import Tournament
 from models.rounds import Round
