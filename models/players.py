@@ -11,7 +11,6 @@ class Player:
         score,
         score_game=0,
         point=0,
-        opponent_point=0,
     ):
         """
         First name :
@@ -32,7 +31,6 @@ class Player:
         self.score_game = score_game
         self.point = point
         self.opponent = []
-        self.opponent_point = opponent_point
 
     def add_score_game(self, score_game, add_point):  # round 1 2 3 4
         """Add match score to player's score_game."""
@@ -66,5 +64,4 @@ class Player:
             "score game": self.score_game,
             "point": self.point,
             "opponents": self.opponent,
-            "opponent_point": self.opponent_point,
         }

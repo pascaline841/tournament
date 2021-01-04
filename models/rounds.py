@@ -1,4 +1,5 @@
 import datetime
+from view.displayround import DisplayRound
 
 
 class Round:
@@ -13,14 +14,14 @@ class Round:
         """
         self.name = name
         self.start = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-        self.list_match = []
+        self.matches = []
         self.players_paired = []
         self.end = end
 
     def __repr__(self):
         """Display : ROUND[], START : [date/time] END :[date/time]."""
         return " {} START : {} END : {} \n MATCHES : {} ".format(
-            self.name, self.start, self.end, self.list_match
+            self.name, self.start, self.end, self.matches
         )
 
     def get_first_opponent(players):
@@ -38,7 +39,7 @@ class Round:
         players[7].opponent.append(players[3].first_name)
         return players
 
-    def display_first_score(self, players):
+    def first_matches(self, players):
         """
         First Round : The players are ranked by best ranking.
         The matches are :
@@ -88,14 +89,10 @@ class Round:
                 players_sorted[7].score_game,
             ),
         )
-        self.list_match.extend([match1, match2, match3, match4])
-        return self.list_match
+        self.matches.extend([match1, match2, match3, match4])
+        return self.matches
 
-    def swap_players(self, i, j, players):
-
-        return self.swap_players
-
- def get_opponent(self, players):
+    def get_opponent(self, players):
         """
         Rounds 2 3 4 : The players are ranked by best score
         The matches are :
@@ -104,33 +101,33 @@ class Round:
         player[4] vs players[5]
         player[6] vs players[7].
         """
-        for i in range(7):
+
+        for i in range(len(players)):
             while players[i].first_name not in self.players_paired:
                 j = i + 1
                 while (
-                    j < 7
+                    j < len(players)
+                    and players[j].first_name in self.players_paired
                     and players[j].first_name in players[i].opponent
                     and players[i].first_name in players[j].opponent
                 ):
                     j += 1
                 players[i].opponent.append(players[j].first_name)
                 players[j].opponent.append(players[i].first_name)
-                match = (
-                    (players[i].first_name, players[i].score_game),
-                    (players[j].first_name, players[j].score_game,
-                )
+                match = (players[i].first_name, players[j].first_name)
+                self.matches.append(match)
                 self.players_paired.append(players[i].first_name)
                 self.players_paired.append(players[j].first_name)
-                self.list_match.append(match)
                 print(f"{players[i].first_name} vs {players[j].first_name}")
+
             i += 1
-        return self.list_match
+        return self.matches
 
     def serialized_round(self):
         """serialized round's data."""
         return {
             "name": self.name,
             "start": self.start,
-            "matches": self.list_match,
+            "matches": self.matches,
             "end": self.end,
         }

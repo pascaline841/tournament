@@ -17,7 +17,7 @@ class TournamentController:
         players.append(Player("Julie", "Stefen", "f", "14/05/1993", 8, 986))
         return players
 
-    def create_first_round(players):
+    def create_first_round(tournament, rounds, players):
         """Create the first round of a tournament. """
         players = sorted(players, key=lambda player: player.rank)
         round1 = Round(
@@ -34,8 +34,8 @@ class TournamentController:
                 player.opponent_point = 0
             else:
                 player.opponent_point = 0.5
-        round1.list_match = round1.display_first_score(players)
-        tournament.matches.append(round1.list_match)
+        round1.matches = DisplayRound.display_first_round(players)
+        tournament.matches.append(round1.matches)
         players = sorted(
             players, key=lambda player: (player.score_game, player.score), reverse=True
         )
@@ -44,7 +44,7 @@ class TournamentController:
         print(f"\n{round1}")
         return round1
 
-    def create_next_round(players):
+    def create_next_round(tournament, rounds, players):
         """Create Round 2, 3 , 4."""
         print(f"\n*******************ROUND {len(rounds)+1}******************\n")
         round = Round("Round " + str(len(rounds) + 1))
@@ -60,7 +60,7 @@ class TournamentController:
                 player.opponent_point = 0
             else:
                 player.opponent_point = 0.5
-        tournament.matches.append(round.list_match)
+        tournament.matches.append(round.matches)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
         print(f"\n{round}")

@@ -1,31 +1,20 @@
-from models.players import Player
-from models.tournaments import Tournament
-from models.rounds import Round
 from models.database import Data
 from view.menu import MainView
-from view.newplayer import NewPlayer
-from view.newtournament import NewTournament
-from view.score import Score
-from view.displayround import DisplayRound
-from view.report import DisplayReport
 from controllers.menucontrol import MenuController
 from controllers.tournamentcontrol import TournamentController
-import datetime
 from tinydb import TinyDB, Query
 
 
 class MainController:
-    
-        db = TinyDB("db.json")
-        tournament_table = db.table("TOURNAMENTS")
-        actors_table = db.table("ACTORS")
-        players_by_tournament = db.table("PLAYERS")
-        rounds_table = db.table("ROUNDS")
-        matches_table = db.table("MATCHES")
-        user = Query()
-
     def start_program():
         """Run the program"""
+        tournament_table = TinyDB("TOURNAMENTS.json")
+        actors_table = TinyDB("ACTORS.json")
+        players_table = TinyDB("PLAYERS.json")
+        # rounds_table = TinyDB("ROUNDS.json")
+        # matches_table = TinyDB("MATCHES.json")
+        user = Query()
+
         choice = MainView.welcome()
         if choice == 1:
             players = []
@@ -40,51 +29,58 @@ class MainController:
                 tournament,
                 players,
                 actors_table,
-                players_by_tournament,
+                players_table,
                 tournament_table,
             )
             print(tournament)
             rounds = tournament.rounds
-            TournamentController.create_first_round(players)
-            Data.update_tournament(
-                rounds,
-                tournament_table,
-                players_by_tournament,
-                rounds_table,
-                matches_table,
+            round_one = TournamentController.create_first_round(
+                tournament, rounds, players
             )
-            MenuController.inter_menu()
+            Data.update_tournament(
+                round_one,
+                tournament_table,
+                players_table,
+                tournament,
+            )
+
+            MenuController.inter_menu(
+                tournament_table, actors_table, players_table, user
+            )
+
             nb_rounds = tournament.nb_rounds
 
             while nb_rounds > 1:
                 nb_rounds -= 1
-                TournamentController.create_next_round(players)
-                Data.update_tournament(
-                    rounds,
-                    tournament_table,
-                    players_by_tournament,
-                    rounds_table,
-                    matches_table,
+                next_round = TournamentController.create_next_round(
+                    tournament, rounds, players
                 )
-                MenuController.inter_menu()
+                Data.update_tournament(
+                    next_round,
+                    tournament_table,
+                    players_table,
+                )
+                MenuController.inter_menu(
+                    tournament_table, actors_table, players_table, user
+                )
 
             MainView.display_final(tournament, players)
             for player in players:
                 score = player.add_final_score(player.score_game, player.score)
-                Data.update_score(actors_table, players_by_tournament, score)
+                Data.update_score(actors_table, players_table, score)
                 player.score_game = 0
                 del player.opponent[:]
-            Data.truncate_data(players_by_tournament, matches_table, rounds_table)
+            Data.truncate_data(players_table)
 
         elif choice == 3:
             # Choice = Continue an existing tournament
             print("BUILDING")
         elif choice == 4:
-            Data.update_rank()
+            Data.update_rank(actors_table, players_table, user)
         elif choice == 5:
-            MenuController.display_reports()
+            MenuController.display_reports(tournament_table, actors_table, user)
         elif choice == 6:
             print("Program ended ! See you soon !")
         else:
             print("An error occurred.")
-        MenuController.back_menu()
+        MenuController.back_menu(tournament_table, actors_table, players_table, user)
