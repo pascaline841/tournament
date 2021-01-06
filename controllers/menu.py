@@ -4,17 +4,14 @@ from models.database import Data
 from view.menu import MainView
 from view.newplayer import NewPlayer
 from view.newtournament import NewTournament
-from view.score import Score
-from view.displayround import DisplayRound
 from view.report import DisplayReport
-
-import datetime
-from tinydb import TinyDB, Query
 
 
 class MenuController:
+    """Class controls all the different menus in the program."""
+
     def create_player():
-        """ Create a new player. """
+        """Create a new player."""
         first_name = NewPlayer.player_first_name()
         last_name = NewPlayer.player_last_name()
         birth_date = NewPlayer.player_birth_date()
@@ -32,6 +29,7 @@ class MenuController:
         return Tournament(name, location, mode, description, players)
 
     def display_reports(tournament_table, actors_table, user):
+        """Display the reports' menu. """
         report = DisplayReport.menu_report()
         if report == 1:
             display_report = Data.sorted_actors(actors_table)

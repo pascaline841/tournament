@@ -2,17 +2,17 @@ import datetime
 
 
 class Tournament:
-    """ Define the characteristics of a tournament."""
+    """ Define the characteristics of a chess tournament."""
 
     def __init__(self, name, location, mode, description, players):
         """
         Name :
         Location :
-        Date :
+        Date : AUTO
         Mode : bullet / blitz / fast
         Rounds : 4 (default)
-        Players : list of indices corresponding to player's instances stored in memory
         Description : general remarks from the tournament director.
+        Players : list of player's  stored in the database.
         """
         self.name = name
         self.location = location
@@ -36,7 +36,7 @@ class Tournament:
         )
 
     def serialized_tournament(self):
-        """serialized tournament's data"""
+        """Serialized tournament's data."""
         return {
             "name": self.name,
             "location": self.location,

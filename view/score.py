@@ -1,4 +1,6 @@
 class Score:
+    """Request the score after a round."""
+
     def player_add_score_match(self):
         """
         Enter the scores for each round:

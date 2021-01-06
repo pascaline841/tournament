@@ -1,6 +1,9 @@
 class MainView:
+    """Display the different menus."""
+
     @staticmethod
     def welcome():
+        """Display the main menu."""
         print("************WELCOME TO CHESS TOURNEMENT**************")
         print("What would you like to do ?")
         print("1 - Create a new player")
@@ -21,6 +24,7 @@ class MainView:
 
     @staticmethod
     def back_menu():
+        """Display the back menu after an action."""
         print("==================================================")
         print("What would you like to do ?")
         print("1 - Back to the Main Menu")
@@ -38,6 +42,7 @@ class MainView:
 
     @staticmethod
     def interround_menu():
+        """Display the menu between 2 rounds during a tournament."""
         print("==================================================")
         print("What would you like to do ?")
         print("1 - CONTINUE THE TOURNAMENT")
@@ -55,6 +60,7 @@ class MainView:
             return MainView.interround_menu()
 
     def display_final(self, players):
+        """Display the final menu with the final score of the tournament."""
         print("==================================================")
         print(f"FINAL RESULTS OF {self.name} :")
         for player in players:

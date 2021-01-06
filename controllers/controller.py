@@ -2,25 +2,28 @@ from models.database import Data
 from models.rounds import Round
 from models.players import Player
 from view.menu import MainView
-from controllers.menucontrol import MenuController
-from controllers.tournamentcontrol import TournamentController
+from controllers.menu import MenuController
+from controllers.progress import TournamentController
 from tinydb import TinyDB, Query
 
 
 class MainController:
+    """Main class to control the program. """
+
     def start_program():
-        """Run the program"""
+        """Run the program."""
         tournament_table = TinyDB("TOURNAMENTS.json")
         actors_table = TinyDB("ACTORS.json")
         user = Query()
         ser_rounds = []
         ser_players = []
         choice = MainView.welcome()
+
         if choice == 1:
             players = []
             player = MenuController.create_player()
             Data.data_actors(player, user, actors_table)
-            print("\n A player has been created \n")
+            print("\n A player has been created. \n")
 
         elif choice == 2:
             players = TournamentController.create_auto_players()

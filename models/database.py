@@ -5,6 +5,8 @@ from tinydb import TinyDB, Query
 
 
 class Data:
+    """Define the database."""
+
     def data_actors(self, user, actors_table):
         """ Store actor's informations in the database."""
         ser_player = Player.serialized_player(self)
@@ -53,7 +55,7 @@ class Data:
 
     @classmethod
     def update_rank(cls, actors_table, tournament_table, user):
-        """Update actor's rank in the datatbase."""
+        """Update actor's rank in the datatbase and in the current tournament."""
         first_name = input("First name ? ").capitalize()
         last_name = input("Last name ? ").capitalize()
         new_rank = int(input("New rank ? "))
@@ -67,7 +69,7 @@ class Data:
         )
 
     def update_score(self, actors_table, score, user):
-        """Update actor/player score in the database."""
+        """Update actor's score in the database."""
         actors_table.update(
             {"score": score},
             user["first name"] == self.first_name
@@ -103,6 +105,3 @@ class Data:
             return sorted(players, key=lambda players: players["last name"])
         else:
             return sorted(players, key=lambda players: players["rank"])
-
-    def truncate_data():
-        """Allows you to delete the tables from the database."""

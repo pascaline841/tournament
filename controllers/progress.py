@@ -6,7 +6,10 @@ import datetime
 
 
 class TournamentController:
+    """Class controls the tournament progress."""
+
     def create_auto_players():
+        """Create 8 players for a demo."""
         players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
         players.append(Player("William", "Smith", "m", "03/11/1980", 2, 998))
         players.append(Player("Damien", "Billard", "m", "10/08/1978", 3, 996))

@@ -94,7 +94,8 @@ class Round:
 
     def get_opponent(self, players):
         """
-        Rounds 2 3 4 : The players are ranked by best score
+        Rounds 2 3 4 : The players are ranked by best score then best rank.
+        The players can't meet each others twice.
         The matches are :
         player[0] vs players[1]
         player[2] vs players[3]
