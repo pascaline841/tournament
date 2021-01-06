@@ -28,6 +28,7 @@ class TournamentController:
         for player in players:
             add_point = Score.player_add_score_match(player)
             player.add_score_game(0, add_point)
+
             if add_point == 0:
                 player.opponent_point = 1
             elif add_point == 1:

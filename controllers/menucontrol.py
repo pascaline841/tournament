@@ -49,13 +49,13 @@ class MenuController:
             MainView.welcome()
         DisplayReport.menu_report()
 
-    def back_menu(tournament_table, actors_table, players_table, user):
+    def back_menu(actors_table, tournament_table, user):
         """Display menu to go back to the Main Menu."""
         choice = MainView.back_menu()
         if choice == 1:
             MainView.welcome()
         elif choice == 2:
-            Data.update_rank(actors_table, players_table, user)
+            Data.update_rank(actors_table, tournament_table, user)
             return MenuController.back_menu()
         elif choice == 3:
             print("Program ended ! See you soon !")
@@ -63,18 +63,18 @@ class MenuController:
             print("An error occurred.")
             return MenuController.back_menu()
 
-    def inter_menu(tournament_table, actors_table, players_table, user):
+    def inter_menu(actors_table, tournament_table, user):
         """Display menu between rounds."""
         choice = MainView.interround_menu()
         if choice == 1:
             pass
         elif choice == 2:
-            Data.update_rank(actors_table, players_table, user)
-            return MenuController.inter_menu()
+            Data.update_rank(actors_table, tournament_table, user)
+            return MenuController.inter_menu(actors_table, tournament_table, user)
         elif choice == 3:
             MainView.welcome()
         elif choice == 4:
             print("Program ended ! See you soon !")
         else:
             print("An error occurred.")
-            return MenuController.inter_menu()
+            return MenuController.inter_menu(actors_table, user)

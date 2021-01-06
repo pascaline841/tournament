@@ -5,58 +5,55 @@ from tinydb import TinyDB, Query
 
 
 class Data:
-    def data_actors(self, actors_table):
-        """ Enter actor's informations in the database."""
+    def data_actors(self, user, actors_table):
+        """ Store actor's informations in the database."""
         ser_player = Player.serialized_player(self)
-        if ser_player in actors_table:
-            actors_table.update(ser_player)
-        else:
+        actors_table.update(
+            {"rank": self.rank, "score": self.score},
+            user["first name"] == self.first_name
+            and user["last name"] == self.last_name,
+        )
+        if ser_player not in actors_table:
             actors_table.insert(ser_player)
         return ser_player
 
-    def data_tournament(self, players, actors_table, players_table, tournament_table):
-        """ Enter players and tournament informations in the database."""
-
-        list_players = []
+    def data_tournament(self, players, user, actors_table, tournament_table):
+        """ Store tournament's informations in the database."""
+        ser_players = []
+        ser_rounds = []
         for player in players:
-            ser_player = Data.data_actors(player, actors_table)
-            list_players.append(ser_player)
-            players_table.insert(ser_player)
-        Tournament.serialized_tournament(self)
+            ser_player = Data.data_actors(player, user, actors_table)
+            ser_players.append(ser_player)
+            Tournament.serialized_tournament(self)
         tournament_table.insert(
             {
                 "name": self.name,
                 "location": self.location,
                 "date": self.date,
                 "mode": self.mode,
-                "rounds": self.rounds,
-                "matches": self.matches,
+                "rounds": ser_rounds,
                 "description": self.description,
-                "players": list_players,
+                "players": ser_players,
             }
         )
 
-    def update_tournament(self, tournament_table, players_table, tournament):
-        """ Update tournament's rounds and matches in the database."""
-
+    def update_tournament(self, players, tournament_table):
+        """ Update tournament's informations in the database."""
+        ser_rounds = []
         ser_round = Round.serialized_round(self)
-
+        ser_rounds.append(ser_round)
+        ser_players = [ser_player for ser_player in players]
         tournament_table.update(
             {
-                "rounds": ser_round,
-            },
-            doc_ids=[tournament.name],
+                "rounds": ser_rounds,
+                "players": ser_players,
+            }
         )
+        del ser_players[:]
 
-        """
-        for player in ser_players:
-            players_table.update(
-                {"rank", "score game"},
-            )
-        """
-
-    def update_rank(actors_table, players_table, user):
-        """Update actor/player rank in the datatbase."""
+    @classmethod
+    def update_rank(cls, actors_table, tournament_table, user):
+        """Update actor's rank in the datatbase."""
         first_name = input("First name ? ").capitalize()
         last_name = input("Last name ? ").capitalize()
         new_rank = int(input("New rank ? "))
@@ -64,15 +61,18 @@ class Data:
             {"rank": new_rank},
             user["first name"] == first_name and user["last name"] == last_name,
         )
-        players_table.update(
+        tournament_table.update(
             {"rank": new_rank},
             user["first name"] == first_name and user["last name"] == last_name,
         )
 
-    def update_score(actors_table, players_table, score):
+    def update_score(self, actors_table, score, user):
         """Update actor/player score in the database."""
-        actors_table.update({"score": score})
-        players_table.update({"score": score})
+        actors_table.update(
+            {"score": score},
+            user["first name"] == self.first_name
+            and user["last name"] == self.last_name,
+        )
 
     def sorted_actors(actors_table):
         """Sort all actors by alphabetic order or by rank."""
@@ -104,6 +104,5 @@ class Data:
         else:
             return sorted(players, key=lambda players: players["rank"])
 
-    def truncate_data(players_table):
+    def truncate_data():
         """Allows you to delete the tables from the database."""
-        players_table.truncate()

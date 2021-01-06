@@ -1,4 +1,6 @@
 from models.database import Data
+from models.rounds import Round
+from models.players import Player
 from view.menu import MainView
 from controllers.menucontrol import MenuController
 from controllers.tournamentcontrol import TournamentController
@@ -10,43 +12,40 @@ class MainController:
         """Run the program"""
         tournament_table = TinyDB("TOURNAMENTS.json")
         actors_table = TinyDB("ACTORS.json")
-        players_table = TinyDB("PLAYERS.json")
-        # rounds_table = TinyDB("ROUNDS.json")
-        # matches_table = TinyDB("MATCHES.json")
         user = Query()
-
+        ser_rounds = []
+        ser_players = []
         choice = MainView.welcome()
         if choice == 1:
             players = []
             player = MenuController.create_player()
-            Data.data_actors(player, actors_table)
+            Data.data_actors(player, user, actors_table)
             print("\n A player has been created \n")
 
         elif choice == 2:
             players = TournamentController.create_auto_players()
             tournament = MenuController.create_tournament(players)
             Data.data_tournament(
-                tournament,
-                players,
-                actors_table,
-                players_table,
-                tournament_table,
+                tournament, players, user, actors_table, tournament_table
             )
             print(tournament)
             rounds = tournament.rounds
             round_one = TournamentController.create_first_round(
                 tournament, rounds, players
             )
-            Data.update_tournament(
-                round_one,
-                tournament_table,
-                players_table,
-                tournament,
+            ser_round = Round.serialized_round(round_one)
+            ser_rounds.append(ser_round)
+            for player in players:
+                ser_player = Player.serialized_player(player)
+                ser_players.append(ser_player)
+            tournament_table.update(
+                {
+                    "rounds": ser_rounds,
+                    "players": ser_players,
+                }
             )
-
-            MenuController.inter_menu(
-                tournament_table, actors_table, players_table, user
-            )
+            del ser_players[:]
+            MenuController.inter_menu(actors_table, tournament_table, user)
 
             nb_rounds = tournament.nb_rounds
 
@@ -55,32 +54,40 @@ class MainController:
                 next_round = TournamentController.create_next_round(
                     tournament, rounds, players
                 )
-                Data.update_tournament(
-                    next_round,
-                    tournament_table,
-                    players_table,
+                ser_round = Round.serialized_round(next_round)
+                ser_rounds.append(ser_round)
+                for player in players:
+                    ser_player = Player.serialized_player(player)
+                    ser_players.append(ser_player)
+                tournament_table.update(
+                    {
+                        "rounds": ser_rounds,
+                        "players": ser_players,
+                    }
                 )
-                MenuController.inter_menu(
-                    tournament_table, actors_table, players_table, user
-                )
+                del ser_players[:]
+                MenuController.inter_menu(actors_table, tournament_table, user)
 
             MainView.display_final(tournament, players)
             for player in players:
                 score = player.add_final_score(player.score_game, player.score)
-                Data.update_score(actors_table, players_table, score)
-                player.score_game = 0
-                del player.opponent[:]
-            Data.truncate_data(players_table)
-
+                Data.update_score(player, actors_table, score, user)
+                ser_player = Player.serialized_player(player)
+                ser_players.append(ser_player)
+                tournament_table.update(
+                    {
+                        "players": ser_players,
+                    }
+                )
         elif choice == 3:
             # Choice = Continue an existing tournament
             print("BUILDING")
         elif choice == 4:
-            Data.update_rank(actors_table, players_table, user)
+            Data.update_rank(actors_table, tournament_table, user)
         elif choice == 5:
             MenuController.display_reports(tournament_table, actors_table, user)
         elif choice == 6:
             print("Program ended ! See you soon !")
         else:
             print("An error occurred.")
-        MenuController.back_menu(tournament_table, actors_table, players_table, user)
+        MenuController.back_menu(actors_table, tournament_table, user)

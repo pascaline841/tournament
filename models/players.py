@@ -62,6 +62,4 @@ class Player:
             "rank": self.rank,
             "score": self.score,
             "score game": self.score_game,
-            "point": self.point,
-            "opponents": self.opponent,
         }

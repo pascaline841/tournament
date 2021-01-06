@@ -43,7 +43,6 @@ class Tournament:
             "date": self.date,
             "mode": self.mode,
             "rounds": self.rounds,
-            "matches": self.matches,
             "description": self.description,
             "players": self.players,
         }
