@@ -7,7 +7,7 @@ class DisplayReport:
         print("************REPORTS**************")
         print("1 - List of all actors")
         print("2 - List of all tournaments")
-        print("3 - List of all rounds or matches for a tournament")
+        print("3 - List of all rounds or matchs for a tournament")
         print("4 - List of all players for a tournament")
         print("5 - return to the general menu")
         try:

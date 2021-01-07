@@ -14,35 +14,35 @@ class Round:
         """
         self.name = name
         self.start = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-        self.matches = []
+        self.matchs = []
         self.players_paired = []
         self.end = end
 
     def __repr__(self):
         """Display : ROUND[], START : [date/time] END :[date/time]."""
-        return " {} START : {} END : {} \n MATCHES : {} ".format(
-            self.name, self.start, self.end, self.matches
+        return " {} START : {} END : {} \n MATCHS : {} ".format(
+            self.name, self.start, self.end, self.matchs
         )
 
-    def get_first_opponent(players):
+    def get_first_opponents(players):
         """
         First Round : The players are ranked by best ranking.
-        Add oppponent's name to the player's opponent list.
+        Add oppponent's name to the player's opponents list.
         """
-        players[0].opponent.append(players[4].first_name)
-        players[4].opponent.append(players[0].first_name)
-        players[1].opponent.append(players[5].first_name)
-        players[5].opponent.append(players[1].first_name)
-        players[2].opponent.append(players[6].first_name)
-        players[6].opponent.append(players[2].first_name)
-        players[3].opponent.append(players[7].first_name)
-        players[7].opponent.append(players[3].first_name)
+        players[0].opponents.append(players[4].first_name)
+        players[4].opponents.append(players[0].first_name)
+        players[1].opponents.append(players[5].first_name)
+        players[5].opponents.append(players[1].first_name)
+        players[2].opponents.append(players[6].first_name)
+        players[6].opponents.append(players[2].first_name)
+        players[3].opponents.append(players[7].first_name)
+        players[7].opponents.append(players[3].first_name)
         return players
 
-    def first_matches(self, players):
+    def first_matchs(self, players):
         """
         First Round : The players are ranked by best ranking.
-        The matches are :
+        The matchs are :
         player[0] vs players[4]
         player[1] vs players[5]
         player[2] vs players[6]
@@ -89,46 +89,48 @@ class Round:
                 players_sorted[7].score_game,
             ),
         )
-        self.matches.extend([match1, match2, match3, match4])
-        return self.matches
+        self.matchs.extend([match1, match2, match3, match4])
+        return self.matchs
 
-    def get_opponent(self, players):
+    def get_opponents(self, players):
         """
         Rounds 2 3 4 : The players are ranked by best score then best rank.
         The players can't meet each others twice.
-        The matches are :
+        The matchs are :
         player[0] vs players[1]
         player[2] vs players[3]
         player[4] vs players[5]
         player[6] vs players[7].
         """
-
         for i in range(len(players)):
             while players[i].first_name not in self.players_paired:
                 j = i + 1
                 while (
                     j < len(players)
                     and players[j].first_name in self.players_paired
-                    and players[j].first_name in players[i].opponent
-                    and players[i].first_name in players[j].opponent
+                    or players[j].first_name in players[i].opponents
+                    or players[i].first_name in players[j].opponents
                 ):
                     j += 1
-                players[i].opponent.append(players[j].first_name)
-                players[j].opponent.append(players[i].first_name)
-                match = (players[i].first_name, players[j].first_name)
-                self.matches.append(match)
+                players[i].opponents.append(players[j].first_name)
+                players[j].opponents.append(players[i].first_name)
+                match = (
+                    (players[i].first_name, players[i].score_game),
+                    (players[j].first_name, players[j].score_game),
+                )
+                self.matchs.append(match)
                 self.players_paired.append(players[i].first_name)
                 self.players_paired.append(players[j].first_name)
                 print(f"{players[i].first_name} vs {players[j].first_name}")
 
             i += 1
-        return self.matches
+        return self.matchs
 
     def serialized_round(self):
-        """serialized round's data."""
+        """Serialize round's data."""
         return {
             "name": self.name,
             "start": self.start,
-            "matches": self.matches,
+            "matchs": self.matchs,
             "end": self.end,
         }

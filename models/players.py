@@ -20,7 +20,7 @@ class Player:
         Ranking :
         Score :
         Tournament Score : 0
-        Opponents : list of opponents already met during a tournament.
+        Opponents : list of opponentss already met during a tournament.
         """
         self.first_name = first_name
         self.last_name = last_name
@@ -29,31 +29,32 @@ class Player:
         self.rank = rank
         self.score = score
         self.score_game = score_game
-        self.point = point
-        self.opponent = []
+        self.opponents = []
 
-    def add_score_game(self, score_game, add_point):  # round 1 2 3 4
-        """Add match score to player's score_game."""
-        self.score_game = score_game + add_point
+    def add_score_game(self, add_point):
+        """Round 1, 2, 3, 4
+        Add match score to player's score_game."""
+        self.score_game += add_point
         return self.score_game
 
-    def add_final_score(self, score_game, score):  # round 4
-        """Add tournament score to player's total score."""
+    def add_final_score(self, score_game, score):
+        """Round 4
+        Add tournament score to player's total score."""
         self.score = score_game + score
         return self.score
 
     def __repr__(self):
-        """Rank:[] [First Name], [Last Name], Score : [], Opponnents :[]."""
+        """Display Rank:[] [First Name], [Last Name], Score Game: [], Opponnents :[]."""
         return "Rank : {} {} {}, Score : {}, Opponnents :{}\n".format(
             self.rank,
             self.first_name,
             self.last_name,
             self.score_game,
-            self.opponent,
+            self.opponents,
         )
 
     def serialized_player(self):
-        """Serialized player's data."""
+        """Serialize player's data."""
         return {
             "first name": self.first_name,
             "last name": self.last_name,
@@ -62,4 +63,5 @@ class Player:
             "rank": self.rank,
             "score": self.score,
             "score game": self.score_game,
+            "opponentss": self.opponents,
         }

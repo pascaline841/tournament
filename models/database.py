@@ -39,17 +39,21 @@ class Data:
             }
         )
 
-    def update_tournament(self, players, tournament_table):
-        """ Update tournament's informations in the database."""
+    def update_tournament(self, players, tournament_table, tournament, user):
+        """ Update tournament's informations in the database after a round."""
         ser_rounds = []
+        ser_players = []
         ser_round = Round.serialized_round(self)
         ser_rounds.append(ser_round)
-        ser_players = [ser_player for ser_player in players]
+        for player in players:
+            ser_player = Player.serialized_player(player)
+            ser_players.append(ser_player)
         tournament_table.update(
             {
                 "rounds": ser_rounds,
                 "players": ser_players,
-            }
+            },
+            user["name"] == tournament.name,
         )
         del ser_players[:]
 
@@ -86,14 +90,14 @@ class Data:
             return sorted(actors, key=lambda actor: actor["rank"])
 
     def request_tournament(tournament_table, user):
-        """Request for a tournament to display its rounds or matches."""
+        """Request for a tournament to display its rounds or matchs."""
         date = input("Tournament's date ? (format : DD/MM/YYYY)")
         choice = tournament_table.search(user["date"] == date)
-        request_tournament = int(input("Display ROUNDS(1) or MATCHES(2) ? "))
+        request_tournament = int(input("Display ROUNDS(1) or MATCHS(2) ? "))
         if request_tournament == 1:
             return choice[0].get("rounds")
         else:
-            return choice[0].get("matches")
+            return choice[0].get("matchs")
 
     def request_players(tournament_table, user):
         """Request for a tournament to display its players by alpha order or rank."""

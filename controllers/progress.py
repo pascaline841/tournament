@@ -27,19 +27,12 @@ class TournamentController:
             "Round 1",
         )
         DisplayRound.display_first_round(players)
-        Round.get_first_opponent(players)
+        Round.get_first_opponents(players)
         for player in players:
             add_point = Score.player_add_score_match(player)
-            player.add_score_game(0, add_point)
-
-            if add_point == 0:
-                player.opponent_point = 1
-            elif add_point == 1:
-                player.opponent_point = 0
-            else:
-                player.opponent_point = 0.5
-        round1.matches = DisplayRound.display_first_round(players)
-        tournament.matches.append(round1.matches)
+            player.add_score_game(add_point)
+        Round.first_matchs(round1, players)
+        tournament.matchs.append(round1.matchs)
         players = sorted(
             players, key=lambda player: (player.score_game, player.score), reverse=True
         )
@@ -54,17 +47,18 @@ class TournamentController:
         round = Round("Round " + str(len(rounds) + 1))
         players = sorted(players, key=lambda player: player.score_game, reverse=True)
         print(players)
-        round.get_opponent(players)
+        round.get_opponents(players)
         for player in players:
             add_point = Score.player_add_score_match(player)
-            player.add_score_game(player.score_game, add_point)
+            player.add_score_game(add_point)
             if add_point == 0:
-                player.opponent_point = 1
+                player.point = 1
             elif add_point == 1:
-                player.opponent_point = 0
+                player.point = 0
             else:
-                player.opponent_point = 0.5
-        tournament.matches.append(round.matches)
+                player.point = 0.5
+
+        tournament.matchs.append(round.matchs)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
         print(f"\n{round}")

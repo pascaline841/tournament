@@ -43,8 +43,8 @@ class MainView:
     @staticmethod
     def interround_menu():
         """Display the menu between 2 rounds during a tournament."""
-        print("==================================================")
-        print("What would you like to do ?")
+        print("\n==================================================")
+        print("\n What would you like to do ?")
         print("1 - CONTINUE THE TOURNAMENT")
         print("2 - Change the ranking from a player ?")
         print("3 - Back to the Main Menu")
@@ -61,8 +61,8 @@ class MainView:
 
     def display_final(self, players):
         """Display the final menu with the final score of the tournament."""
-        print("==================================================")
-        print(f"FINAL RESULTS OF {self.name} :")
+        print("\n==================================================")
+        print(f"FINAL RESULTS OF {self.name} :\n")
         for player in players:
             print(
                 f"SCORE : {player.score_game}, {player.first_name} {player.last_name}"

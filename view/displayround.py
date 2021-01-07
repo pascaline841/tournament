@@ -1,9 +1,9 @@
 class DisplayRound:
-    """Display the matches of the round during a tournament."""
+    """Display the matchs of the round during a tournament."""
 
     @staticmethod
     def display_first_round(players):
-        """Display the matches of the 1st round."""
+        """Display the matchs of the 1st round."""
         print("*******************ROUND 1 ******************\n")
         print(f"{players[0].first_name} vs {players[4].first_name}")
         print(f"{players[1].first_name} vs {players[5].first_name}")

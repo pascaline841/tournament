@@ -75,4 +75,4 @@ class MenuController:
             print("Program ended ! See you soon !")
         else:
             print("An error occurred.")
-            return MenuController.inter_menu(actors_table, user)
+            return MenuController.inter_menu(actors_table, tournament_table, user)

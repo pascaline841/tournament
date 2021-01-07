@@ -1,9 +1,9 @@
-import controllers.controller
+from controllers.controller import MainController
 
 
 def main():
 
-    controller.start_program()
+    MainController.start_program()
 
 
 if __name__ == "__main__":

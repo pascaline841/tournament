@@ -36,18 +36,9 @@ class MainController:
             round_one = TournamentController.create_first_round(
                 tournament, rounds, players
             )
-            ser_round = Round.serialized_round(round_one)
-            ser_rounds.append(ser_round)
-            for player in players:
-                ser_player = Player.serialized_player(player)
-                ser_players.append(ser_player)
-            tournament_table.update(
-                {
-                    "rounds": ser_rounds,
-                    "players": ser_players,
-                }
+            Data.update_tournament(
+                round_one, players, tournament_table, tournament, user
             )
-            del ser_players[:]
             MenuController.inter_menu(actors_table, tournament_table, user)
 
             nb_rounds = tournament.nb_rounds
@@ -57,18 +48,9 @@ class MainController:
                 next_round = TournamentController.create_next_round(
                     tournament, rounds, players
                 )
-                ser_round = Round.serialized_round(next_round)
-                ser_rounds.append(ser_round)
-                for player in players:
-                    ser_player = Player.serialized_player(player)
-                    ser_players.append(ser_player)
-                tournament_table.update(
-                    {
-                        "rounds": ser_rounds,
-                        "players": ser_players,
-                    }
+                Data.update_tournament(
+                    next_round, players, tournament_table, tournament, user
                 )
-                del ser_players[:]
                 MenuController.inter_menu(actors_table, tournament_table, user)
 
             MainView.display_final(tournament, players)
@@ -80,7 +62,8 @@ class MainController:
                 tournament_table.update(
                     {
                         "players": ser_players,
-                    }
+                    },
+                    user["name"] == tournament.name,
                 )
         elif choice == 3:
             # Choice = Continue an existing tournament

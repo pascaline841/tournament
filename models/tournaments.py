@@ -2,7 +2,7 @@ import datetime
 
 
 class Tournament:
-    """ Define the characteristics of a chess tournament."""
+    """Define the characteristics of a chess tournament."""
 
     def __init__(self, name, location, mode, description, players):
         """
@@ -20,7 +20,7 @@ class Tournament:
         self.mode = mode
         self.nb_rounds = 4
         self.rounds = []
-        self.matches = []
+        self.matchs = []
         self.description = description
         self.players = players
 
@@ -36,7 +36,7 @@ class Tournament:
         )
 
     def serialized_tournament(self):
-        """Serialized tournament's data."""
+        """Serialize tournament's data."""
         return {
             "name": self.name,
             "location": self.location,
