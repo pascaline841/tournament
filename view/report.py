@@ -22,13 +22,13 @@ class DisplayReport:
             return DisplayReport.menu_report
 
     @staticmethod
-    def report_1(display_report):
+    def report_actors(display_report):
         """Display a list of all the actors."""
         for actor in display_report:
             print(f"{actor['first name']} {actor['last name']} RANK : {actor['rank']}")
 
     @staticmethod
-    def report_2(display_report):
+    def report_tournaments(display_report):
         """Display a list of all the tournaments."""
         for tournament in display_report:
             print(
@@ -36,13 +36,13 @@ class DisplayReport:
             )
 
     @staticmethod
-    def report_3(display_report):
+    def report_rounds(display_report):
         """Display a list of all the rounds of a tournament."""
         for round in display_report:
             print(f"{round['name']} {round['start']} {round['end']}")
 
     @staticmethod
-    def report_4(display_report):
+    def report_players(display_report):
         """Display a list of all the players of a tournament."""
         for player in display_report:
             print(
