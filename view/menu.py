@@ -4,7 +4,7 @@ class MainView:
     @staticmethod
     def welcome():
         """Display the main menu."""
-        print("************WELCOME TO CHESS TOURNEMENT**************")
+        print("\n************WELCOME TO CHESS TOURNEMENT**************\n")
         print("What would you like to do ?")
         print("1 - Create a new player")
         print("2 - Create a new tournament")
@@ -25,7 +25,7 @@ class MainView:
     @staticmethod
     def back_menu():
         """Display the back menu after an action."""
-        print("==================================================")
+        print("\n==================================================")
         print("What would you like to do ?")
         print("1 - Back to the Main Menu")
         print("2 - Change the ranking from a player? ")
@@ -59,7 +59,7 @@ class MainView:
             print("The value entered doesn't match the possible choices !\n")
             return MainView.interround_menu()
 
-    def display_final(self, players):
+    def display_final_score(self, players):
         """Display the final menu with the final score of the tournament."""
         print("\n==================================================")
         print(f"FINAL RESULTS OF {self.name} :\n")
