@@ -31,18 +31,6 @@ class Player:
         self.score_game = score_game
         self.opponents = []
 
-    def add_score_game(self, add_point):
-        """Round 1, 2, 3, 4
-        Add match score to player's score_game."""
-        self.score_game += add_point
-        return self.score_game
-
-    def add_final_score(self, score_game, score):
-        """Round 4
-        Add tournament score to player's total score."""
-        self.score = score_game + score
-        return self.score
-
     def __repr__(self):
         """Display Rank:[] [First Name], [Last Name], Score Game: [], Opponnents :[]."""
         return "Rank : {} {} {}, Score : {}, Opponnents :{}\n".format(
@@ -63,5 +51,67 @@ class Player:
             "rank": self.rank,
             "score": self.score,
             "score game": self.score_game,
-            "opponentss": self.opponents,
+            "opponents": self.opponents,
         }
+
+    def store_data_actors(self, user, actors_table):
+        """Store actor's informations in the database."""
+        ser_player = Player.serialized_player(self)
+        actors_table.update(
+            {"rank": self.rank, "score": self.score},
+            user["first name"] == self.first_name
+            and user["last name"] == self.last_name,
+        )
+        if ser_player not in actors_table:
+            actors_table.insert(ser_player)
+        return ser_player
+
+    def add_score_game(self, add_point):
+        """Round 1, 2, 3, 4
+        Add match score to player's score_game."""
+        self.score_game += add_point
+        return self.score_game
+
+    def add_final_score(self, score_game, score):
+        """Round 4
+        Add tournament score to player's total score."""
+        self.score = score_game + score
+        return self.score
+
+    @classmethod
+    def update_players(cls, players, tournament_table, tournament, user):
+        """ Update players's informations in the database."""
+        serialized_players = []
+        for player in players:
+            ser_player = Player.serialized_player(player)
+            serialized_players.append(ser_player)
+        tournament_table.update(
+            {
+                "players": serialized_players,
+            },
+            user["name"] == tournament.name,
+        )
+        del serialized_players[:]
+
+    @classmethod
+    def update_rank(cls, actors_table, tournament_table, user):
+        """Update actor's rank in the datatbase and in the current tournament."""
+        first_name = input("First name ? ").capitalize()
+        last_name = input("Last name ? ").capitalize()
+        new_rank = int(input("New rank ? "))
+        actors_table.update(
+            {"rank": new_rank},
+            user["first name"] == first_name and user["last name"] == last_name,
+        )
+        tournament_table.update(
+            {"rank": new_rank},
+            user["first name"] == first_name and user["last name"] == last_name,
+        )
+
+    def update_score(self, actors_table, score, user):
+        """Update actor's score in the database."""
+        actors_table.update(
+            {"score": score},
+            user["first name"] == self.first_name
+            and user["last name"] == self.last_name,
+        )

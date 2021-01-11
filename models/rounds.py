@@ -1,5 +1,4 @@
 import datetime
-from view.displayround import DisplayRound
 
 
 class Round:
