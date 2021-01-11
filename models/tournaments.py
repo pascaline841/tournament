@@ -1,4 +1,5 @@
 import datetime
+from models.players import Player
 
 
 class Tournament:
@@ -25,15 +26,17 @@ class Tournament:
         self.players = players
 
     def __repr__(self):
-        return " NAME : {}\n LOCATION : {}\n MODE : {}\n DATE : {}\n ROUNDS : {}\n DESCRIPTION : {}\n PLAYERS :{}\n".format(
-            self.name,
-            self.location,
-            self.mode,
-            self.date,
-            self.rounds,
-            self.description,
-            self.players,
-        )
+        return {
+            " NAME : {}\n LOCATION : {}\n MODE : {}\n DATE : {}\n ROUNDS : {}\n DESCRIPTION : {}\n PLAYERS :{}\n".format(
+                self.name,
+                self.location,
+                self.mode,
+                self.date,
+                self.rounds,
+                self.description,
+                self.players,
+            )
+        }
 
     def serialized_tournament(self):
         """Serialize tournament's data."""
@@ -46,3 +49,32 @@ class Tournament:
             "description": self.description,
             "players": self.players,
         }
+
+    def store_data_tournament(self, players, user, actors_table, tournament_table):
+        """Store tournament's informations in the database."""
+        serialized_players = []
+        serialized_rounds = []
+        for player in players:
+            ser_player = Player.store_data_actors(player, user, actors_table)
+            serialized_players.append(ser_player)
+            Tournament.serialized_tournament(self)
+        tournament_table.insert(
+            {
+                "name": self.name,
+                "location": self.location,
+                "date": self.date,
+                "mode": self.mode,
+                "rounds": serialized_rounds,
+                "description": self.description,
+                "players": serialized_players,
+            }
+        )
+
+    def update_round(self, serialized_rounds, tournament_table, user):
+        """Update round's informations in the database."""
+        tournament_table.insert(
+            {
+                "rounds": serialized_rounds,
+            },
+            user["name"] == self.name,
+        )
