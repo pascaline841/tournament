@@ -5,10 +5,10 @@ class DisplayRound:
     def display_first_round(players):
         """Display the matchs of the 1st round."""
         print("*******************ROUND 1 ******************\n")
-        print(f"{players[0].first_name} vs {players[4].first_name}")
-        print(f"{players[1].first_name} vs {players[5].first_name}")
-        print(f"{players[2].first_name} vs {players[6].first_name}")
-        print(f"{players[3].first_name} vs {players[7].first_name}")
+        i = 0
+        for i in range(3):
+            print(f"{players[i].first_name} vs {players[i+4].first_name}")
+            i += 1
 
     @staticmethod
     def display_next_round(players):
