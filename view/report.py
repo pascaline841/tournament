@@ -16,7 +16,6 @@ class DisplayReport:
                 raise ValueError
             print("Your choice ({}) has been successfully entered\n".format(report))
             return report
-
         except ValueError:
             print("The value entered doesn't match the possible choices !\n")
             return DisplayReport.menu_report
