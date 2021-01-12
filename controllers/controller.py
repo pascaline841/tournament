@@ -3,7 +3,6 @@ from controllers.menu import MenuController
 from controllers.progress import TournamentController
 from models.players import Player
 from models.tournaments import Tournament
-from models.database import Data
 from models.rounds import Round
 from view.menu import MainView
 
@@ -17,32 +16,30 @@ class MainController:
         actors_table = TinyDB("ACTORS.json")
         user = Query()
         serialized_rounds = []
-        choice = MainView.welcome()
         choices = {
             1: "create_player",
             2: "create_tournament",
             3: "pull_tournament",
             4: "update_rank",
-            5: "display_report",
+            5: "display_reports",
             6: "program_end",
         }
+
         run_program = True
         while run_program is True:
-            if choices[choice] == "create-player":
+            choice = MainView.welcome()
+            if choices[choice] == "create_player":
                 player = MenuController.create_player()
-                player = Player.store_data_actors(user, actors_table)
+                Player.store_data_actors(player, user, actors_table)
                 print("\n A player has been created. \n")
 
             elif choices[choice] == "create_tournament":
                 players = TournamentController.create_auto_players()
-                for player in players:
-                    Player.store_data_actors(player, user, actors_table)
                 tournament = MenuController.create_tournament(players)
-                # Tournament.store_data_tournament(
-                #    tournament, players, user, actors_table, tournament_table
-                # )
+                Tournament.store_data_tournament(
+                    tournament, players, user, actors_table, tournament_table
+                )
                 print(tournament)
-
                 rounds = tournament.rounds
                 round_one = TournamentController.create_first_round(
                     tournament, rounds, players
@@ -78,7 +75,6 @@ class MainController:
                 )
                 MainView.display_final_score(tournament, players)
                 for player in players:
-                    
                     score = player.add_final_score(player.score_game, player.score)
                     Player.update_score(player, actors_table, score, user)
                 Player.update_players(players, tournament_table, tournament, user)
@@ -96,7 +92,5 @@ class MainController:
             elif choices[choice] == "program_end":
                 print("Program ended ! See you soon !")
                 run_program = False
-
             else:
                 print("An error occurred.")
-            MenuController.back_menu(actors_table, tournament_table, user)
