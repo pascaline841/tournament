@@ -19,6 +19,7 @@ class MenuController:
         gender = NewPlayer.player_gender()
         rank = NewPlayer.player_rank()
         score = NewPlayer.player_score()
+        print("\n A player has been created. \n")
         return Player(first_name, last_name, birth_date, gender, rank, score)
 
     @classmethod
@@ -76,13 +77,12 @@ class MenuController:
             print("An error occurred.")
             return MenuController.back_menu()
 
-    classmethod
-
+    @classmethod
     def inter_menu(cls, actors_table, tournament_table, user):
         """Display menu between rounds."""
         choice = MainView.interround_menu()
         choices = {
-            1: "continue_tournamemnt",
+            1: "continue_tournament",
             2: "update_rank",
             3: "welcome_menu",
             4: "end_program",
