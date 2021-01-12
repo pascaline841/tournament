@@ -47,45 +47,45 @@ class Round:
         player[2] vs players[6]
         player[3] vs players[5].
         """
-        players_sorted = sorted(players, key=lambda player: player.rank)
+        players = sorted(players, key=lambda player: player.rank)
         match1 = (
             (
-                players_sorted[0].first_name,
-                players_sorted[0].score_game,
+                players[0].first_name,
+                players[0].score_game,
             ),
             (
-                players_sorted[4].first_name,
-                players_sorted[4].score_game,
+                players[4].first_name,
+                players[4].score_game,
             ),
         )
         match2 = (
             (
-                players_sorted[1].first_name,
-                players_sorted[1].score_game,
+                players[1].first_name,
+                players[1].score_game,
             ),
             (
-                players_sorted[5].first_name,
-                players_sorted[5].score_game,
+                players[5].first_name,
+                players[5].score_game,
             ),
         )
         match3 = (
             (
-                players_sorted[2].first_name,
-                players_sorted[2].score_game,
+                players[2].first_name,
+                players[2].score_game,
             ),
             (
-                players_sorted[6].first_name,
-                players_sorted[6].score_game,
+                players[6].first_name,
+                players[6].score_game,
             ),
         )
         match4 = (
             (
-                players_sorted[3].first_name,
-                players_sorted[3].score_game,
+                players[3].first_name,
+                players[3].score_game,
             ),
             (
-                players_sorted[7].first_name,
-                players_sorted[7].score_game,
+                players[7].first_name,
+                players[7].score_game,
             ),
         )
         self.matchs.extend([match1, match2, match3, match4])
