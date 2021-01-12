@@ -28,18 +28,20 @@ class MenuController:
         location = NewTournament.tournament_location()
         mode = NewTournament.tournament_mode()
         description = NewTournament.tournament_description()
+        players = players
         return Tournament(name, location, mode, description, players)
 
     @classmethod
     def display_reports(cls, tournament_table, actors_table, user):
         """Display the reports' menu."""
-        report = DisplayReport.menu_report()
         reports = {
             1: "sorted_actors_report",
             2: "tournaments_report",
             3: "rounds_report",
             4: "players_report",
         }
+        report = DisplayReport.menu_report()
+
         if reports[report] == "sorted_actors_report":
             display_report = Data.sorted_actors(actors_table)
             DisplayReport.report_actors(display_report)
@@ -54,7 +56,6 @@ class MenuController:
             DisplayReport.report_players(display_report)
         else:
             MainView.welcome()
-        DisplayReport.menu_report()
 
     @classmethod
     def back_menu(cls, actors_table, tournament_table, user):
@@ -69,10 +70,8 @@ class MenuController:
             MainView.welcome()
         elif choices[choice] == "update_rank":
             Data.update_rank(actors_table, tournament_table, user)
-            return MenuController.back_menu()
         elif choices[choice] == "end_program":
             print("Program ended ! See you soon !")
-
         else:
             print("An error occurred.")
             return MenuController.back_menu()
@@ -97,6 +96,7 @@ class MenuController:
             MainView.welcome()
         elif choices[choice] == "end_program":
             print("Program ended ! See you soon !")
+
         else:
             print("An error occurred.")
             return MenuController.inter_menu(actors_table, tournament_table, user)
