@@ -57,7 +57,7 @@ class Tournament:
         for player in players:
             ser_player = Player.store_data_actors(player, user, actors_table)
             serialized_players.append(ser_player)
-            Tournament.serialized_tournament(self)
+        Tournament.serialized_tournament(self)
         tournament_table.insert(
             {
                 "name": self.name,
