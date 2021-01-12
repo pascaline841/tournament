@@ -78,36 +78,6 @@ class Player:
         self.score = score_game + score
         return self.score
 
-    @classmethod
-    def update_players(cls, players, tournament_table, tournament, user):
-        """ Update players's informations in the database."""
-        serialized_players = []
-        for player in players:
-            ser_player = Player.serialized_player(player)
-            serialized_players.append(ser_player)
-        tournament_table.update(
-            {
-                "players": serialized_players,
-            },
-            user["name"] == tournament.name,
-        )
-        del serialized_players[:]
-
-    @classmethod
-    def update_rank(cls, actors_table, tournament_table, user):
-        """Update actor's rank in the datatbase and in the current tournament."""
-        first_name = input("First name ? ").capitalize()
-        last_name = input("Last name ? ").capitalize()
-        new_rank = int(input("New rank ? "))
-        actors_table.update(
-            {"rank": new_rank},
-            user["first name"] == first_name and user["last name"] == last_name,
-        )
-        tournament_table.update(
-            {"rank": new_rank},
-            user["first name"] == first_name and user["last name"] == last_name,
-        )
-
     def update_score(self, actors_table, score, user):
         """Update actor's score in the database."""
         actors_table.update(
