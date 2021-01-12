@@ -72,9 +72,7 @@ class Tournament:
 
     def update_round(self, serialized_rounds, tournament_table, user):
         """Update round's informations in the database."""
-        tournament_table.insert(
-            {
-                "rounds": serialized_rounds,
-            },
+        tournament_table.update(
+            {"rounds": serialized_rounds},
             user["name"] == self.name,
         )
