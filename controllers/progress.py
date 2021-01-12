@@ -25,9 +25,7 @@ class TournamentController:
     def create_first_round(cls, tournament, rounds, players):
         """Create the first round of a tournament."""
         players = sorted(players, key=lambda player: player.rank)
-        round1 = Round(
-            "Round 1",
-        )
+        round1 = Round("Round 1")
         DisplayRound.display_first_round(players)
         Round.get_first_opponents(players)
         for player in players:
@@ -44,7 +42,7 @@ class TournamentController:
         return round1
 
     @classmethod
-    def create_next_round(tournament, rounds, players):
+    def create_next_round(cls, tournament, rounds, players):
         """Create Round 2, 3 , 4."""
         print(f"\n*******************ROUND {len(rounds)+1}******************\n")
         round = Round(f"Round {len(rounds) + 1}")
@@ -54,8 +52,7 @@ class TournamentController:
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = float(input(f"Please enter {player.first_name}'s score : "))
-            Score.player_add_score_match(add_point)
+            add_point = Score.player_add_score_match(player)
             player.add_score_game(add_point)
             if add_point == 0:
                 player.point = 1
@@ -63,7 +60,6 @@ class TournamentController:
                 player.point = 0
             else:
                 player.point = 0.5
-
         tournament.matchs.append(round.matchs)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
