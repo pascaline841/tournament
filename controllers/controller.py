@@ -3,6 +3,7 @@ from controllers.menu import MenuController
 from controllers.progress import TournamentController
 from models.players import Player
 from models.tournaments import Tournament
+from models.database import Data
 from models.rounds import Round
 from view.menu import MainView
 
@@ -15,7 +16,6 @@ class MainController:
         tournament_table = TinyDB("TOURNAMENTS.json")
         actors_table = TinyDB("ACTORS.json")
         user = Query()
-        serialized_rounds = []
         choices = {
             1: "create_player",
             2: "create_tournament",
@@ -31,7 +31,6 @@ class MainController:
             if choices[choice] == "create_player":
                 player = MenuController.create_player()
                 Player.store_data_actors(player, user, actors_table)
-                print("\n A player has been created. \n")
 
             elif choices[choice] == "create_tournament":
                 players = TournamentController.create_auto_players()
@@ -39,17 +38,18 @@ class MainController:
                 Tournament.store_data_tournament(
                     tournament, players, user, actors_table, tournament_table
                 )
-                print(tournament)
+                # print(tournament)
                 rounds = tournament.rounds
-                round_one = TournamentController.create_first_round(
+                round = TournamentController.create_first_round(
                     tournament, rounds, players
                 )
-                ser_round = Round.serialized_round(round_one)
+                serialized_rounds = []
+                ser_round = Round.serialized_round(round)
                 serialized_rounds.append(ser_round)
                 Tournament.update_round(
                     tournament, serialized_rounds, tournament_table, user
                 )
-                Player.update_players(players, tournament_table, tournament, user)
+                Data.update_players(players, tournament_table, tournament, user)
 
                 MenuController.inter_menu(actors_table, tournament_table, user)
 
@@ -57,15 +57,15 @@ class MainController:
 
                 while nb_rounds > 1:
                     nb_rounds -= 1
-                    next_round = TournamentController.create_next_round(
+                    round = TournamentController.create_next_round(
                         tournament, rounds, players
                     )
-                    ser_round = Round.serialized_round(next_round)
+                    ser_round = Round.serialized_round(round)
                     serialized_rounds.append(ser_round)
                     Tournament.update_round(
                         tournament, serialized_rounds, tournament_table, user
                     )
-                    Player.update_players(players, tournament_table, tournament, user)
+                    Data.update_players(players, tournament_table, tournament, user)
 
                     MenuController.inter_menu(actors_table, tournament_table, user)
                 players = sorted(
@@ -77,14 +77,14 @@ class MainController:
                 for player in players:
                     score = player.add_final_score(player.score_game, player.score)
                     Player.update_score(player, actors_table, score, user)
-                Player.update_players(players, tournament_table, tournament, user)
+                Data.update_players(players, tournament_table, tournament, user)
 
             elif choices[choice] == "pull_tournament":
                 # Choice = Continue an existing tournament
                 print("BUILDING")
 
             elif choices[choice] == "update_rank":
-                Player.update_rank(actors_table, tournament_table, user)
+                Data.update_rank(actors_table, tournament_table, user)
 
             elif choices[choice] == "display_reports":
                 MenuController.display_reports(tournament_table, actors_table, user)
