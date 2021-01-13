@@ -1,3 +1,4 @@
+import json
 from tinydb import TinyDB, Query
 from controllers.menu import MenuController
 from controllers.progress import TournamentController
@@ -51,7 +52,9 @@ class MainController:
                 )
                 Data.update_players(players, tournament_table, tournament, user)
 
-                MenuController.inter_menu(actors_table, tournament_table, user)
+                MenuController.inter_menu(
+                    actors_table, tournament_table, user, run_program
+                )
 
                 nb_rounds = tournament.nb_rounds
 
@@ -67,7 +70,9 @@ class MainController:
                     )
                     Data.update_players(players, tournament_table, tournament, user)
 
-                    MenuController.inter_menu(actors_table, tournament_table, user)
+                    MenuController.inter_menu(
+                        actors_table, tournament_table, user, run_program
+                    )
                 players = sorted(
                     players,
                     key=lambda player: (player.score_game, player.score),
@@ -81,7 +86,12 @@ class MainController:
 
             elif choices[choice] == "pull_tournament":
                 # Choice = Continue an existing tournament
-                print("BUILDING")
+                name = input("Name of an UNcompleted tournament ? ")
+                serialized_tournament = tournament_table.get(user["name"] == name)
+                tournament = Tournament.deserialized_tournament(serialized_tournament)
+                rounds = tournament.rounds
+                players = tournament.players
+                nb_rounds = len(rounds)
 
             elif choices[choice] == "update_rank":
                 Data.update_rank(actors_table, tournament_table, user)
