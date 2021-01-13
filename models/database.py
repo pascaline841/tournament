@@ -15,21 +15,17 @@ class Data:
             return sorted(actors, key=lambda actor: actor["rank"])
 
     @classmethod
-    def request_tournament(cls, tournament_table, user):
+    def request_rounds(cls, tournament_table, user):
         """Request for a tournament to display its rounds or matchs."""
-        date = input("Tournament's date ? (format : DD/MM/YYYY)")
-        choice = tournament_table.search(user["date"] == date)
-        request_tournament = int(input("Display ROUNDS(1) or MATCHS(2) ? "))
-        if request_tournament == 1:
-            return choice[0].get("rounds")
-        else:
-            return choice[0].get("matchs")
+        name = input("What is it name ? ")
+        choice = tournament_table.search(user["name"] == name)
+        return choice[0].get("rounds")
 
     @classmethod
     def request_players(cls, tournament_table, user):
         """Request for a tournament to display its players by alpha order or rank."""
-        date = input("Tournament's date ? (format : DD/MM/YYYY) ")
-        choice = tournament_table.search(user["date"] == date)
+        name = input("What is it name ? ")
+        choice = tournament_table.search(user["name"] == name)
         players = choice[0].get("players")
         sorted_choice = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
         if sorted_choice == 1:
