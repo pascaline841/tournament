@@ -50,7 +50,7 @@ class MenuController:
             display_report = tournament_table.all()
             DisplayReport.report_tournaments(display_report)
         elif reports[report] == "rounds_report":
-            display_report = Data.request_tournament(tournament_table, user)
+            display_report = Data.request_rounds(tournament_table, user)
             DisplayReport.report_rounds(display_report)
         elif reports[report] == "players_report":
             display_report = Data.request_players(tournament_table, user)
@@ -59,26 +59,7 @@ class MenuController:
             MainView.welcome()
 
     @classmethod
-    def back_menu(cls, actors_table, tournament_table, user):
-        """Display menu to go back to the Main Menu."""
-        choice = MainView.back_menu()
-        choices = {
-            1: "welcome_menu",
-            2: "update_rank",
-            3: "end_program",
-        }
-        if choices[choice] == "welcome_menu":
-            MainView.welcome()
-        elif choices[choice] == "update_rank":
-            Data.update_rank(actors_table, tournament_table, user)
-        elif choices[choice] == "end_program":
-            print("Program ended ! See you soon !")
-        else:
-            print("An error occurred.")
-            return MenuController.back_menu()
-
-    @classmethod
-    def inter_menu(cls, actors_table, tournament_table, user):
+    def inter_menu(cls, actors_table, tournament_table, user, run_program):
         """Display menu between rounds."""
         choice = MainView.interround_menu()
         choices = {
@@ -96,7 +77,8 @@ class MenuController:
             MainView.welcome()
         elif choices[choice] == "end_program":
             print("Program ended ! See you soon !")
-
+            run_program = False
+            return run_program
         else:
             print("An error occurred.")
             return MenuController.inter_menu(actors_table, tournament_table, user)
