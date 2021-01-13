@@ -133,3 +133,12 @@ class Round:
             "matchs": self.matchs,
             "end": self.end,
         }
+
+    @classmethod
+    def deserialized_round(cls, serialized_round):
+        """Pull round's informations from the database to continue a tournament."""
+        name = serialized_round["name"]
+        start = serialized_round["start"]
+        matchs = serialized_round["matchs"]
+        end = serialized_round["end"]
+        return Round(name, start, matchs, end)
