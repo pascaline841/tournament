@@ -54,6 +54,28 @@ class Player:
             "opponents": self.opponents,
         }
 
+    @classmethod
+    def deserialized_player(cls, serialized_player):
+        """Pull player's informations from the database to continue a tournament."""
+        first_name = serialized_player["first name"]
+        last_name = serialized_player["last name"]
+        birth_date = serialized_player["birth date"]
+        gender = serialized_player["gender"]
+        rank = serialized_player["rank"]
+        score = serialized_player["score"]
+        score_game = serialized_player["score game"]
+        opponents = serialized_player["opponents"]
+        return Player(
+            first_name,
+            last_name,
+            birth_date,
+            gender,
+            rank,
+            score,
+            score_game,
+            opponents,
+        )
+
     def store_data_actors(self, user, actors_table):
         """Store actor's informations in the database."""
         ser_player = Player.serialized_player(self)
