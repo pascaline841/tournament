@@ -6,7 +6,7 @@ class DisplayRound:
         """Display the matchs of the 1st round."""
         print("*******************ROUND 1 ******************\n")
         i = 0
-        for i in range(3):
+        for i in range(4):
             print(f"{players[i].first_name} vs {players[i+4].first_name}")
             i += 1
 
