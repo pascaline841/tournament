@@ -1,4 +1,4 @@
-CHESS TOURNAMENT -  SWISS PAIRING SYSTEM <br>
+CHESS TOURNAMENT MANAGER -  SWISS PAIRING SYSTEM <br>
 <br>
 ## OVERVIEW
 Beta version of a chess tournament manager (Swiss system).
