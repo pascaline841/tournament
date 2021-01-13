@@ -1,3 +1,4 @@
+import datetime
 from models.players import Player
 from models.tournaments import Tournament
 from models.database import Data
@@ -27,10 +28,12 @@ class MenuController:
         """Create a new tournament."""
         name = NewTournament.tournament_name()
         location = NewTournament.tournament_location()
+        date = datetime.date.today().strftime("%d/%m/%Y")
         mode = NewTournament.tournament_mode()
+        rounds = []
         description = NewTournament.tournament_description()
         players = players
-        return Tournament(name, location, mode, description, players)
+        return Tournament(name, location, date, mode, rounds, description, players)
 
     @classmethod
     def display_reports(cls, tournament_table, actors_table, user):
@@ -59,7 +62,7 @@ class MenuController:
             MainView.welcome()
 
     @classmethod
-    def inter_menu(cls, actors_table, tournament_table, user, run_program):
+    def inter_menu(cls, actors_table, tournament_table, user):
         """Display menu between rounds."""
         choice = MainView.interround_menu()
         choices = {
@@ -76,9 +79,8 @@ class MenuController:
         elif choices[choice] == "welcome_menu":
             MainView.welcome()
         elif choices[choice] == "end_program":
-            print("Program ended ! See you soon !")
-            run_program = False
-            return run_program
+            print("Program ended ! See you soon!")
+            breakpoint
         else:
             print("An error occurred.")
             return MenuController.inter_menu(actors_table, tournament_table, user)

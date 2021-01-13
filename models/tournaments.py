@@ -1,4 +1,3 @@
-import datetime
 from models.players import Player
 from models.rounds import Round
 
@@ -6,7 +5,7 @@ from models.rounds import Round
 class Tournament:
     """Define the characteristics of a chess tournament."""
 
-    def __init__(self, name, location, mode, description, players):
+    def __init__(self, name, location, date, mode, rounds, description, players):
         """
         Name :
         Location :
@@ -18,11 +17,10 @@ class Tournament:
         """
         self.name = name
         self.location = location
-        self.date = datetime.date.today().strftime("%d/%m/%Y")
+        self.date = date
         self.mode = mode
         self.nb_rounds = 4
-        self.rounds = []
-        self.matchs = []
+        self.rounds = rounds
         self.description = description
         self.players = players
 
@@ -74,8 +72,7 @@ class Tournament:
     def update_round(self, serialized_rounds, tournament_table, user):
         """Update round's informations in the database."""
         tournament_table.update(
-            {"rounds": serialized_rounds},
-            user["name"] == self.name,
+            {"rounds": serialized_rounds}, user["name"] == self.name
         )
 
     @classmethod
@@ -85,13 +82,14 @@ class Tournament:
         location = serialized_tournament["location"]
         date = serialized_tournament["date"]
         mode = serialized_tournament["mode"]
+        players = [
+            Player.deserialized_player(ser_player)
+            for ser_player in serialized_tournament["players"]
+        ]
         rounds = [
             Round.deserialized_round(ser_round)
             for ser_round in serialized_tournament["rounds"]
         ]
         description = serialized_tournament["description"]
-        players = [
-            Player.deserialized_player(ser_player)
-            for ser_player in serialized_tournament["players"]
-        ]
+
         return Tournament(name, location, date, mode, rounds, description, players)

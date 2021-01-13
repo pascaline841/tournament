@@ -1,4 +1,3 @@
-import json
 from tinydb import TinyDB, Query
 from controllers.menu import MenuController
 from controllers.progress import TournamentController
@@ -25,6 +24,7 @@ class MainController:
             5: "display_reports",
             6: "program_end",
         }
+        serialized_rounds = []
 
         run_program = True
         while run_program is True:
@@ -40,58 +40,48 @@ class MainController:
                     tournament, players, user, actors_table, tournament_table
                 )
                 # print(tournament)
-                rounds = tournament.rounds
-                round = TournamentController.create_first_round(
-                    tournament, rounds, players
-                )
-                serialized_rounds = []
-                ser_round = Round.serialized_round(round)
-                serialized_rounds.append(ser_round)
-                Tournament.update_round(
-                    tournament, serialized_rounds, tournament_table, user
-                )
-                Data.update_players(players, tournament_table, tournament, user)
-
-                MenuController.inter_menu(
-                    actors_table, tournament_table, user, run_program
-                )
-
-                nb_rounds = tournament.nb_rounds
-
-                while nb_rounds > 1:
-                    nb_rounds -= 1
-                    round = TournamentController.create_next_round(
-                        tournament, rounds, players
-                    )
-                    ser_round = Round.serialized_round(round)
-                    serialized_rounds.append(ser_round)
-                    Tournament.update_round(
-                        tournament, serialized_rounds, tournament_table, user
-                    )
-                    Data.update_players(players, tournament_table, tournament, user)
-
-                    MenuController.inter_menu(
-                        actors_table, tournament_table, user, run_program
-                    )
-                players = sorted(
+                TournamentController.progress_first_round(
+                    tournament,
                     players,
-                    key=lambda player: (player.score_game, player.score),
-                    reverse=True,
+                    tournament_table,
+                    user,
+                    actors_table,
+                    serialized_rounds,
                 )
-                MainView.display_final_score(tournament, players)
-                for player in players:
-                    score = player.add_final_score(player.score_game, player.score)
-                    Player.update_score(player, actors_table, score, user)
-                Data.update_players(players, tournament_table, tournament, user)
+                nb_rounds = tournament.nb_rounds
+                while nb_rounds > 1:
+                    TournamentController.progress_next_rounds(
+                        tournament,
+                        players,
+                        serialized_rounds,
+                        tournament_table,
+                        user,
+                        actors_table,
+                        nb_rounds,
+                    )
 
             elif choices[choice] == "pull_tournament":
-                # Choice = Continue an existing tournament
                 name = input("Name of an UNcompleted tournament ? ")
                 serialized_tournament = tournament_table.get(user["name"] == name)
                 tournament = Tournament.deserialized_tournament(serialized_tournament)
                 rounds = tournament.rounds
+                for round in rounds:
+                    ser_round = Round.serialized_round(round)
+                    serialized_rounds.append(ser_round)
                 players = tournament.players
-                nb_rounds = len(rounds)
+                rounds_done = len(rounds)
+                total_rounds = tournament.nb_rounds
+                nb_rounds = total_rounds - rounds_done
+                while nb_rounds > 1:
+                    TournamentController.progress_next_rounds(
+                        tournament,
+                        players,
+                        serialized_rounds,
+                        tournament_table,
+                        user,
+                        actors_table,
+                        nb_rounds,
+                    )
 
             elif choices[choice] == "update_rank":
                 Data.update_rank(actors_table, tournament_table, user)

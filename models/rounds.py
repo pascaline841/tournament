@@ -4,7 +4,7 @@ import datetime
 class Round:
     """Define a round."""
 
-    def __init__(self, name, end=0):
+    def __init__(self, name, start, matchs, end=0):
         """
         Name : Round 1, Round 2, Round 3, Round 4
         Start date and time :  AUTO
@@ -13,7 +13,7 @@ class Round:
         """
         self.name = name
         self.start = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-        self.matchs = []
+        self.matchs = matchs
         self.players_paired = []
         self.end = end
 
