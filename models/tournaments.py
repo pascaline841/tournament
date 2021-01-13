@@ -1,5 +1,6 @@
 import datetime
 from models.players import Player
+from models.rounds import Round
 
 
 class Tournament:
@@ -25,7 +26,7 @@ class Tournament:
         self.description = description
         self.players = players
 
-    def __repr__(self):
+    def __str__(self):
         return {
             " NAME : {}\n LOCATION : {}\n MODE : {}\n DATE : {}\n ROUNDS : {}\n DESCRIPTION : {}\n PLAYERS :{}\n".format(
                 self.name,
@@ -76,3 +77,21 @@ class Tournament:
             {"rounds": serialized_rounds},
             user["name"] == self.name,
         )
+
+    @classmethod
+    def deserialized_tournament(cls, serialized_tournament):
+        """Pull tournament's informations from the database to continue it."""
+        name = serialized_tournament["name"]
+        location = serialized_tournament["location"]
+        date = serialized_tournament["date"]
+        mode = serialized_tournament["mode"]
+        rounds = [
+            Round.deserialized_round(ser_round)
+            for ser_round in serialized_tournament["rounds"]
+        ]
+        description = serialized_tournament["description"]
+        players = [
+            Player.deserialized_player(ser_player)
+            for ser_player in serialized_tournament["players"]
+        ]
+        return Tournament(name, location, date, mode, rounds, description, players)
