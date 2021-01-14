@@ -61,8 +61,8 @@ class Tournament:
             for ser_player in serialized_tournament["players"]
         ]
         rounds = [
-            Round.deserialized_round(ser_round)
-            for ser_round in serialized_tournament["rounds"]
+            Round.deserialized_round(serialized_round)
+            for serialized_round in serialized_tournament["rounds"]
         ]
         description = serialized_tournament["description"]
 

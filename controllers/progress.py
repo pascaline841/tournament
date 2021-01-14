@@ -12,6 +12,17 @@ class TournamentController:
     """Class controls the tournament progress."""
 
     @classmethod
+    def create_list_players(cls, actors_table, user):  # CHANGER FIRST NAME by doc_IDE
+        """Create a list of 8 players from the database."""
+        players = []
+        print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
+        for i in range(1, 9):  # PROPOSER UN MESSAGE D ERREUR SI LE JOUEUR N EXISTE PAS
+            name = input(f"PLAYER {i}: What is the FIRST NAME ? ").capitalize()
+            serialized_player = actors_table.get((user["first name"] == name))
+            player = Player.deserialized_player(serialized_player)
+            players.append(player)
+        return players
+
     def create_auto_players(cls):
         """Create 8 players for a demo."""
         players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
@@ -86,8 +97,8 @@ class TournamentController:
         """Run the first round."""
         rounds = tournament.rounds
         round = TournamentController.create_first_round(tournament, rounds, players)
-        ser_round = Round.serialized_round(round)
-        serialized_rounds.append(ser_round)
+        serialized_round = Round.serialized_round(round)
+        serialized_rounds.append(serialized_round)
         Tournament.update_round(tournament, serialized_rounds, tournament_table, user)
         Tournament.update_players(tournament, players, tournament_table, user)
         MenuController.choose_inter_menu(actors_table, tournament_table, user)
@@ -108,8 +119,8 @@ class TournamentController:
             nb_rounds -= 1
             rounds = tournament.rounds
             round = TournamentController.create_next_round(tournament, rounds, players)
-            ser_round = Round.serialized_round(round)
-            serialized_rounds.append(ser_round)
+            serialized_round = Round.serialized_round(round)
+            serialized_rounds.append(serialized_round)
             Tournament.update_round(
                 tournament, serialized_rounds, tournament_table, user
             )

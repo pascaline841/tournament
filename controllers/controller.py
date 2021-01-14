@@ -15,6 +15,10 @@ class MainController:
         tournament_table = TinyDB("TOURNAMENTS.json")
         actors_table = TinyDB("ACTORS.json")
         user = Query()
+
+        serialized_rounds = []
+
+        run_program = True
         choices = {
             1: "create player",
             2: "create tournament",
@@ -23,18 +27,14 @@ class MainController:
             5: "display reports",
             6: "program end",
         }
-        serialized_rounds = []
-
-        run_program = True
         while run_program:
             choice = MenuController.choose_welcome_menu()
-
             if choices[choice] == "create player":
                 player = MenuController.create_player()
                 Player.store_data_actors(player, user, actors_table)
 
             elif choices[choice] == "create tournament":
-                players = TournamentController.create_auto_players()
+                players = TournamentController.create_list_players(actors_table, user)
                 tournament = MenuController.create_tournament(players)
                 Tournament.store_data_tournament(
                     tournament, players, user, actors_table, tournament_table
@@ -65,8 +65,8 @@ class MainController:
                 tournament = Tournament.deserialized_tournament(serialized_tournament)
                 rounds = tournament.rounds
                 for round in rounds:
-                    ser_round = Round.serialized_round(round)
-                    serialized_rounds.append(ser_round)
+                    serialized_round = Round.serialized_round(round)
+                    serialized_rounds.append(serialized_round)
                 players = tournament.players
                 rounds_done = len(rounds)
                 total_rounds = tournament.nb_rounds
