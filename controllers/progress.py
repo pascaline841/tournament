@@ -4,12 +4,25 @@ from models.rounds import Round
 from models.tournaments import Tournament
 from controllers.menu import MenuController
 from view.menu import MenuView
-from view.score import Score
 from view.displayround import DisplayRound
 
 
 class TournamentController:
     """Class controls the tournament progress."""
+
+    @classmethod
+    def create_tournament(cls, players):
+        """Create a new tournament."""
+        print("\n==================================================")
+        print("************CREATE A NEW TOURNAMENT**************\n")
+        name = input("Please enter tournament's name : ")
+        location = input("Please enter tournament's location : ")
+        date = datetime.date.today().strftime("%d/%m/%Y")
+        mode = input("How would you like to play ? bullet / blitz / fast : ")
+        rounds = []
+        description = input("Please enter tournament's description : ")
+        players = players
+        return Tournament(name, location, date, mode, rounds, description, players)
 
     @classmethod
     def create_list_players(cls, actors_table, user):  # CHANGER FIRST NAME by doc_IDE
@@ -22,6 +35,7 @@ class TournamentController:
             players.append(player)
         return players
 
+    @classmethod
     def create_auto_players(cls):
         """Create 8 players for a demo."""
         players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
@@ -44,7 +58,7 @@ class TournamentController:
         DisplayRound.display_first_round(players)
         Round.get_first_opponents(players)
         for player in players:
-            add_point = Score.add_score_match(player)
+            add_point = MenuController.add_score_match(player)
             player.add_score_game(add_point)
         Round.first_matchs(round, players)
         players = sorted(
@@ -70,7 +84,7 @@ class TournamentController:
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = Score.add_score_match(player)
+            add_point = MenuController.add_score_match(player)
             player.add_score_game(add_point)
             if add_point == 0:
                 player.point = 1
@@ -142,8 +156,7 @@ class TournamentController:
     @classmethod
     def pull_tournament(cls, tournaments_table, serialized_rounds, actors_table, user):
         """To continue an unfinished tournament."""
-        name = input("Name of an UNcompleted tournament ? ")
-        serialized_tournament = tournaments_table.get(user["name"] == name)
+        serialized_tournament = MenuController.choose_tournamen(tournaments_table, user)
         tournament = Tournament.deserialized_tournament(serialized_tournament)
         rounds = tournament.rounds
         for round in rounds:

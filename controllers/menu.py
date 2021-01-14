@@ -47,7 +47,20 @@ class MenuController:
             print("The value entered doesn't match the possible choices !\n")
             return MenuController.choose_actors(i, actors_table, user)
         return serialized_player
-
+         
+    @classmethod
+    def choose_tournament(cls, tournaments_table, user):
+        "Choose a player from the database to play in a tournament."
+        try:
+        name = input("Name of an UNcompleted tournament ? ")
+        serialized_tournament = tournaments_table.get(user["name"] == name)
+            if serialized_tournament is None:
+                raise TypeError
+        except TypeError:
+            print("The value entered doesn't match the possible choices !\n")
+            return MenuController.choose_actors(tournaments_table, user)
+        return serialized_tournament
+    
     @classmethod
     def choose_player_rank(cls):
         """Choose the player's rank."""
@@ -77,20 +90,6 @@ class MenuController:
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
             return MenuController.change_rank()
-
-    @classmethod
-    def create_tournament(cls, players):
-        """Create a new tournament."""
-        print("\n==================================================")
-        print("************CREATE A NEW TOURNAMENT**************\n")
-        name = input("Please enter tournament's name : ")
-        location = input("Please enter tournament's location : ")
-        date = datetime.date.today().strftime("%d/%m/%Y")
-        mode = input("How would you like to play ? bullet / blitz / fast : ")
-        rounds = []
-        description = input("Please enter tournament's description : ")
-        players = players
-        return Tournament(name, location, date, mode, rounds, description, players)
 
     @classmethod
     def choose_reports(cls, tournaments_table, actors_table, user):
@@ -151,9 +150,9 @@ class MenuController:
                 actors_table, tournaments_table, user
             )
         elif choices[choice] == "welcome menu":
-            MenuView.welcome()
+            return MenuView.welcome()
         elif choices[choice] == "end program":
-            print("Program ended ! See you soon!")
+            return print("Program ended ! See you soon!")
             # A CORRIGER POUR SORTIR DU PROGRAMME
         else:
             print("An error occurred.")

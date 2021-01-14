@@ -32,8 +32,10 @@ class MainController:
                 Player.store_data_actors(player, user, actors_table)
 
             elif choices[choice] == "create tournament":
-                players = TournamentController.create_list_players(actors_table, user)
-                tournament = MenuController.create_tournament(players)
+                # CHOOSE BETWEEN AUTO or MANUAL list of players :
+                players = TournamentController.create_auto_players()
+                # players = TournamentController.create_list_players(actors_table, user)
+                tournament = TournamentController.create_tournament(players)
                 Tournament.store_data_tournament(
                     tournament, players, user, actors_table, tournaments_table
                 )
@@ -58,7 +60,7 @@ class MainController:
                 )
 
             elif choices[choice] == "pull tournament":
-                MenuController.pull_tournament(
+                TournamentController.pull_tournament(
                     tournaments_table, serialized_rounds, actors_table, user
                 )
 
