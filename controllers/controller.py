@@ -63,7 +63,7 @@ class MainController:
                 )
 
             elif choices[choice] == "update rank":
-                Player.update_rank(actors_table, tournaments_table, user)
+                MenuController.update_rank(actors_table, tournaments_table, user)
 
             elif choices[choice] == "display reports":
                 MenuController.choose_reports(tournaments_table, actors_table, user)

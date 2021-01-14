@@ -2,7 +2,6 @@ import datetime
 from models.players import Player
 from models.tournaments import Tournament
 from view.menu import MenuView
-from view.newplayer import NewPlayer
 from view.report import DisplayReport
 
 
@@ -30,11 +29,54 @@ class MenuController:
         first_name = input("Please enter player's first name : ").capitalize()
         last_name = input("Please enter player's last name : ").capitalize()
         birth_date = input("Please enter player's birth date (format = DD/MM/YYYY) : ")
-        gender = NewPlayer.player_gender()
-        rank = NewPlayer.player_rank()
-        score = NewPlayer.player_score()
+        gender = input("Please enter player's gender (format = 'm' / 'f') : ")
+        rank = MenuController.choose_player_rank()
+        score = MenuController.choose_player_score()
         print("\n A player has been created. \n")
         return Player(first_name, last_name, birth_date, gender, rank, score)
+
+    @classmethod
+    def choose_actors(cls, i, actors_table, user):
+        "Choose a player from the database to play in a tournament."
+        try:
+            choice = input(f"PLAYER {i}: What is the FIRST NAME ? ").capitalize()
+            serialized_player = actors_table.get((user["first name"] == choice))
+            if serialized_player is None:
+                raise TypeError
+        except TypeError:
+            print("The value entered doesn't match the possible choices !\n")
+            return MenuController.choose_actors(i, actors_table, user)
+        return serialized_player
+
+    @classmethod
+    def choose_player_rank(cls):
+        """Choose the player's rank."""
+        try:
+            return int(input("Please enter player's rank : "))
+        except ValueError:
+            print("Incorrect value, it has to be a positive number !")
+            return MenuController.choose_player_rank()
+
+    @classmethod
+    def choose_player_score(cls):
+        """Choose the player's score."""
+        try:
+            return int(input("Please enter player's total score : "))
+        except ValueError:
+            print("Incorrect value, it has to be a positive number !")
+            return MenuController.choose_player_score()
+
+    @classmethod
+    def change_rank(cls):
+        """Request to change the player's rank."""
+        choice_last_name = input("Please enter player's last name : ").capitalize()
+        return choice_last_name
+        try:
+            rank = int(input("Please enter player's rank : "))
+            return rank
+        except ValueError:
+            print("Incorrect value, it has to be a positive number !")
+            return MenuController.change_rank()
 
     @classmethod
     def create_tournament(cls, players):
@@ -69,7 +111,7 @@ class MenuController:
             print("The value entered doesn't match the possible choices !\n")
             return MenuController.choose_reports
         if reports[report] == "sorted_actors report":
-            display_report = Player.sorted_actors(actors_table)
+            display_report = MenuController.sorted_actors(actors_table)
             DisplayReport.report_actors(display_report)
         elif reports[report] == "tournaments report":
             display_report = tournaments_table.all()
@@ -104,7 +146,7 @@ class MenuController:
         if choices[choice] == "continue tournament":
             pass
         elif choices[choice] == "update rank":
-            Player.update_rank(actors_table, tournaments_table, user)
+            MenuController.update_rank(actors_table, tournaments_table, user)
             return MenuController.choose_inter_menu(
                 actors_table, tournaments_table, user
             )
@@ -139,11 +181,52 @@ class MenuController:
         return choice[0].get("rounds")
 
     @classmethod
-    def choose_actors(cls, i, actors_table, user):
+    def add_score_match(cls, player):
+        """
+        Enter the scores for each round:
+        1 point for the winner,
+        0.5 point if draw,
+        0 point for the loser.
+        """
         try:
-            choice = input(f"PLAYER {i}: What is the FIRST NAME ? ").capitalize()
-
-            serialized_player = actors_table.get((user["first name"] == choice))
+            add_point = float(input(f"Please enter {player.first_name}'s score : "))
+            if add_point not in [0, 0.5, 1]:
+                raise ValueError
+            print("Score entered successfully...")
+            return add_point
+        except ValueError:
+            print(
+                "Incorrect score, it has to be 1 point for the winner, 0.5 point if draw, 0 point for the loser!"
+            )
+            return MenuController.add_score_match(player)
         except TypeError:
-            return MenuController.choose_actors(i, actors_table, user)
-        return serialized_player
+            print(
+                "Incorrect score, it has to be 1 point for the winner, 0.5 point if draw, 0 point for the loser!"
+            )
+            return MenuController.add_score_match(player)
+
+    @classmethod
+    def update_rank(cls, actors_table, tournaments_table, user):
+        """Update actor's rank in the database and in the current tournament."""
+        first_name = input("First name ? ").capitalize()
+        last_name = input("Last name ? ").capitalize()
+        new_rank = int(input("New rank ? "))
+        actors_table.update(
+            {"rank": new_rank},
+            user["first name"] == first_name and user["last name"] == last_name,
+        )
+        # NE FONCTIONNE PAS SUR LE TOURNOIS . A CORRIGER
+        tournaments_table.update(
+            {"rank": new_rank},
+            user["first name"] == first_name and user["last name"] == last_name,
+        )
+
+    @classmethod
+    def sorted_actors(cls, actors_table):
+        """Sort all actors by alphabetic order or by rank."""
+        actors = actors_table.all()
+        sorted_choice = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
+        if sorted_choice == 1:
+            return sorted(actors, key=lambda actor: actor["last name"])
+        else:
+            return sorted(actors, key=lambda actor: actor["rank"])

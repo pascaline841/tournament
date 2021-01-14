@@ -44,7 +44,7 @@ class TournamentController:
         DisplayRound.display_first_round(players)
         Round.get_first_opponents(players)
         for player in players:
-            add_point = Score.player_add_score_match(player)
+            add_point = Score.add_score_match(player)
             player.add_score_game(add_point)
         Round.first_matchs(round, players)
         players = sorted(
@@ -70,7 +70,7 @@ class TournamentController:
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = Score.player_add_score_match(player)
+            add_point = Score.add_score_match(player)
             player.add_score_game(add_point)
             if add_point == 0:
                 player.point = 1
