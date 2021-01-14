@@ -142,5 +142,3 @@ class Round:
 
             i += 1
         return self.matchs
-
-

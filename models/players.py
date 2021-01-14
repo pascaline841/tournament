@@ -97,7 +97,7 @@ class Player:
         )
 
     @classmethod
-    def update_rank(cls, actors_table, tournament_table, user):
+    def update_rank(cls, actors_table, tournaments_table, user):
         """Update actor's rank in the database and in the current tournament."""
         first_name = input("First name ? ").capitalize()
         last_name = input("Last name ? ").capitalize()
@@ -107,7 +107,7 @@ class Player:
             user["first name"] == first_name and user["last name"] == last_name,
         )
         # NE FONCTIONNE PAS SUR LE TOURNOIS . A CORRIGER
-        tournament_table.update(
+        tournaments_table.update(
             {"rank": new_rank},
             user["first name"] == first_name and user["last name"] == last_name,
         )
