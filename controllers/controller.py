@@ -3,7 +3,6 @@ from controllers.menu import MenuController
 from controllers.progress import TournamentController
 from models.players import Player
 from models.tournaments import Tournament
-from models.rounds import Round
 
 
 class MainController:
@@ -12,10 +11,9 @@ class MainController:
     @classmethod
     def start_program(cls):
         """Run the program."""
-        tournament_table = TinyDB("TOURNAMENTS.json")
+        tournaments_table = TinyDB("TOURNAMENTS.json")
         actors_table = TinyDB("ACTORS.json")
         user = Query()
-
         serialized_rounds = []
 
         run_program = True
@@ -37,13 +35,13 @@ class MainController:
                 players = TournamentController.create_list_players(actors_table, user)
                 tournament = MenuController.create_tournament(players)
                 Tournament.store_data_tournament(
-                    tournament, players, user, actors_table, tournament_table
+                    tournament, players, user, actors_table, tournaments_table
                 )
                 # print(tournament)
                 TournamentController.progress_first_round(
                     tournament,
                     players,
-                    tournament_table,
+                    tournaments_table,
                     user,
                     actors_table,
                     serialized_rounds,
@@ -53,39 +51,22 @@ class MainController:
                     tournament,
                     players,
                     serialized_rounds,
-                    tournament_table,
+                    tournaments_table,
                     user,
                     actors_table,
                     nb_rounds,
                 )
 
             elif choices[choice] == "pull tournament":
-                name = input("Name of an UNcompleted tournament ? ")
-                serialized_tournament = tournament_table.get(user["name"] == name)
-                tournament = Tournament.deserialized_tournament(serialized_tournament)
-                rounds = tournament.rounds
-                for round in rounds:
-                    serialized_round = Round.serialized_round(round)
-                    serialized_rounds.append(serialized_round)
-                players = tournament.players
-                rounds_done = len(rounds)
-                total_rounds = tournament.nb_rounds
-                nb_rounds = total_rounds - rounds_done
-                TournamentController.progress_next_rounds(
-                    tournament,
-                    players,
-                    serialized_rounds,
-                    tournament_table,
-                    user,
-                    actors_table,
-                    nb_rounds,
+                MenuController.pull_tournament(
+                    tournaments_table, serialized_rounds, actors_table, user
                 )
 
             elif choices[choice] == "update rank":
-                Player.update_rank(actors_table, tournament_table, user)
+                Player.update_rank(actors_table, tournaments_table, user)
 
             elif choices[choice] == "display reports":
-                MenuController.choose_reports(tournament_table, actors_table, user)
+                MenuController.choose_reports(tournaments_table, actors_table, user)
 
             elif choices[choice] == "program end":
                 print("Program ended ! See you soon !")

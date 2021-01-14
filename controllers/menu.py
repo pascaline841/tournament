@@ -51,7 +51,7 @@ class MenuController:
         return Tournament(name, location, date, mode, rounds, description, players)
 
     @classmethod
-    def choose_reports(cls, tournament_table, actors_table, user):
+    def choose_reports(cls, tournaments_table, actors_table, user):
         """Display the reports' menu."""
         reports = {
             1: "sorted_actors report",
@@ -72,19 +72,19 @@ class MenuController:
             display_report = Player.sorted_actors(actors_table)
             DisplayReport.report_actors(display_report)
         elif reports[report] == "tournaments report":
-            display_report = tournament_table.all()
+            display_report = tournaments_table.all()
             DisplayReport.report_tournaments(display_report)
         elif reports[report] == "rounds report":
-            display_report = MenuController.request_rounds(tournament_table, user)
+            display_report = MenuController.request_rounds(tournaments_table, user)
             DisplayReport.report_rounds(display_report)
         elif reports[report] == "players report":
-            display_report = MenuController.request_players(tournament_table, user)
+            display_report = MenuController.request_players(tournaments_table, user)
             DisplayReport.report_players(display_report)
         else:
             MenuView.welcome()
 
     @classmethod
-    def choose_inter_menu(cls, actors_table, tournament_table, user):
+    def choose_inter_menu(cls, actors_table, tournaments_table, user):
         """Display menu between rounds."""
         MenuView.interround_menu()
         choices = {
@@ -104,9 +104,9 @@ class MenuController:
         if choices[choice] == "continue tournament":
             pass
         elif choices[choice] == "update rank":
-            Player.update_rank(actors_table, tournament_table, user)
+            Player.update_rank(actors_table, tournaments_table, user)
             return MenuController.choose_inter_menu(
-                actors_table, tournament_table, user
+                actors_table, tournaments_table, user
             )
         elif choices[choice] == "welcome menu":
             MenuView.welcome()
@@ -116,14 +116,14 @@ class MenuController:
         else:
             print("An error occurred.")
             return MenuController.choose_inter_menu(
-                actors_table, tournament_table, user
+                actors_table, tournaments_table, user
             )
 
     @classmethod
-    def request_players(cls, tournament_table, user):
+    def request_players(cls, tournaments_table, user):
         """Request for a tournament to display its players by alpha order or rank."""
         name = input("What is it name ? ")
-        choice = tournament_table.search(user["name"] == name)
+        choice = tournaments_table.search(user["name"] == name)
         players = choice[0].get("players")
         sorted_choice = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
         if sorted_choice == 1:
@@ -132,8 +132,18 @@ class MenuController:
             return sorted(players, key=lambda players: players["rank"])
 
     @classmethod
-    def request_rounds(cls, tournament_table, user):
+    def request_rounds(cls, tournaments_table, user):
         """Request for a tournament to display its rounds or matchs."""
         name = input("What is it name ? ")
-        choice = tournament_table.search(user["name"] == name)
+        choice = tournaments_table.search(user["name"] == name)
         return choice[0].get("rounds")
+
+    @classmethod
+    def choose_actors(cls, i, actors_table, user):
+        try:
+            choice = input(f"PLAYER {i}: What is the FIRST NAME ? ").capitalize()
+
+            serialized_player = actors_table.get((user["first name"] == choice))
+        except TypeError:
+            return MenuController.choose_actors(i, actors_table, user)
+        return serialized_player
