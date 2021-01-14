@@ -11,7 +11,7 @@ class Tournament:
         Location :
         Date : AUTO
         Mode : bullet / blitz / fast
-        Rounds : 4 (default)
+        Nb_Rounds : 4 (default)
         Description : general remarks from the tournament director.
         Players : list of player's  stored in the database.
         """
@@ -49,6 +49,25 @@ class Tournament:
             "players": self.players,
         }
 
+    @classmethod
+    def deserialized_tournament(cls, serialized_tournament):
+        """Pull tournament's informations from the database to continue it."""
+        name = serialized_tournament["name"]
+        location = serialized_tournament["location"]
+        date = serialized_tournament["date"]
+        mode = serialized_tournament["mode"]
+        players = [
+            Player.deserialized_player(ser_player)
+            for ser_player in serialized_tournament["players"]
+        ]
+        rounds = [
+            Round.deserialized_round(ser_round)
+            for ser_round in serialized_tournament["rounds"]
+        ]
+        description = serialized_tournament["description"]
+
+        return Tournament(name, location, date, mode, rounds, description, players)
+
     def store_data_tournament(self, players, user, actors_table, tournament_table):
         """Store tournament's informations in the database."""
         serialized_players = []
@@ -75,21 +94,16 @@ class Tournament:
             {"rounds": serialized_rounds}, user["name"] == self.name
         )
 
-    @classmethod
-    def deserialized_tournament(cls, serialized_tournament):
-        """Pull tournament's informations from the database to continue it."""
-        name = serialized_tournament["name"]
-        location = serialized_tournament["location"]
-        date = serialized_tournament["date"]
-        mode = serialized_tournament["mode"]
-        players = [
-            Player.deserialized_player(ser_player)
-            for ser_player in serialized_tournament["players"]
-        ]
-        rounds = [
-            Round.deserialized_round(ser_round)
-            for ser_round in serialized_tournament["rounds"]
-        ]
-        description = serialized_tournament["description"]
-
-        return Tournament(name, location, date, mode, rounds, description, players)
+    def update_players(self, players, tournament_table, user):
+        """Update players's informations in the database."""
+        serialized_players = []
+        for player in players:
+            ser_player = Player.serialized_player(player)
+            serialized_players.append(ser_player)
+        tournament_table.update(
+            {
+                "players": serialized_players,
+            },
+            user["name"] == self.name,
+        )
+        del serialized_players[:]

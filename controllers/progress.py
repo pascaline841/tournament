@@ -1,10 +1,9 @@
 import datetime
 from models.players import Player
 from models.rounds import Round
-from models.database import Data
 from models.tournaments import Tournament
 from controllers.menu import MenuController
-from view.menu import MainView
+from view.menu import MenuView
 from view.score import Score
 from view.displayround import DisplayRound
 
@@ -84,16 +83,14 @@ class TournamentController:
         actors_table,
         serialized_rounds,
     ):
-        """mm."""
+        """Run the first round."""
         rounds = tournament.rounds
         round = TournamentController.create_first_round(tournament, rounds, players)
         ser_round = Round.serialized_round(round)
         serialized_rounds.append(ser_round)
         Tournament.update_round(tournament, serialized_rounds, tournament_table, user)
-
-        Data.update_players(players, tournament_table, tournament, user)
-
-        MenuController.inter_menu(actors_table, tournament_table, user)
+        Tournament.update_players(tournament, players, tournament_table, user)
+        MenuController.choose_inter_menu(actors_table, tournament_table, user)
 
     @classmethod
     def progress_next_rounds(
@@ -106,27 +103,28 @@ class TournamentController:
         actors_table,
         nb_rounds,
     ):
-        """mm """
-
-        nb_rounds -= 1
-        rounds = tournament.rounds
-        round = TournamentController.create_next_round(tournament, rounds, players)
-        ser_round = Round.serialized_round(round)
-        serialized_rounds.append(ser_round)
-        Tournament.update_round(tournament, serialized_rounds, tournament_table, user)
-        Data.update_players(players, tournament_table, tournament, user)
-
-        MenuController.inter_menu(
-            actors_table,
-            tournament_table,
-            user,
-        )
-        players = sorted(
-            players,
-            key=lambda player: (player.score_game, player.score),
-            reverse=True,
-        )
-        MainView.display_final_score(tournament, players)
-        for player in players:
-            score = player.add_final_score(player.score_game, player.score)
-            Player.update_score(player, actors_table, score, user)
+        """Run the following rounds."""
+        while nb_rounds > 1:
+            nb_rounds -= 1
+            rounds = tournament.rounds
+            round = TournamentController.create_next_round(tournament, rounds, players)
+            ser_round = Round.serialized_round(round)
+            serialized_rounds.append(ser_round)
+            Tournament.update_round(
+                tournament, serialized_rounds, tournament_table, user
+            )
+            Tournament.update_players(tournament, players, tournament_table, user)
+            MenuController.choose_inter_menu(
+                actors_table,
+                tournament_table,
+                user,
+            )
+            players = sorted(
+                players,
+                key=lambda player: (player.score_game, player.score),
+                reverse=True,
+            )
+            MenuView.display_final_score(tournament, players)
+            for player in players:
+                score = player.add_final_score(player.score_game, player.score)
+                Player.update_score(player, actors_table, score, user)

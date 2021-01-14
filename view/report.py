@@ -2,7 +2,7 @@ class DisplayReport:
     """Display the different reports."""
 
     @staticmethod
-    def menu_report():
+    def display_reports():
         """Display the menu of the reports."""
         print("************REPORTS**************")
         print("1 - List of all actors")
@@ -10,15 +10,6 @@ class DisplayReport:
         print("3 - List of all rounds for a tournament")
         print("4 - List of all players for a tournament")
         print("5 - return to the general menu")
-        try:
-            report = int(input("Enter your choice (1, 2, 3, 4, 5) : \n"))
-            if report > 6:
-                raise ValueError
-            print("Your choice ({}) has been successfully entered\n".format(report))
-            return report
-        except ValueError:
-            print("The value entered doesn't match the possible choices !\n")
-            return DisplayReport.menu_report
 
     @staticmethod
     def report_actors(display_report):
@@ -31,7 +22,7 @@ class DisplayReport:
         """Display a list of all the tournaments."""
         for tournament in display_report:
             print(
-                f"{tournament['name']} {tournament['date']} {tournament['location']} {tournament['mode']}"
+                f"{tournament['name']} DATE : {tournament['date']} LOCATION : {tournament['location']} MODE : {tournament['mode']}"
             )
 
     @staticmethod

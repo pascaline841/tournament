@@ -88,18 +88,6 @@ class Player:
             actors_table.insert(ser_player)
         return ser_player
 
-    def add_score_game(self, add_point):
-        """Round 1, 2, 3, 4
-        Add match score to player's score_game."""
-        self.score_game += add_point
-        return self.score_game
-
-    def add_final_score(self, score_game, score):
-        """Round 4
-        Add tournament score to player's total score."""
-        self.score = score_game + score
-        return self.score
-
     def update_score(self, actors_table, score, user):
         """Update actor's score in the database."""
         actors_table.update(
@@ -107,3 +95,41 @@ class Player:
             user["first name"] == self.first_name
             and user["last name"] == self.last_name,
         )
+
+    @classmethod
+    def update_rank(cls, actors_table, tournament_table, user):
+        """Update actor's rank in the database and in the current tournament."""
+        first_name = input("First name ? ").capitalize()
+        last_name = input("Last name ? ").capitalize()
+        new_rank = int(input("New rank ? "))
+        actors_table.update(
+            {"rank": new_rank},
+            user["first name"] == first_name and user["last name"] == last_name,
+        )
+        # NE FONCTIONNE PAS SUR LE TOURNOIS . A CORRIGER
+        tournament_table.update(
+            {"rank": new_rank},
+            user["first name"] == first_name and user["last name"] == last_name,
+        )
+
+    def add_score_game(self, add_point):
+        """At the end of all the rounds.
+        Add match score to player's score_game."""
+        self.score_game += add_point
+        return self.score_game
+
+    def add_final_score(self, score_game, score):
+        """Last round only.
+        Add tournament score to player's total score."""
+        self.score = score_game + score
+        return self.score
+
+    @classmethod
+    def sorted_actors(cls, actors_table):
+        """Sort all actors by alphabetic order or by rank."""
+        actors = actors_table.all()
+        sorted_choice = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
+        if sorted_choice == 1:
+            return sorted(actors, key=lambda actor: actor["last name"])
+        else:
+            return sorted(actors, key=lambda actor: actor["rank"])

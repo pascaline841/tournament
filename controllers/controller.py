@@ -3,37 +3,37 @@ from controllers.menu import MenuController
 from controllers.progress import TournamentController
 from models.players import Player
 from models.tournaments import Tournament
-from models.database import Data
 from models.rounds import Round
-from view.menu import MainView
 
 
 class MainController:
     """Main class to control the program."""
 
-    def start_program():  # mettre un self
+    @classmethod
+    def start_program(cls):
         """Run the program."""
         tournament_table = TinyDB("TOURNAMENTS.json")
         actors_table = TinyDB("ACTORS.json")
         user = Query()
         choices = {
-            1: "create_player",
-            2: "create_tournament",
-            3: "pull_tournament",
-            4: "update_rank",
-            5: "display_reports",
-            6: "program_end",
+            1: "create player",
+            2: "create tournament",
+            3: "pull tournament",
+            4: "update rank",
+            5: "display reports",
+            6: "program end",
         }
         serialized_rounds = []
 
         run_program = True
-        while run_program is True:
-            choice = MainView.welcome()
-            if choices[choice] == "create_player":
+        while run_program:
+            choice = MenuController.choose_welcome_menu()
+
+            if choices[choice] == "create player":
                 player = MenuController.create_player()
                 Player.store_data_actors(player, user, actors_table)
 
-            elif choices[choice] == "create_tournament":
+            elif choices[choice] == "create tournament":
                 players = TournamentController.create_auto_players()
                 tournament = MenuController.create_tournament(players)
                 Tournament.store_data_tournament(
@@ -49,18 +49,17 @@ class MainController:
                     serialized_rounds,
                 )
                 nb_rounds = tournament.nb_rounds
-                while nb_rounds > 1:
-                    TournamentController.progress_next_rounds(
-                        tournament,
-                        players,
-                        serialized_rounds,
-                        tournament_table,
-                        user,
-                        actors_table,
-                        nb_rounds,
-                    )
+                TournamentController.progress_next_rounds(
+                    tournament,
+                    players,
+                    serialized_rounds,
+                    tournament_table,
+                    user,
+                    actors_table,
+                    nb_rounds,
+                )
 
-            elif choices[choice] == "pull_tournament":
+            elif choices[choice] == "pull tournament":
                 name = input("Name of an UNcompleted tournament ? ")
                 serialized_tournament = tournament_table.get(user["name"] == name)
                 tournament = Tournament.deserialized_tournament(serialized_tournament)
@@ -72,24 +71,23 @@ class MainController:
                 rounds_done = len(rounds)
                 total_rounds = tournament.nb_rounds
                 nb_rounds = total_rounds - rounds_done
-                while nb_rounds > 1:
-                    TournamentController.progress_next_rounds(
-                        tournament,
-                        players,
-                        serialized_rounds,
-                        tournament_table,
-                        user,
-                        actors_table,
-                        nb_rounds,
-                    )
+                TournamentController.progress_next_rounds(
+                    tournament,
+                    players,
+                    serialized_rounds,
+                    tournament_table,
+                    user,
+                    actors_table,
+                    nb_rounds,
+                )
 
-            elif choices[choice] == "update_rank":
-                Data.update_rank(actors_table, tournament_table, user)
+            elif choices[choice] == "update rank":
+                Player.update_rank(actors_table, tournament_table, user)
 
-            elif choices[choice] == "display_reports":
-                MenuController.display_reports(tournament_table, actors_table, user)
+            elif choices[choice] == "display reports":
+                MenuController.choose_reports(tournament_table, actors_table, user)
 
-            elif choices[choice] == "program_end":
+            elif choices[choice] == "program end":
                 print("Program ended ! See you soon !")
                 run_program = False
             else:

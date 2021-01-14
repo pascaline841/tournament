@@ -23,6 +23,24 @@ class Round:
             self.name, self.start, self.end, self.matchs
         )
 
+    def serialized_round(self):
+        """Serialize round's data."""
+        return {
+            "name": self.name,
+            "start": self.start,
+            "matchs": self.matchs,
+            "end": self.end,
+        }
+
+    @classmethod
+    def deserialized_round(cls, serialized_round):
+        """Pull round's informations from the database to continue a tournament."""
+        name = serialized_round["name"]
+        start = serialized_round["start"]
+        matchs = serialized_round["matchs"]
+        end = serialized_round["end"]
+        return Round(name, start, matchs, end)
+
     def get_first_opponents(players):
         """
         First Round : The players are ranked by best ranking.
@@ -125,20 +143,4 @@ class Round:
             i += 1
         return self.matchs
 
-    def serialized_round(self):
-        """Serialize round's data."""
-        return {
-            "name": self.name,
-            "start": self.start,
-            "matchs": self.matchs,
-            "end": self.end,
-        }
 
-    @classmethod
-    def deserialized_round(cls, serialized_round):
-        """Pull round's informations from the database to continue a tournament."""
-        name = serialized_round["name"]
-        start = serialized_round["start"]
-        matchs = serialized_round["matchs"]
-        end = serialized_round["end"]
-        return Round(name, start, matchs, end)

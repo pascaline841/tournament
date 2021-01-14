@@ -2,28 +2,6 @@ class NewPlayer:
     """Request player's informations."""
 
     @staticmethod
-    def player_first_name():
-        """Request player's first name."""
-        print("\n************CREATE A NEW PLAYER **************\n")
-        first_name = input("Please enter player's first name : ").capitalize()
-        print("First name entered successfully...")
-        return first_name
-
-    @staticmethod
-    def player_last_name():
-        """Request player's last name."""
-        last_name = input("Please enter player's last name : ").capitalize()
-        print("Last name entered successfully...")
-        return last_name
-
-    @staticmethod
-    def player_birth_date():
-        """Request player's birth date."""
-        birth_date = input("Please enter player's birth date (format = DD/MM/YYYY) : ")
-        print("Birth date entered successfully...")
-        return birth_date
-
-    @staticmethod
     def player_gender():
         """Request player's gender."""
         try:
@@ -62,7 +40,7 @@ class NewPlayer:
 
     @staticmethod
     def change_rank():
-        """Request to change the player's rank.  """
+        """Request to change the player's rank."""
         choice_last_name = input("Please enter player's last name : ").capitalize()
         print("Last name entered successfully...")
         return choice_last_name
