@@ -3,6 +3,7 @@ from models.players import Player
 from models.rounds import Round
 from models.tournaments import Tournament
 from controllers.menu import MenuController
+from controllers.player import PlayerController
 from view.menu import MenuView
 from view.displayround import DisplayRound
 
@@ -25,12 +26,25 @@ class TournamentController:
         return Tournament(name, location, date, mode, rounds, description, players)
 
     @classmethod
+    def choose_tournament(cls, tournaments_table, user):
+        "Choose a player from the database to play in a tournament."
+        try:
+            name = input("Name of an UNcompleted tournament ? ")
+            serialized_tournament = tournaments_table.get(user["name"] == name)
+            if serialized_tournament is None:
+                raise TypeError
+        except TypeError:
+            print("The value entered doesn't match the possible choices !\n")
+            return Tournament.choose_actors(tournaments_table, user)
+        return serialized_tournament
+
+    @classmethod
     def create_list_players(cls, actors_table, user):
         """Create a list of 8 players from the database."""
         players = []
         print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
         for i in range(1, 9):
-            serialized_player = MenuController.choose_actors(i, actors_table, user)
+            serialized_player = PlayerController.choose_actors(i, actors_table, user)
             player = Player.deserialized_player(serialized_player)
             players.append(player)
         return players
@@ -59,7 +73,7 @@ class TournamentController:
         DisplayRound.display_first_round(players)
         Round.get_first_opponents(players)
         for player in players:
-            add_point = MenuController.add_score_match(player)
+            add_point = PlayerController.add_score_match(player)
             player.add_score_game(add_point)
         Round.first_matchs(round, players)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
@@ -77,13 +91,17 @@ class TournamentController:
             matchs=[],
         )
         players = sorted(
-            sorted(players, key=lambda player: (player.score_game), reverse=True),
+            sorted(
+                players,
+                key=lambda player: (player.score_game, player.rank),
+                reverse=True,
+            ),
             key=lambda player: player.rank,
         )
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = MenuController.add_score_match(player)
+            add_point = PlayerController.add_score_match(player)
             player.add_score_game(add_point)
             if add_point == 0:
                 player.point = 1
@@ -159,7 +177,7 @@ class TournamentController:
     @classmethod
     def pull_tournament(cls, tournaments_table, serialized_rounds, actors_table, user):
         """To continue an unfinished tournament."""
-        serialized_tournament = MenuController.choose_tournament(
+        serialized_tournament = TournamentController.choose_tournament(
             tournaments_table, user
         )
         tournament = Tournament.deserialized_tournament(serialized_tournament)

@@ -1,6 +1,7 @@
 from tinydb import TinyDB, Query
 from controllers.menu import MenuController
-from controllers.progress import TournamentController
+from controllers.tournament import TournamentController
+from controllers.player import PlayerController
 from models.players import Player
 from models.tournaments import Tournament
 
@@ -28,7 +29,7 @@ class MainController:
         while run_program:
             choice = MenuController.choose_welcome_menu()
             if choices[choice] == "create player":
-                player = MenuController.create_player()
+                player = PlayerController.create_player()
                 Player.store_data_actors(player, user, actors_table)
 
             elif choices[choice] == "create tournament":
@@ -64,7 +65,7 @@ class MainController:
                 )
 
             elif choices[choice] == "update rank":
-                MenuController.update_rank(actors_table, tournaments_table, user)
+                PlayerController.update_rank(actors_table, tournaments_table, user)
 
             elif choices[choice] == "display reports":
                 MenuController.choose_reports(tournaments_table, actors_table, user)
