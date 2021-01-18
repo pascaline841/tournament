@@ -26,7 +26,8 @@ class Tournament:
 
     def __str__(self):
         return {
-            " NAME : {}\n LOCATION : {}\n MODE : {}\n DATE : {}\n ROUNDS : {}\n DESCRIPTION : {}\n PLAYERS :{}\n".format(
+            " NAME : {}\n LOCATION : {}\n MODE : {}\n DATE : {}\n ROUNDS : {}\n "
+            "DESCRIPTION : {}\n PLAYERS :{}\n".format(
                 self.name,
                 self.location,
                 self.mode,

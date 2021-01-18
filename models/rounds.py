@@ -139,6 +139,5 @@ class Round:
                 self.players_paired.append(players[i].first_name)
                 self.players_paired.append(players[j].first_name)
                 print(f"{players[i].first_name} vs {players[j].first_name}")
-
             i += 1
         return self.matchs

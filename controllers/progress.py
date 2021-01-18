@@ -25,7 +25,7 @@ class TournamentController:
         return Tournament(name, location, date, mode, rounds, description, players)
 
     @classmethod
-    def create_list_players(cls, actors_table, user):  # CHANGER FIRST NAME by doc_IDE
+    def create_list_players(cls, actors_table, user):
         """Create a list of 8 players from the database."""
         players = []
         print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
@@ -52,6 +52,7 @@ class TournamentController:
     def create_first_round(cls, tournament, rounds, players):
         """Create the first round of a tournament."""
         players = sorted(players, key=lambda player: player.rank)
+        print(players)
         round = Round(
             "Round 1", datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), matchs=[]
         )
@@ -61,9 +62,6 @@ class TournamentController:
             add_point = MenuController.add_score_match(player)
             player.add_score_game(add_point)
         Round.first_matchs(round, players)
-        players = sorted(
-            players, key=lambda player: (player.score_game, player.score), reverse=True
-        )
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
         print(f"\n{round}")
@@ -79,7 +77,8 @@ class TournamentController:
             matchs=[],
         )
         players = sorted(
-            players, key=lambda player: (player.score_game, player.score), reverse=True
+            sorted(players, key=lambda player: (player.score_game), reverse=True),
+            key=lambda player: player.rank,
         )
         print(players)
         round.get_opponents(players)
@@ -114,7 +113,13 @@ class TournamentController:
         serialized_rounds.append(serialized_round)
         Tournament.update_round(tournament, serialized_rounds, tournaments_table, user)
         Tournament.update_players(tournament, players, tournaments_table, user)
-        MenuController.choose_inter_menu(actors_table, tournaments_table, user)
+        MenuController.choose_inter_menu(
+            actors_table,
+            tournaments_table,
+            user,
+            tournament,
+            players,
+        )
 
     @classmethod
     def progress_next_rounds(
@@ -139,24 +144,24 @@ class TournamentController:
             )
             Tournament.update_players(tournament, players, tournaments_table, user)
             MenuController.choose_inter_menu(
-                actors_table,
-                tournaments_table,
-                user,
+                actors_table, tournaments_table, user, tournament, players
             )
             players = sorted(
                 players,
                 key=lambda player: (player.score_game, player.score),
                 reverse=True,
             )
-            MenuView.display_final_score(tournament, players)
-            for player in players:
-                score = player.add_final_score(player.score_game, player.score)
-                Player.update_score(player, actors_table, score, user)
+        MenuView.display_final_score(tournament, players)
+        for player in players:
+            score = player.add_final_score(player.score_game, player.score)
+            Player.update_score(player, actors_table, score, user)
 
     @classmethod
     def pull_tournament(cls, tournaments_table, serialized_rounds, actors_table, user):
         """To continue an unfinished tournament."""
-        serialized_tournament = MenuController.choose_tournamen(tournaments_table, user)
+        serialized_tournament = MenuController.choose_tournament(
+            tournaments_table, user
+        )
         tournament = Tournament.deserialized_tournament(serialized_tournament)
         rounds = tournament.rounds
         for round in rounds:

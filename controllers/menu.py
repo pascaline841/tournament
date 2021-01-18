@@ -47,20 +47,20 @@ class MenuController:
             print("The value entered doesn't match the possible choices !\n")
             return MenuController.choose_actors(i, actors_table, user)
         return serialized_player
-         
+
     @classmethod
     def choose_tournament(cls, tournaments_table, user):
         "Choose a player from the database to play in a tournament."
         try:
-        name = input("Name of an UNcompleted tournament ? ")
-        serialized_tournament = tournaments_table.get(user["name"] == name)
+            name = input("Name of an UNcompleted tournament ? ")
+            serialized_tournament = tournaments_table.get(user["name"] == name)
             if serialized_tournament is None:
                 raise TypeError
         except TypeError:
             print("The value entered doesn't match the possible choices !\n")
             return MenuController.choose_actors(tournaments_table, user)
         return serialized_tournament
-    
+
     @classmethod
     def choose_player_rank(cls):
         """Choose the player's rank."""
@@ -125,7 +125,9 @@ class MenuController:
             MenuView.welcome()
 
     @classmethod
-    def choose_inter_menu(cls, actors_table, tournaments_table, user):
+    def choose_inter_menu(
+        cls, actors_table, tournaments_table, user, tournament, players
+    ):
         """Display menu between rounds."""
         MenuView.interround_menu()
         choices = {
@@ -141,13 +143,25 @@ class MenuController:
             print("Your choice ({}) has been successfully entered...".format(choice))
         except ValueError:
             print("The value entered doesn't match the possible choices !\n")
-            return MenuController.choose_inter_menu()
+            return MenuController.choose_inter_menu(
+                actors_table,
+                tournaments_table,
+                user,
+                tournament,
+                players,
+            )
         if choices[choice] == "continue tournament":
             pass
         elif choices[choice] == "update rank":
-            MenuController.update_rank(actors_table, tournaments_table, user)
+            MenuController.update_rank_tournament(
+                actors_table, tournaments_table, user, players, tournament
+            )
             return MenuController.choose_inter_menu(
-                actors_table, tournaments_table, user
+                actors_table,
+                tournaments_table,
+                user,
+                tournament,
+                players,
             )
         elif choices[choice] == "welcome menu":
             return MenuView.welcome()
@@ -157,7 +171,7 @@ class MenuController:
         else:
             print("An error occurred.")
             return MenuController.choose_inter_menu(
-                actors_table, tournaments_table, user
+                actors_table, tournaments_table, user, tournament, players
             )
 
     @classmethod
@@ -206,6 +220,19 @@ class MenuController:
 
     @classmethod
     def update_rank(cls, actors_table, tournaments_table, user):
+        """Update actor's rank in the database."""
+        first_name = input("First name ? ").capitalize()
+        last_name = input("Last name ? ").capitalize()
+        new_rank = int(input("New rank ? "))
+        actors_table.update(
+            {"rank": new_rank},
+            user["first name"] == first_name and user["last name"] == last_name,
+        )
+
+    @classmethod
+    def update_rank_tournament(
+        cls, actors_table, tournaments_table, user, players, tournament
+    ):
         """Update actor's rank in the database and in the current tournament."""
         first_name = input("First name ? ").capitalize()
         last_name = input("Last name ? ").capitalize()
@@ -214,11 +241,10 @@ class MenuController:
             {"rank": new_rank},
             user["first name"] == first_name and user["last name"] == last_name,
         )
-        # NE FONCTIONNE PAS SUR LE TOURNOIS . A CORRIGER
-        tournaments_table.update(
-            {"rank": new_rank},
-            user["first name"] == first_name and user["last name"] == last_name,
-        )
+        for player in players:
+            if first_name == player.first_name and last_name == player.last_name:
+                player.rank = new_rank
+                Tournament.update_players(tournament, players, tournaments_table, user)
 
     @classmethod
     def sorted_actors(cls, actors_table):
