@@ -18,10 +18,11 @@ class Round:
         self.end = end
 
     def __repr__(self):
-        """Display : ROUND[], START : [date/time] END :[date/time]."""
-        return " {} START : {} END : {} \n MATCHS : {} ".format(
-            self.name, self.start, self.end, self.matchs
-        )
+        """Display : ROUND[], START : [date/time] END : [date/time]."""
+        return {
+            f"{self.name} START : {self.start} END : {self.end} \n "
+            f"MATCHS : {self.matchs} "
+        }
 
     def serialized_round(self):
         """Serialize round's data."""
@@ -69,41 +70,41 @@ class Round:
         match1 = (
             (
                 players[0].first_name,
-                players[0].score_game,
+                players[0].points,
             ),
             (
                 players[4].first_name,
-                players[4].score_game,
+                players[4].points,
             ),
         )
         match2 = (
             (
                 players[1].first_name,
-                players[1].score_game,
+                players[1].points,
             ),
             (
                 players[5].first_name,
-                players[5].score_game,
+                players[5].points,
             ),
         )
         match3 = (
             (
                 players[2].first_name,
-                players[2].score_game,
+                players[2].points,
             ),
             (
                 players[6].first_name,
-                players[6].score_game,
+                players[6].points,
             ),
         )
         match4 = (
             (
                 players[3].first_name,
-                players[3].score_game,
+                players[3].points,
             ),
             (
                 players[7].first_name,
-                players[7].score_game,
+                players[7].points,
             ),
         )
         self.matchs.extend([match1, match2, match3, match4])
@@ -132,8 +133,8 @@ class Round:
                 players[i].opponents.append(players[j].first_name)
                 players[j].opponents.append(players[i].first_name)
                 match = (
-                    (players[i].first_name, players[i].score_game),
-                    (players[j].first_name, players[j].score_game),
+                    (players[i].first_name, players[i].points),
+                    (players[j].first_name, players[j].points),
                 )
                 self.matchs.append(match)
                 self.players_paired.append(players[i].first_name)

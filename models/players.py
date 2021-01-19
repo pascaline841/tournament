@@ -9,8 +9,7 @@ class Player:
         gender,
         rank,
         score,
-        score_game=0,
-        point=0,
+        points=0,
     ):
         """
         First name :
@@ -19,7 +18,7 @@ class Player:
         Gender :
         Ranking :
         Score :
-        Tournament Score : 0
+        Points : 0
         Opponents : list of opponentss already met during a tournament.
         """
         self.first_name = first_name
@@ -28,18 +27,15 @@ class Player:
         self.gender = gender
         self.rank = rank
         self.score = score
-        self.score_game = score_game
+        self.points = points
         self.opponents = []
 
     def __repr__(self):
-        """Display Rank:[] [First Name], [Last Name], Score Game: [], Opponnents :[]."""
-        return "Rank : {} {} {}, Score : {}, Opponnents :{}\n".format(
-            self.rank,
-            self.first_name,
-            self.last_name,
-            self.score_game,
-            self.opponents,
-        )
+        """Display Rank:[] [First Name], [Last Name], Points: [], Opponnents :[]."""
+        return {
+            f"Rank : {self.rank} {self.first_name} {self.last_name}, "
+            f"Points : {self.points}, Opponents :{self.opponents}\n"
+        }
 
     def serialized_player(self):
         """Serialize player's data."""
@@ -50,7 +46,7 @@ class Player:
             "gender": self.gender,
             "rank": self.rank,
             "score": self.score,
-            "score game": self.score_game,
+            "score game": self.points,
             "opponents": self.opponents,
         }
 
@@ -63,7 +59,7 @@ class Player:
         gender = serialized_player["gender"]
         rank = serialized_player["rank"]
         score = serialized_player["score"]
-        score_game = serialized_player["score game"]
+        points = serialized_player["score game"]
         opponents = serialized_player["opponents"]
         return Player(
             first_name,
@@ -72,7 +68,7 @@ class Player:
             gender,
             rank,
             score,
-            score_game,
+            points,
             opponents,
         )
 
@@ -96,14 +92,14 @@ class Player:
             and user["last name"] == self.last_name,
         )
 
-    def add_score_game(self, add_point):
+    def add_points(self, add_point):
         """At the end of all the rounds.
-        Add match score to player's score_game."""
-        self.score_game += add_point
-        return self.score_game
+        Add match score to player's points."""
+        self.points += add_point
+        return self.points
 
-    def add_final_score(self, score_game, score):
+    def add_final_score(self, points, score):
         """Last round only.
         Add tournament score to player's total score."""
-        self.score = score_game + score
+        self.score = points + score
         return self.score

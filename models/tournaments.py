@@ -26,16 +26,9 @@ class Tournament:
 
     def __str__(self):
         return {
-            " NAME : {}\n LOCATION : {}\n MODE : {}\n DATE : {}\n ROUNDS : {}\n "
-            "DESCRIPTION : {}\n PLAYERS :{}\n".format(
-                self.name,
-                self.location,
-                self.mode,
-                self.date,
-                self.rounds,
-                self.description,
-                self.players,
-            )
+            f"NAME : {self.name}\n LOCATION : {self.location}\n MODE : {self.mode}\n"
+            f"DATE : {self.date}\n ROUNDS : {self.rounds}\n "
+            f"DESCRIPTION : {self.description}\n PLAYERS :{self.players}\n"
         }
 
     def serialized_tournament(self):
