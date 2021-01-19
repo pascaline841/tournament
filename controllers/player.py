@@ -80,12 +80,14 @@ class PlayerController:
             return add_point
         except ValueError:
             print(
-                "Incorrect score, it has to be 1 point for the winner, 0.5 point if draw, 0 point for the loser!"
+                "Incorrect score, it has to be 1 point for the winner, "
+                "0.5 point if draw, 0 point for the loser!"
             )
             return PlayerController.add_score_match(player)
         except TypeError:
             print(
-                "Incorrect score, it has to be 1 point for the winner, 0.5 point if draw, 0 point for the loser!"
+                "Incorrect score, it has to be 1 point for the winner, "
+                "0.5 point if draw, 0 point for the loser!"
             )
             return PlayerController.add_score_match(player)
 

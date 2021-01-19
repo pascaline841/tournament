@@ -11,6 +11,6 @@ class DisplayRound:
             i += 1
 
     @classmethod
-    def display_next_round(cls, players):
+    def display_next_round(cls, players, i, j):
         """Display a match of a round different to the 1st round."""
         print(f"{players[i].first_name} vs {players[j].first_name}")
