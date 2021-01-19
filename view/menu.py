@@ -28,6 +28,4 @@ class MenuView:
         print("\n==================================================")
         print(f"FINAL RESULTS OF {self.name} :\n")
         for player in players:
-            print(
-                f"SCORE : {player.score_game}, {player.first_name} {player.last_name}"
-            )
+            print(f"SCORE : {player.points}, {player.first_name} {player.last_name}")
