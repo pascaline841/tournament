@@ -74,7 +74,7 @@ class TournamentController:
         Round.get_first_opponents(players)
         for player in players:
             add_point = PlayerController.add_score_match(player)
-            player.add_score_game(add_point)
+            player.add_points(add_point)
         Round.first_matchs(round, players)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
@@ -95,14 +95,14 @@ class TournamentController:
                 players,
                 key=lambda player: player.rank,
             ),
-            key=lambda player: player.score_game,
+            key=lambda player: player.points,
             reverse=True,
         )
         print(players)
         round.get_opponents(players)
         for player in players:
             add_point = PlayerController.add_score_match(player)
-            player.add_score_game(add_point)
+            player.add_points(add_point)
             if add_point == 0:
                 player.point = 1
             elif add_point == 1:
@@ -169,12 +169,12 @@ class TournamentController:
                     players,
                     key=lambda player: player.rank,
                 ),
-                key=lambda player: player.score_game,
+                key=lambda player: player.points,
                 reverse=True,
             )
         MenuView.display_final_score(tournament, players)
         for player in players:
-            score = player.add_final_score(player.score_game, player.score)
+            score = player.add_final_score(player.points, player.score)
             Player.update_score(player, actors_table, score, user)
 
     @classmethod

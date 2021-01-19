@@ -12,11 +12,26 @@ class PlayerController:
         first_name = input("Please enter player's first name: ").capitalize()
         last_name = input("Please enter player's last name: ").capitalize()
         birth_date = input("Please enter player's birth date (format = DD/MM/YYYY): ")
-        gender = input("Please enter player's gender (format = 'm' / 'f'): ")
+        gender = PlayerController.choose_player_gender()
         rank = PlayerController.choose_player_rank()
         score = PlayerController.choose_player_score()
         print("\n A player has been created. \n")
         return Player(first_name, last_name, birth_date, gender, rank, score)
+
+    @classmethod
+    def choose_player_gender(cls):
+        """Request player's gender."""
+        try:
+            gender = input(
+                "Please enter player's gender (format = 'm' / 'f') : "
+            ).lower()
+            if gender not in ["m", "f"]:
+                raise ValueError
+            print("Gender entered successfully...")
+            return gender
+        except ValueError:
+            print("Incorrect gender, it has to be 'm' / 'f' !")
+            return PlayerController.chosse_player_gender()
 
     @classmethod
     def choose_player_rank(cls):
@@ -110,4 +125,6 @@ class PlayerController:
                     )
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
-            return PlayerController.update_rank_tournament()
+            return PlayerController.update_rank_tournament(
+                actors_table, tournaments_table, user, players, tournament
+            )
