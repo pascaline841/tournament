@@ -93,10 +93,10 @@ class TournamentController:
         players = sorted(
             sorted(
                 players,
-                key=lambda player: (player.score_game, player.rank),
-                reverse=True,
+                key=lambda player: player.rank,
             ),
-            key=lambda player: player.rank,
+            key=lambda player: player.score_game,
+            reverse=True,
         )
         print(players)
         round.get_opponents(players)
@@ -165,8 +165,11 @@ class TournamentController:
                 actors_table, tournaments_table, user, tournament, players
             )
             players = sorted(
-                players,
-                key=lambda player: (player.score_game, player.score),
+                sorted(
+                    players,
+                    key=lambda player: player.rank,
+                ),
+                key=lambda player: player.score_game,
                 reverse=True,
             )
         MenuView.display_final_score(tournament, players)
