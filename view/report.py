@@ -15,14 +15,18 @@ class DisplayReport:
     def report_actors(cls, display_report):
         """Display a list of all the actors."""
         for actor in display_report:
-            print(f"{actor['last name']} {actor['first name']} RANK : {actor['rank']}")
+            print(
+                f"{actor['last name']} {actor['first name']} RANK: {actor['rank']}"
+                f"SCORE: {actor['score']}"
+            )
 
     @classmethod
     def report_tournaments(cls, display_report):
         """Display a list of all the tournaments."""
         for tournament in display_report:
             print(
-                f"{tournament['name']} DATE : {tournament['date']} LOCATION : {tournament['location']} MODE : {tournament['mode']}"
+                f"{tournament['name']} DATE : {tournament['date']} LOCATION : "
+                f"{tournament['location']} MODE : {tournament['mode']}"
             )
 
     @classmethod
@@ -37,4 +41,5 @@ class DisplayReport:
         for player in display_report:
             print(
                 f"{player['first name']} {player['last name']} RANK : {player['rank']}"
+                f" POINT: {player['score game']}"
             )
