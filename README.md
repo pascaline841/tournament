@@ -7,10 +7,6 @@ Beta version of a chess tournament manager (Swiss system).
 ## REQUISITORIES <br>
 <br>
 Python3<br>
-flake8 <br>
-flake8-html <br>
-DateTime<br>
-
 <br>
 
 ## INSTALLATION 
@@ -32,8 +28,10 @@ flake8 --format=html --htmldir=flake-report --exclude=env
 Open the html file into the flake-report repertory to show the report.
 
 ## LAUNCH 
-
-Run main.py to start<br>
+Run 
+```
+python main.py
+```
 1. Add 8 players. <br>
 2. Create a new tournament. <br>
 3. The computer generates pairs of players for the first round. <br>
