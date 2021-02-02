@@ -1,6 +1,7 @@
 from controllers.player import PlayerController
 from view.menu import MenuView
 from view.report import DisplayReport
+import sys
 
 
 class MenuController:
@@ -22,19 +23,23 @@ class MenuController:
 
     @classmethod
     def choose_inter_menu(
-        cls, actors_table, tournaments_table, user, tournament, players
+        cls,
+        actors_table,
+        tournaments_table,
+        user,
+        tournament,
+        players,
     ):
         """Display menu between rounds."""
         MenuView.interround_menu()
         choices = {
             1: "continue tournament",
             2: "update rank",
-            3: "welcome menu",
-            4: "end program",
+            3: "end program",
         }
         try:
-            choice = int(input("Enter your choice (1, 2, 3, 4): \n"))
-            if choice > 5:
+            choice = int(input("Enter your choice (1, 2, 3): \n"))
+            if choice > 4:
                 raise ValueError
             print("Your choice ({}) has been successfully entered...".format(choice))
         except ValueError:
@@ -59,15 +64,17 @@ class MenuController:
                 tournament,
                 players,
             )
-        elif choices[choice] == "welcome menu":
-            return MenuView.welcome()
         elif choices[choice] == "end program":
+            sys.exit()
             return print("Program ended ! See you soon!")
-            # A CORRIGER POUR SORTIR DU PROGRAMME
         else:
             print("An error occurred.")
             return MenuController.choose_inter_menu(
-                actors_table, tournaments_table, user, tournament, players
+                actors_table,
+                tournaments_table,
+                user,
+                tournament,
+                players,
             )
 
     @classmethod
