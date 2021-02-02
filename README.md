@@ -22,7 +22,14 @@ git clone https://github.com/pascaline841/tournament
 - Create a virtual environment
 - Install the python dependencies on the virtual environment
 
+pip install -r requirements
 
+## Use FLAKE8
+In order to generate a flake8 report, run the following command :
+
+flake8 --format=html --htmldir=flake-report --exclude=env
+
+Open the html file into the flake-report repertory to show the report.
 ## LAUNCH 
 
 Run main.py to start<br>
