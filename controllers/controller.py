@@ -40,6 +40,7 @@ class MainController:
                 Tournament.store_data_tournament(
                     tournament, players, user, actors_table, tournaments_table
                 )
+                print(tournament)
                 TournamentController.progress_first_round(
                     tournament,
                     players,
