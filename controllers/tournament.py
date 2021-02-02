@@ -44,8 +44,8 @@ class TournamentController:
         players = []
         print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
         for i in range(1, 9):
-            serialized_player = PlayerController.choose_actors(i, actors_table, user)
-            player = Player.deserialized_player(serialized_player)
+            ser_player = PlayerController.choose_actors(i, actors_table, user)
+            player = Player.deserialized_player(ser_player)
             players.append(player)
         return players
 
@@ -63,13 +63,13 @@ class TournamentController:
         return players
 
     @classmethod
-    def create_first_round(cls, tournament, rounds, players):
+    def get_first_round(cls, tournament, rounds, players):
         """Create the first round of a tournament."""
         players = sorted(players, key=lambda player: player.rank)
-        print(players)
         round = Round(
             "Round 1", datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), matchs=[]
         )
+
         DisplayRound.display_first_round(players)
         Round.get_first_opponents(players)
         for player in players:
@@ -82,7 +82,7 @@ class TournamentController:
         return round
 
     @classmethod
-    def create_next_round(cls, tournament, rounds, players):
+    def get_next_round(cls, tournament, rounds, players):
         """Create Round 2, 3 , 4."""
         print(f"\n*******************ROUND {len(rounds)+1}******************\n")
         round = Round(
@@ -103,12 +103,6 @@ class TournamentController:
         for player in players:
             add_point = PlayerController.add_score_match(player)
             player.add_points(add_point)
-            if add_point == 0:
-                player.point = 1
-            elif add_point == 1:
-                player.point = 0
-            else:
-                player.point = 0.5
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
         print(f"\n{round}")
@@ -126,7 +120,7 @@ class TournamentController:
     ):
         """Run the first round."""
         rounds = tournament.rounds
-        round = TournamentController.create_first_round(tournament, rounds, players)
+        round = TournamentController.get_first_round(tournament, rounds, players)
         serialized_round = Round.serialized_round(round)
         serialized_rounds.append(serialized_round)
         Tournament.update_round(tournament, serialized_rounds, tournaments_table, user)
@@ -151,10 +145,11 @@ class TournamentController:
         nb_rounds,
     ):
         """Run the following rounds."""
+
         while nb_rounds > 1:
             nb_rounds -= 1
             rounds = tournament.rounds
-            round = TournamentController.create_next_round(tournament, rounds, players)
+            round = TournamentController.get_next_round(tournament, rounds, players)
             serialized_round = Round.serialized_round(round)
             serialized_rounds.append(serialized_round)
             Tournament.update_round(
@@ -162,7 +157,11 @@ class TournamentController:
             )
             Tournament.update_players(tournament, players, tournaments_table, user)
             MenuController.choose_inter_menu(
-                actors_table, tournaments_table, user, tournament, players
+                actors_table,
+                tournaments_table,
+                user,
+                tournament,
+                players,
             )
             players = sorted(
                 sorted(
