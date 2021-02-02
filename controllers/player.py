@@ -104,7 +104,7 @@ class PlayerController:
             )
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
-            return PlayerController.update_rank()
+            return PlayerController.update_rank(actors_table, tournaments_table, user)
 
     @classmethod
     def update_rank_tournament(
