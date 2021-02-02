@@ -25,11 +25,11 @@ class Tournament:
         self.players = players
 
     def __str__(self):
-        return {
+        return (
             f"NAME : {self.name}\n LOCATION : {self.location}\n MODE : {self.mode}\n"
             f"DATE : {self.date}\n ROUNDS : {self.rounds}\n "
             f"DESCRIPTION : {self.description}\n PLAYERS :{self.players}\n"
-        }
+        )
 
     def serialized_tournament(self):
         """Serialize tournament's data."""

@@ -10,6 +10,7 @@ class Player:
         rank,
         score,
         points=0,
+        opponents=[],
     ):
         """
         First name :
@@ -32,10 +33,10 @@ class Player:
 
     def __repr__(self):
         """Display Rank:[] [First Name], [Last Name], Points: [], Opponnents :[]."""
-        return {
+        return (
             f"Rank : {self.rank} {self.first_name} {self.last_name}, "
             f"Points : {self.points}, Opponents :{self.opponents}\n"
-        }
+        )
 
     def serialized_player(self):
         """Serialize player's data."""
@@ -46,21 +47,21 @@ class Player:
             "gender": self.gender,
             "rank": self.rank,
             "score": self.score,
-            "score game": self.points,
+            "points": self.points,
             "opponents": self.opponents,
         }
 
     @classmethod
-    def deserialized_player(cls, serialized_player):
+    def deserialized_player(cls, ser_player):
         """Pull player's informations from the database to continue a tournament."""
-        first_name = serialized_player["first name"]
-        last_name = serialized_player["last name"]
-        birth_date = serialized_player["birth date"]
-        gender = serialized_player["gender"]
-        rank = serialized_player["rank"]
-        score = serialized_player["score"]
-        points = serialized_player["score game"]
-        opponents = serialized_player["opponents"]
+        first_name = ser_player["first name"]
+        last_name = ser_player["last name"]
+        birth_date = ser_player["birth date"]
+        gender = ser_player["gender"]
+        rank = ser_player["rank"]
+        score = ser_player["score"]
+        points = ser_player["points"]
+        opponents = ser_player["opponents"]
         return Player(
             first_name,
             last_name,

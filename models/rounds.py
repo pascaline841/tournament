@@ -20,10 +20,10 @@ class Round:
 
     def __repr__(self):
         """Display : ROUND[], START : [date/time] END : [date/time]."""
-        return {
+        return (
             f"{self.name} START : {self.start} END : {self.end} \n "
             f"MATCHS : {self.matchs} "
-        }
+        )
 
     def serialized_round(self):
         """Serialize round's data."""

@@ -16,7 +16,7 @@ class DisplayReport:
         """Display a list of all the actors."""
         for actor in display_report:
             print(
-                f"{actor['last name']} {actor['first name']} RANK: {actor['rank']}"
+                f"{actor['last name']} {actor['first name']} RANK: {actor['rank']} "
                 f"SCORE: {actor['score']}"
             )
 
