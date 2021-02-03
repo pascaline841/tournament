@@ -35,7 +35,7 @@ class TournamentController:
                 raise TypeError
         except TypeError:
             print("The value entered doesn't match the possible choices !\n")
-            return Tournament.choose_actors(tournaments_table, user)
+            return TournamentController.choose_tournament(tournaments_table, user)
         return serialized_tournament
 
     @classmethod
@@ -146,8 +146,8 @@ class TournamentController:
     ):
         """Run the following rounds."""
 
-        while nb_rounds > 1:
-            nb_rounds -= 1
+        while nb_rounds > 0:
+
             rounds = tournament.rounds
             round = TournamentController.get_next_round(tournament, rounds, players)
             serialized_round = Round.serialized_round(round)
@@ -171,6 +171,7 @@ class TournamentController:
                 key=lambda player: player.points,
                 reverse=True,
             )
+            nb_rounds -= 1
         MenuView.display_final_score(tournament, players)
         for player in players:
             score = player.add_final_score(player.points, player.score)

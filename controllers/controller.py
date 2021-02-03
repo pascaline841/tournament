@@ -62,7 +62,10 @@ class MainController:
 
             elif choices[choice] == "pull tournament":
                 TournamentController.pull_tournament(
-                    tournaments_table, serialized_rounds, actors_table, user
+                    tournaments_table,
+                    serialized_rounds,
+                    actors_table,
+                    user,
                 )
 
             elif choices[choice] == "update rank":
