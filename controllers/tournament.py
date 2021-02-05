@@ -10,8 +10,7 @@ from view.menu import MenuView
 class TournamentController:
     """Class controls the tournament progress."""
 
-    @classmethod
-    def create_tournament(cls, players):
+    def create_tournament(players):
         """Create a new tournament."""
         print("\n==================================================")
         print("************CREATE A NEW TOURNAMENT**************\n")
@@ -26,8 +25,7 @@ class TournamentController:
         players = players
         return Tournament(name, location, date, mode, rounds, description, players)
 
-    @classmethod
-    def choose_tournament(cls, tournaments_table, user):
+    def choose_tournament(tournaments_table, user):
         "Choose a player from the database to play in a tournament."
         try:
             name = MenuView.check_str("Name of an UNcompleted tournament ? ")
@@ -39,8 +37,7 @@ class TournamentController:
             return TournamentController.choose_tournament(tournaments_table, user)
         return serialized_tournament
 
-    @classmethod
-    def create_list_players(cls, actors_table, user):
+    def create_list_players(actors_table, user):
         """Create a list of 8 players from the database."""
         players = []
         print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
@@ -63,8 +60,7 @@ class TournamentController:
         players.append(Player("Julie", "Stefen", "f", "14/05/1993", 8, 986))
         return players
 
-    @classmethod
-    def get_first_round(cls, tournament, rounds, players):
+    def get_first_round(tournament, rounds, players):
         """Create the first round of a tournament."""
         players = sorted(players, key=lambda player: player.rank)
         round = Round(
@@ -84,8 +80,7 @@ class TournamentController:
         print(f"\n{round}")
         return round
 
-    @classmethod
-    def get_next_round(cls, tournament, rounds, players):
+    def get_next_round(tournament, rounds, players):
         """Create Round 2, 3 , 4."""
         print(f"\n*******************ROUND {len(rounds)+1}******************\n")
         round = Round(
@@ -113,9 +108,7 @@ class TournamentController:
         print(f"\n{round}")
         return round
 
-    @classmethod
     def progress_first_round(
-        cls,
         tournament,
         players,
         tournaments_table,
@@ -138,9 +131,7 @@ class TournamentController:
             players,
         )
 
-    @classmethod
     def progress_next_rounds(
-        cls,
         tournament,
         players,
         serialized_rounds,
@@ -182,8 +173,7 @@ class TournamentController:
             Player.update_score(player, actors_table, score, user)
         MenuView.display_final_score(tournament, players)
 
-    @classmethod
-    def pull_tournament(cls, tournaments_table, serialized_rounds, actors_table, user):
+    def pull_tournament(tournaments_table, serialized_rounds, actors_table, user):
         """To continue an unfinished tournament."""
         serialized_tournament = TournamentController.choose_tournament(
             tournaments_table, user

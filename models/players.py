@@ -52,8 +52,7 @@ class Player:
             "opponents": self.opponents,
         }
 
-    @classmethod
-    def deserialized_player(cls, ser_player):
+    def deserialized_player(ser_player):
         """Pull player's informations from the database to continue a tournament."""
         first_name = ser_player["first name"]
         last_name = ser_player["last name"]

@@ -15,9 +15,8 @@ class MenuController:
             "Enter your choice (1, 2, 3, 4, 5) :  \n"
         )
 
-    @classmethod
+    
     def choose_inter_menu(
-        cls,
         actors_table,
         tournaments_table,
         user,
@@ -62,8 +61,8 @@ class MenuController:
                 players,
             )
 
-    @classmethod
-    def choose_reports(cls, tournaments_table, actors_table, user):
+    
+    def choose_reports(tournaments_table, actors_table, user):
         """Display the reports' menu."""
         reports = {
             1: "sorted_actors report",
@@ -91,8 +90,8 @@ class MenuController:
         elif reports[choice] == "general menu":
             MenuView.welcome()
 
-    @classmethod
-    def request_players(cls, tournaments_table, user):
+    
+    def request_players(tournaments_table, user):
         """Request for a tournament to display its players by alpha order or rank."""
         name = input("What is it name ? ")
         choice = tournaments_table.search(user["name"] == name)
@@ -103,15 +102,15 @@ class MenuController:
         else:
             return sorted(players, key=lambda players: players["rank"])
 
-    @classmethod
-    def request_rounds(cls, tournaments_table, user):
+    
+    def request_rounds(tournaments_table, user):
         """Request for a tournament to display its rounds or matchs."""
         name = input("What is it name ? ")
         choice = tournaments_table.search(user["name"] == name)
         return choice[0].get("rounds")
 
-    @classmethod
-    def sorted_actors(cls, actors_table):
+    
+    def sorted_actors(actors_table):
         """Sort all actors by alphabetic order or by rank."""
         actors = actors_table.all()
         sorted_choice = int(input("Sorted by Last Name (1) or by Rank (2) ? "))

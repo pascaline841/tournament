@@ -6,8 +6,8 @@ from view.menu import MenuView
 class PlayerController:
     """Class controls all the different menus about the player in the program."""
 
-    @classmethod
-    def create_player(cls):
+    @staticmethod
+    def create_player():
         """Create a new player."""
         print("\n************CREATE A NEW PLAYER **************\n")
         first_name = MenuView.check_str(
@@ -21,8 +21,7 @@ class PlayerController:
         print("\n A player has been created. \n")
         return Player(first_name, last_name, birth_date, gender, rank, score)
 
-    @classmethod
-    def choose_actors(cls, i, actors_table, user):
+    def choose_actors(i, actors_table, user):
         "Choose a player from the database to play in a tournament."
         try:
             choice = input(f"PLAYER {i}: What is the FIRST NAME ? ").capitalize()
@@ -34,8 +33,7 @@ class PlayerController:
             return PlayerController.choose_actors(i, actors_table, user)
         return serialized_player
 
-    @classmethod
-    def update_rank(cls, actors_table, tournaments_table, user):
+    def update_rank(actors_table, tournaments_table, user):
         """Update actor's rank in the database."""
         first_name = MenuView.check_str("First name ? ").capitalize()
         last_name = MenuView.check_str("Last name ? ").capitalize()
@@ -45,9 +43,8 @@ class PlayerController:
             user["first name"] == first_name and user["last name"] == last_name,
         )
 
-    @classmethod
     def update_rank_tournament(
-        cls, actors_table, tournaments_table, user, players, tournament
+        actors_table, tournaments_table, user, players, tournament
     ):
         """Update actor's rank in the database and in the current tournament."""
         first_name = MenuView.check_str("First name ? ").capitalize()

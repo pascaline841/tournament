@@ -43,8 +43,7 @@ class Tournament:
             "players": self.players,
         }
 
-    @classmethod
-    def deserialized_tournament(cls, serialized_tournament):
+    def deserialized_tournament(serialized_tournament):
         """Pull tournament's informations from the database to continue it."""
         name = serialized_tournament["name"]
         location = serialized_tournament["location"]

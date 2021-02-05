@@ -9,7 +9,6 @@ from models.tournaments import Tournament
 class MainController:
     """Main class to control the program."""
 
-    @classmethod
     def start_program():
         """Run the program."""
         tournaments_table = TinyDB("TOURNAMENTS.json")

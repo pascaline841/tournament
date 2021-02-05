@@ -34,8 +34,7 @@ class Round:
             "end": self.end,
         }
 
-    @classmethod
-    def deserialized_round(cls, serialized_round):
+    def deserialized_round(serialized_round):
         """Pull round's informations from the database to continue a tournament."""
         name = serialized_round["name"]
         start = serialized_round["start"]
@@ -43,8 +42,7 @@ class Round:
         end = serialized_round["end"]
         return Round(name, start, matchs, end)
 
-    @classmethod
-    def get_first_opponents(cls, players):
+    def get_first_opponents(players):
         """
         First Round : The players are ranked by best ranking.
         Add oppponent's name to the player's opponents list.
