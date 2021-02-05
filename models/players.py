@@ -22,7 +22,7 @@ class Player:
         Points : 0
         Opponents : list of opponents already met during a tournament.
         """
-        
+
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
@@ -33,10 +33,10 @@ class Player:
         self.opponents = []
 
     def __repr__(self):
-        """Display Rank:[] [First Name], [Last Name], Points: [], Opponnents :[]."""
+        """Display Rank:[] [First Name], [Last Name], Points: []."""
         return (
             f"Rank : {self.rank} {self.first_name} {self.last_name}, "
-            f"Points : {self.points}, Opponents : {self.opponents}\n"
+            f"Points : {self.points}\n"
         )
 
     def serialized_player(self):
@@ -97,7 +97,7 @@ class Player:
     def add_points(self, add_point):
         """At the end of all the rounds.
         Add match score to player's points."""
-        
+
         self.points += add_point
         return self.points
 

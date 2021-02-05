@@ -1,5 +1,5 @@
 import datetime
-from view.displayround import DisplayRound
+from view.menu import MenuView
 
 
 class Round:
@@ -141,6 +141,6 @@ class Round:
                 self.matchs.append(match)
                 self.players_paired.append(players[i].first_name)
                 self.players_paired.append(players[j].first_name)
-                DisplayRound.display_next_round(players, i, j)
+                MenuView.display_next_round(players, i, j)
             i += 1
         return self.matchs

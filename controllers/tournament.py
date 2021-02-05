@@ -5,7 +5,6 @@ from models.tournaments import Tournament
 from controllers.menu import MenuController
 from controllers.player import PlayerController
 from view.menu import MenuView
-from view.displayround import DisplayRound
 
 
 class TournamentController:
@@ -16,10 +15,12 @@ class TournamentController:
         """Create a new tournament."""
         print("\n==================================================")
         print("************CREATE A NEW TOURNAMENT**************\n")
-        name = input("Please enter tournament's name : ")
-        location = input("Please enter tournament's location : ")
+        name = MenuView.check_str("Please enter tournament's name : ")
+        location = MenuView.check_str("Please enter tournament's location : ")
         date = datetime.date.today().strftime("%d/%m/%Y")
-        mode = input("How would you like to play ? bullet / blitz / fast : ")
+        mode = MenuView.check_str(
+            "How would you like to play ? bullet / blitz / fast : "
+        )
         rounds = []
         description = input("Please enter tournament's description : ")
         players = players
@@ -29,7 +30,7 @@ class TournamentController:
     def choose_tournament(cls, tournaments_table, user):
         "Choose a player from the database to play in a tournament."
         try:
-            name = input("Name of an UNcompleted tournament ? ")
+            name = MenuView.check_str("Name of an UNcompleted tournament ? ")
             serialized_tournament = tournaments_table.get(user["name"] == name)
             if serialized_tournament is None:
                 raise TypeError
@@ -49,8 +50,8 @@ class TournamentController:
             players.append(player)
         return players
 
-    @classmethod
-    def create_auto_players(cls):
+    @staticmethod
+    def create_auto_players():
         """Create 8 players for a demo."""
         players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
         players.append(Player("William", "Smith", "m", "03/11/1980", 2, 998))
@@ -69,11 +70,13 @@ class TournamentController:
         round = Round(
             "Round 1", datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), matchs=[]
         )
-
-        DisplayRound.display_first_round(players)
+        for i in range(4):
+            print(f"{players[i].first_name} vs {players[i+4].first_name}")
         Round.get_first_opponents(players)
         for player in players:
-            add_point = PlayerController.add_score_match(player)
+            add_point = MenuView.check_score(
+                f"Please enter {player.first_name}'s score : "
+            )
             player.add_points(add_point)
         Round.first_matchs(round, players)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
@@ -101,7 +104,9 @@ class TournamentController:
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = PlayerController.add_score_match(player)
+            add_point = MenuView.check_score(
+                f"Please enter {player.first_name}'s score : "
+            )
             player.add_points(add_point)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
@@ -146,8 +151,8 @@ class TournamentController:
     ):
         """Run the following rounds."""
 
-        while nb_rounds > 0:
-
+        while nb_rounds > 1:
+            nb_rounds -= 1
             rounds = tournament.rounds
             round = TournamentController.get_next_round(tournament, rounds, players)
             serialized_round = Round.serialized_round(round)
@@ -171,11 +176,11 @@ class TournamentController:
                 key=lambda player: player.points,
                 reverse=True,
             )
-            nb_rounds -= 1
-        MenuView.display_final_score(tournament, players)
+
         for player in players:
             score = player.add_final_score(player.points, player.score)
             Player.update_score(player, actors_table, score, user)
+        MenuView.display_final_score(tournament, players)
 
     @classmethod
     def pull_tournament(cls, tournaments_table, serialized_rounds, actors_table, user):
