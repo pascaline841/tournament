@@ -49,16 +49,15 @@ class Tournament:
         location = serialized_tournament["location"]
         date = serialized_tournament["date"]
         mode = serialized_tournament["mode"]
-        players = [
-            Player.deserialized_player(ser_player)
-            for ser_player in serialized_tournament["players"]
-        ]
         rounds = [
             Round.deserialized_round(serialized_round)
             for serialized_round in serialized_tournament["rounds"]
         ]
         description = serialized_tournament["description"]
-
+        players = [
+            Player.deserialized_player(ser_player)
+            for ser_player in serialized_tournament["players"]
+        ]
         return Tournament(name, location, date, mode, rounds, description, players)
 
     def store_data_tournament(self, players, user, actors_table, tournaments_table):
@@ -88,7 +87,7 @@ class Tournament:
         )
 
     def update_players(self, players, tournaments_table, user):
-        """Update players's informations in the database."""
+        """Update players' informations in the database."""
         serialized_players = []
         for player in players:
             ser_player = Player.serialized_player(player)

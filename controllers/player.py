@@ -9,7 +9,7 @@ class PlayerController:
     @staticmethod
     def create_player():
         """Create a new player."""
-        print("\n************CREATE A NEW PLAYER **************\n")
+        MenuView.display_create_player()
         first_name = MenuView.check_str(
             "Please enter player's first name: "
         ).capitalize()
@@ -23,17 +23,21 @@ class PlayerController:
 
     def choose_actors(i, actors_table, user):
         "Choose a player from the database to play in a tournament."
-        try:
-            choice = input(f"PLAYER {i}: What is the FIRST NAME ? ").capitalize()
-            serialized_player = actors_table.get((user["first name"] == choice))
-            if serialized_player is None:
-                raise TypeError
-        except TypeError:
-            print("The value entered doesn't match the possible choices !\n")
-            return PlayerController.choose_actors(i, actors_table, user)
-        return serialized_player
+        boolean = True
+        while boolean:
+            choice = MenuView.check_str(
+                f"PLAYER {i}: What is the FIRST NAME ? "
+            ).capitalize()
+            try:
+                serialized_player = actors_table.get((user["first name"] == choice))
+                if serialized_player is None:
+                    raise TypeError
+                boolean = False
+                return serialized_player
+            except TypeError:
+                print("The value entered doesn't match the possible choices !\n")
 
-    def update_rank(actors_table, tournaments_table, user):
+    def update_rank(actors_table, user):
         """Update actor's rank in the database."""
         first_name = MenuView.check_str("First name ? ").capitalize()
         last_name = MenuView.check_str("Last name ? ").capitalize()

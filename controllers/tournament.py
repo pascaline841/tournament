@@ -12,8 +12,7 @@ class TournamentController:
 
     def create_tournament(players):
         """Create a new tournament."""
-        print("\n==================================================")
-        print("************CREATE A NEW TOURNAMENT**************\n")
+        MenuView.display_create_tournament()
         name = MenuView.check_str("Please enter tournament's name : ")
         location = MenuView.check_str("Please enter tournament's location : ")
         date = datetime.date.today().strftime("%d/%m/%Y")
@@ -27,15 +26,17 @@ class TournamentController:
 
     def choose_tournament(tournaments_table, user):
         "Choose a player from the database to play in a tournament."
-        try:
+        boolean = True
+        while boolean:
             name = MenuView.check_str("Name of an UNcompleted tournament ? ")
-            serialized_tournament = tournaments_table.get(user["name"] == name)
-            if serialized_tournament is None:
-                raise TypeError
-        except TypeError:
-            print("The value entered doesn't match the possible choices !\n")
-            return TournamentController.choose_tournament(tournaments_table, user)
-        return serialized_tournament
+            try:
+                serialized_tournament = tournaments_table.get(user["name"] == name)
+                if serialized_tournament is None:
+                    raise TypeError
+                boolean = False
+                return serialized_tournament
+            except TypeError:
+                print("The value entered doesn't match the possible choices !\n")
 
     def create_list_players(actors_table, user):
         """Create a list of 8 players from the database."""

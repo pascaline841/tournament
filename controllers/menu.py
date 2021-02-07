@@ -15,7 +15,6 @@ class MenuController:
             "Enter your choice (1, 2, 3, 4, 5) :  \n"
         )
 
-    
     def choose_inter_menu(
         actors_table,
         tournaments_table,
@@ -28,7 +27,7 @@ class MenuController:
         choices = {
             1: "continue tournament",
             2: "update rank",
-            3: "end program",
+            3: "program end",
         }
 
         choice = MenuView.check_available_three_choices(
@@ -48,7 +47,7 @@ class MenuController:
                 tournament,
                 players,
             )
-        elif choices[choice] == "end program":
+        elif choices[choice] == "program end":
             sys.exit()
             return print("Program ended ! See you soon!")
         else:
@@ -61,7 +60,6 @@ class MenuController:
                 players,
             )
 
-    
     def choose_reports(tournaments_table, actors_table, user):
         """Display the reports' menu."""
         reports = {
@@ -90,30 +88,27 @@ class MenuController:
         elif reports[choice] == "general menu":
             MenuView.welcome()
 
-    
     def request_players(tournaments_table, user):
         """Request for a tournament to display its players by alpha order or rank."""
-        name = input("What is it name ? ")
+        name = MenuView.check_str("What is it name ? ")
         choice = tournaments_table.search(user["name"] == name)
         players = choice[0].get("players")
-        sorted_choice = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
+        sorted_choice = MenuView.check_int("Sorted by Last Name (1) or by Rank (2) ? "))
         if sorted_choice == 1:
             return sorted(players, key=lambda players: players["last name"])
         else:
             return sorted(players, key=lambda players: players["rank"])
 
-    
     def request_rounds(tournaments_table, user):
         """Request for a tournament to display its rounds or matchs."""
-        name = input("What is it name ? ")
+        name = MenuView.check_str("What is it name ? ")
         choice = tournaments_table.search(user["name"] == name)
         return choice[0].get("rounds")
 
-    
     def sorted_actors(actors_table):
         """Sort all actors by alphabetic order or by rank."""
         actors = actors_table.all()
-        sorted_choice = int(input("Sorted by Last Name (1) or by Rank (2) ? "))
+        sorted_choice = MenuView.check_int("Sorted by Last Name (1) or by Rank (2) ? "))
         if sorted_choice == 1:
             return sorted(actors, key=lambda actor: actor["last name"])
         else:

@@ -1,5 +1,5 @@
 class MenuView:
-    """Display the different menus."""
+    """Display the different menus and check the different Value or Type Error."""
 
     @staticmethod
     def welcome():
@@ -12,6 +12,18 @@ class MenuView:
         print("4 - Change the ranking from a player ?")
         print("5 -  Edit reports")
         print("6 - End the program")
+
+    @staticmethod
+    def display_create_tournament()
+        """Display the creation of a new tournament."""
+        print("\n==================================================")
+        print("************CREATE A NEW TOURNAMENT**************\n")
+
+    @staticmethod
+    def display_create_player():
+        """Display the creation of a new player."""
+        print("\n==================================================")
+        print("\n************CREATE A NEW PLAYER **************\n")
 
     @staticmethod
     def interround_menu():
@@ -34,7 +46,7 @@ class MenuView:
         """Display a match of a round different to the 1st round."""
         print(f"{players[i].first_name} vs {players[j].first_name}")
 
-
+    @staticmethod
     def check_str(message):
         """Check if the value of an input is a string."""
         boolean = True
@@ -48,7 +60,7 @@ class MenuView:
             except ValueError:
                 print("Incorrect value, it has to be a word !")
 
-
+    @staticmethod
     def check_int(message):
         """Check if the value of an input is an integer."""
         try:
@@ -57,7 +69,7 @@ class MenuView:
             print("Incorrect value, it has to be a positive number !")
             return MenuView.check_int(message)
 
-
+    @staticmethod
     def check_gender(message):
         """Check if the gender value is 'm' or 'f'."""
         boolean = True
@@ -74,7 +86,7 @@ class MenuView:
             except ValueError:
                 print("Incorrect gender, it has to be 'm' / 'f' !")
 
-
+    @staticmethod
     def check_available_three_choices(message):
         """Check the input value when the choice are from 1 to 3."""
         boolean = True
@@ -91,7 +103,7 @@ class MenuView:
             except TypeError:
                 print("Incorrect value, it has to be a positive number !")
 
-
+    @staticmethod
     def check_available_five_choices(message):
         """Check the input value when the choice are from 1 to 5."""
         boolean = True
@@ -108,7 +120,7 @@ class MenuView:
             except TypeError:
                 print("Incorrect value, it has to be a positive number !")
 
-
+    @staticmethod
     def check_score(message):
         """
         Enter the scores for each round:
