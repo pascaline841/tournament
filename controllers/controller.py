@@ -5,33 +5,55 @@ from controllers.player import PlayerController
 from models.players import Player
 from models.tournaments import Tournament
 
+from controllers.main_page import MainPageController
+
 
 class MainController:
     """Main class to control the program."""
 
-    def start_program():
-        """Run the program."""
-        tournaments_table = TinyDB("TOURNAMENTS.json")
-        actors_table = TinyDB("ACTORS.json")
-        user = Query()
-        serialized_rounds = []
+    def __init__(self):
+        self.running = True
+        self.controller = MainPageController()
+        self.messages = []
 
-        run_program = True
-        choices = {
-            1: "create player",
-            2: "create tournament",
-            3: "pull tournament",
-            4: "update rank",
-            5: "display reports",
-            6: "program end",
-        }
-        while run_program:
+    def run(self):
+        # tournaments_table = TinyDB("TOURNAMENTS.json")
+        # actors_table = TinyDB("ACTORS.json")
+        # user = Query()
+        # serialized_rounds = []
+        while self.running:
+            self.controller.display()
+            command = self.controller.get_command()
+            self.update(command)
+
+    def update(self, command: str):
+        """Update the application."""
+        if command == "quit":
+            self.running = False
+        elif command == "create player":
+            self.controller = CreatePlayer()
+        elif command == "create tournament":
+            self.controller = CreateTournament()
+        elif command == "pull tournament":
+            self.controller = PullTournament()
+        elif command == "update rank":
+            self.controller = UpdateRank()
+        elif command == "display reports":
+            self.controller = ReportsController()
+        else:
+            print("An error occurred.")
+
+    def start_program(self):
+        """Run the program."""
+
+        while self.running:
             choice = MenuController.choose_welcome_menu()
-            if choices[choice] == "create player":
+
+            if choice == "create player":
                 player = PlayerController.create_player()
                 Player.store_data_actors(player, user, actors_table)
 
-            elif choices[choice] == "create tournament":
+            elif choice == "create tournament":
                 # CHOOSE BETWEEN AUTO or MANUAL list of players :
                 players = TournamentController.create_auto_players()
                 # players = TournamentController.create_list_players(actors_table, user)
@@ -59,7 +81,7 @@ class MainController:
                     nb_rounds,
                 )
 
-            elif choices[choice] == "pull tournament":
+            elif choice == "pull tournament":
                 TournamentController.pull_tournament(
                     tournaments_table,
                     serialized_rounds,
@@ -67,14 +89,12 @@ class MainController:
                     user,
                 )
 
-            elif choices[choice] == "update rank":
+            elif choice == "update rank":
                 PlayerController.update_rank(actors_table, user)
 
-            elif choices[choice] == "display reports":
+            elif choice == "display reports":
                 MenuController.choose_reports(tournaments_table, actors_table, user)
 
-            elif choices[choice] == "program end":
+            elif choice == "program end":
                 print("Program ended ! See you soon !")
                 run_program = False
-            else:
-                print("An error occurred.")

@@ -10,34 +10,6 @@ from view.menu import MenuView
 class TournamentController:
     """Class controls the tournament progress."""
 
-    def create_tournament(players):
-        """Create a new tournament."""
-        MenuView.display_create_tournament()
-        name = MenuView.check_str("Please enter tournament's name : ")
-        location = MenuView.check_str("Please enter tournament's location : ")
-        date = datetime.date.today().strftime("%d/%m/%Y")
-        mode = MenuView.check_str(
-            "How would you like to play ? bullet / blitz / fast : "
-        )
-        rounds = []
-        description = input("Please enter tournament's description : ")
-        players = players
-        return Tournament(name, location, date, mode, rounds, description, players)
-
-    def choose_tournament(tournaments_table, user):
-        "Choose a player from the database to play in a tournament."
-        boolean = True
-        while boolean:
-            name = MenuView.check_str("Name of an UNcompleted tournament ? ")
-            try:
-                serialized_tournament = tournaments_table.get(user["name"] == name)
-                if serialized_tournament is None:
-                    raise TypeError
-                boolean = False
-                return serialized_tournament
-            except TypeError:
-                print("The value entered doesn't match the possible choices !\n")
-
     def create_list_players(actors_table, user):
         """Create a list of 8 players from the database."""
         players = []
@@ -173,27 +145,3 @@ class TournamentController:
             score = player.add_final_score(player.points, player.score)
             Player.update_score(player, actors_table, score, user)
         MenuView.display_final_score(tournament, players)
-
-    def pull_tournament(tournaments_table, serialized_rounds, actors_table, user):
-        """To continue an unfinished tournament."""
-        serialized_tournament = TournamentController.choose_tournament(
-            tournaments_table, user
-        )
-        tournament = Tournament.deserialized_tournament(serialized_tournament)
-        rounds = tournament.rounds
-        for round in rounds:
-            serialized_round = Round.serialized_round(round)
-            serialized_rounds.append(serialized_round)
-        players = tournament.players
-        rounds_done = len(rounds)
-        total_rounds = tournament.nb_rounds
-        nb_rounds = total_rounds - rounds_done
-        TournamentController.progress_next_rounds(
-            tournament,
-            players,
-            serialized_rounds,
-            tournaments_table,
-            user,
-            actors_table,
-            nb_rounds,
-        )

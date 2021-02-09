@@ -1,31 +1,16 @@
 from models.players import Player
 from models.tournaments import Tournament
-from view.menu import MenuView
+from view.check_view import CheckView
 
 
 class PlayerController:
     """Class controls all the different menus about the player in the program."""
 
-    @staticmethod
-    def create_player():
-        """Create a new player."""
-        MenuView.display_create_player()
-        first_name = MenuView.check_str(
-            "Please enter player's first name: "
-        ).capitalize()
-        last_name = MenuView.check_str("Please enter player's last name: ").capitalize()
-        birth_date = input("Please enter player's birth date (format = DD/MM/YYYY): ")
-        gender = MenuView.check_gender("Please enter player's gender ('m' / 'f'): ")
-        rank = MenuView.check_int("Please enter player's rank : ")
-        score = MenuView.check_int("Please enter player's total score : ")
-        print("\n A player has been created. \n")
-        return Player(first_name, last_name, birth_date, gender, rank, score)
-
     def choose_actors(i, actors_table, user):
         "Choose a player from the database to play in a tournament."
         boolean = True
         while boolean:
-            choice = MenuView.check_str(
+            choice = CheckView.check_str(
                 f"PLAYER {i}: What is the FIRST NAME ? "
             ).capitalize()
             try:
@@ -39,9 +24,9 @@ class PlayerController:
 
     def update_rank(actors_table, user):
         """Update actor's rank in the database."""
-        first_name = MenuView.check_str("First name ? ").capitalize()
-        last_name = MenuView.check_str("Last name ? ").capitalize()
-        new_rank = MenuView.check_int("Please enter player's  new rank : ")
+        first_name = CheckView.check_str("First name ? ").capitalize()
+        last_name = CheckView.check_str("Last name ? ").capitalize()
+        new_rank = CheckView.check_int("Please enter player's  new rank : ")
         actors_table.update(
             {"rank": new_rank},
             user["first name"] == first_name and user["last name"] == last_name,
@@ -51,9 +36,9 @@ class PlayerController:
         actors_table, tournaments_table, user, players, tournament
     ):
         """Update actor's rank in the database and in the current tournament."""
-        first_name = MenuView.check_str("First name ? ").capitalize()
-        last_name = MenuView.check_str("Last name ? ").capitalize()
-        new_rank = MenuView.check_int("Please enter player's  new rank : ")
+        first_name = CheckView.check_str("First name ? ").capitalize()
+        last_name = CheckView.check_str("Last name ? ").capitalize()
+        new_rank = CheckView.check_int("Please enter player's  new rank : ")
         actors_table.update(
             {"rank": new_rank},
             user["first name"] == first_name and user["last name"] == last_name,

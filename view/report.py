@@ -1,10 +1,10 @@
-class DisplayReport:
+class ReportView:
     """Display the different reports."""
 
-    @staticmethod
-    def display_reports():
+    def display(self):
         """Display the menu of the reports."""
-        print("************REPORTS**************")
+        print("\n==================================================")
+        print("\n************REPORTS**************\n")
         print("1 - List of all actors")
         print("2 - List of all tournaments")
         print("3 - List of all rounds for a tournament")
