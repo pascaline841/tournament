@@ -3,7 +3,7 @@ from view.check_input import CheckView
 
 
 class Reports:
-    """Report controller."""
+    """Display report menu."""
 
     def __init__(self):
         self.running = True
@@ -34,22 +34,7 @@ class Reports:
         elif command == "5":
             return "general menu"
 
-    def update(self, command: str, tournaments_table, actors_table, user):
-        if command == "sorted_actors report":
-            display_report = self.controller.sorted_actors(actors_table)
-            View.report_actors(display_report)
-        elif command == "tournaments report":
-            display_report = tournaments_table.all()
-            View.report_tournaments(display_report)
-        elif command == "rounds report":
-            display_report = self.controller.request_rounds(tournaments_table, user)
-            View.report_rounds(display_report)
-        elif command == "players report":
-            display_report = self.controller.request_players(tournaments_table, user)
-            View.report_players(display_report)
-        elif command == "general menu":
-            self.running = False
-
+    @staticmethod
     def sorted_actors(actors_table):
         """Sort all actors by alphabetic order or by rank."""
         actors = actors_table.all()
@@ -59,6 +44,7 @@ class Reports:
         else:
             return sorted(actors, key=lambda actor: actor["rank"])
 
+    @staticmethod
     def request_players(tournaments_table, user):
         """Request for a tournament to display its players by alpha order or rank."""
         name = CheckView.check_str("What is it name ? ")
@@ -70,6 +56,7 @@ class Reports:
         else:
             return sorted(players, key=lambda players: players["rank"])
 
+    @staticmethod
     def request_rounds(tournaments_table, user):
         """Request for a tournament to display its rounds or matchs."""
         name = CheckView.check_str("What is it name ? ")
