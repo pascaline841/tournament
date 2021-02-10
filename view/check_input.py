@@ -20,4 +20,4 @@ class CheckView:
             return int(input(message))
         except ValueError:
             print("Incorrect value, it has to be a positive number !")
-            return CreatePlayerView.check_int(message)
+            return CheckView.check_int(message)

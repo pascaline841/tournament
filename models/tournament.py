@@ -55,8 +55,8 @@ class Tournament:
         ]
         description = serialized_tournament["description"]
         players = [
-            Player.deserialized_player(ser_player)
-            for ser_player in serialized_tournament["players"]
+            Player.deserialized_player(serialized_player)
+            for serialized_player in serialized_tournament["players"]
         ]
         return Tournament(name, location, date, mode, rounds, description, players)
 
@@ -65,8 +65,8 @@ class Tournament:
         serialized_players = []
         serialized_rounds = []
         for player in players:
-            ser_player = Player.store_data_actors(player, user, actors_table)
-            serialized_players.append(ser_player)
+            serialized_player = Player.store_data_actors(player, user, actors_table)
+            serialized_players.append(serialized_player)
         Tournament.serialized_tournament(self)
         tournaments_table.insert(
             {
@@ -90,8 +90,8 @@ class Tournament:
         """Update players' informations in the database."""
         serialized_players = []
         for player in players:
-            ser_player = Player.serialized_player(player)
-            serialized_players.append(ser_player)
+            serialized_player = Player.serialized_player(player)
+            serialized_players.append(serialized_player)
         tournaments_table.update(
             {
                 "players": serialized_players,

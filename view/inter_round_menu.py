@@ -14,7 +14,7 @@ class InterRoundMenuView:
         while boolean:
             try:
                 command = input(message)
-                if command not in [1, 2, 3]:
+                if command not in ["1", "2", "3"]:
                     raise ValueError
                 print(f"Your command ({command}) has been successfully entered...\n")
                 boolean = False

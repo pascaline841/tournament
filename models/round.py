@@ -42,21 +42,6 @@ class Round:
         end = serialized_round["end"]
         return Round(name, start, matchs, end)
 
-    def get_first_opponents(players):
-        """
-        First Round : The players are ranked by best ranking.
-        Add oppponent's name to the player's opponents list.
-        """
-        players[0].opponents.append(players[4].first_name)
-        players[4].opponents.append(players[0].first_name)
-        players[1].opponents.append(players[5].first_name)
-        players[5].opponents.append(players[1].first_name)
-        players[2].opponents.append(players[6].first_name)
-        players[6].opponents.append(players[2].first_name)
-        players[3].opponents.append(players[7].first_name)
-        players[7].opponents.append(players[3].first_name)
-        return players
-
     def first_matchs(self, players):
         """
         First Round : The players are ranked by best ranking.
