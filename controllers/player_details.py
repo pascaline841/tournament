@@ -1,19 +1,31 @@
 from models.tournament import Tournament
+from models.player import Player
 from view.check_input import CheckView
 
 
 class PlayerDetails:
     """Class controls all the different menus about the player in the program."""
 
+    @staticmethod
+    def create_list_players(actors_table, user):
+        """Create a list of 8 players from the database."""
+        players = []
+        print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
+        for i in range(1, 9):
+            ser_player = PlayerDetails.choose_actors(i, actors_table, user)
+            player = Player.deserialized_player(ser_player)
+            players.append(player)
+        return players
+
     def choose_actors(i, actors_table, user):
         "Choose a player from the database to play in a tournament."
         boolean = True
         while boolean:
-            choice = CheckView.check_str(
+            command = CheckView.check_str(
                 f"PLAYER {i}: What is the FIRST NAME ? "
             ).capitalize()
             try:
-                serialized_player = actors_table.get((user["first name"] == choice))
+                serialized_player = actors_table.get((user["first name"] == command))
                 if serialized_player is None:
                     raise TypeError
                 boolean = False

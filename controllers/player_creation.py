@@ -3,15 +3,18 @@ from view.check_input import CheckView
 from models.player import Player as Player
 
 
-class CreatePlayer:
+class PlayerCreation:
     """Create a new player controller."""
 
     def __init__(self):
         self.view = View()
-        self.player = Player()
 
     def display(self):
         self.view.display()
+
+    def run(self):
+        self.display()
+        self.get_command()
 
     def get_command(self):
         """Create a new player."""

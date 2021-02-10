@@ -2,36 +2,55 @@ import datetime
 from models.player import Player
 from models.round import Round
 from models.tournament import Tournament
-from controllers.menu import MenuController
-from controllers.player_details import PlayerDetails
+from controllers.inter_round_menu import InterRoundMenu
+from controllers.tournament_creation import TournamentCreation
 from view.score import ScoreView
 
 
 class TournamentDetails:
     """Class controls the tournament progress."""
 
-    def create_list_players(actors_table, user):
-        """Create a list of 8 players from the database."""
-        players = []
-        print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
-        for i in range(1, 9):
-            ser_player = PlayerDetails.choose_actors(i, actors_table, user)
-            player = Player.deserialized_player(ser_player)
-            players.append(player)
-        return players
+    def __init__(self):
+        self.tournament = TournamentCreation()
 
-    @staticmethod
-    def create_auto_players():
-        """Create 8 players for a demo."""
-        players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
-        players.append(Player("William", "Smith", "m", "03/11/1980", 2, 998))
-        players.append(Player("Damien", "Billard", "m", "10/08/1978", 3, 996))
-        players.append(Player("Mickael", "Fitz", "m", "25/06/2000", 4, 994))
-        players.append(Player("Ricardo", "Gagnon", "m", "29/02/1988", 5, 992))
-        players.append(Player("Manon", "Tremblay", "f", "13/06/1999", 6, 990))
-        players.append(Player("Claire", "Beaulieu", "f", "17/11/1992", 7, 988))
-        players.append(Player("Julie", "Stefen", "f", "14/05/1993", 8, 986))
-        return players
+    def display(self):
+        self.view.display()
+
+    def run(self):
+        self.display()
+        self.get_command()
+
+    def get_command(
+        self,
+        players,
+        tournaments_table,
+        user,
+        actors_table,
+        serialized_rounds,
+    ):
+        tournament = self.tournament.get_command()
+        Tournament.store_data_tournament(
+            tournament, players, user, actors_table, tournaments_table
+        )
+        print(tournament)
+        TournamentDetails.progress_first_round(
+            tournament,
+            players,
+            tournaments_table,
+            user,
+            actors_table,
+            serialized_rounds,
+        )
+        nb_rounds = tournament.nb_rounds
+        TournamentDetails.progress_next_rounds(
+            tournament,
+            players,
+            serialized_rounds,
+            tournaments_table,
+            user,
+            actors_table,
+            nb_rounds,
+        )
 
     def get_first_round(tournament, rounds, players):
         """Create the first round of a tournament."""
@@ -96,7 +115,7 @@ class TournamentDetails:
         serialized_rounds.append(serialized_round)
         Tournament.update_round(tournament, serialized_rounds, tournaments_table, user)
         Tournament.update_players(tournament, players, tournaments_table, user)
-        MenuController.choose_inter_menu(
+        InterRoundMenu.choose_inter_menu(
             actors_table,
             tournaments_table,
             user,
@@ -125,7 +144,7 @@ class TournamentDetails:
                 tournament, serialized_rounds, tournaments_table, user
             )
             Tournament.update_players(tournament, players, tournaments_table, user)
-            MenuController.choose_inter_menu(
+            InterRoundMenu.choose_inter_menu(
                 actors_table,
                 tournaments_table,
                 user,

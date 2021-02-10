@@ -1,8 +1,8 @@
-from view.check_input import MenuView as View
+from view.check_input import CheckView as View
 from models.tournament import Tournament as Tournament
 from models.round import Round as Round
 
-from controller.tournament import TournamentDetails
+from controllers.tournament_details import TournamentDetails
 
 
 class PullTournament:
@@ -10,10 +10,12 @@ class PullTournament:
 
     def __init__(self):
         self.view = View()
-        self.tournament = Tournament()
-        self.round = Round()
 
-    def choose_tournament(self, tournaments_table, user):
+    def run(self):
+        serialized_tournament = self.get_command()
+        self.update(serialized_tournament)
+
+    def get_command(self, tournaments_table, user):
         "Choose a uncompleted tournament in the database."
         boolean = True
         while boolean:
@@ -27,11 +29,15 @@ class PullTournament:
             except TypeError:
                 print("The value entered doesn't match any tournament !\n")
 
-    def get_command(self, tournaments_table, serialized_rounds, actors_table, user):
+    def update(
+        self,
+        serialized_tournament,
+        tournaments_table,
+        serialized_rounds,
+        actors_table,
+        user,
+    ):
         """To continue an unfinished tournament."""
-        serialized_tournament = PullTournament.choose_tournament(
-            tournaments_table, user
-        )
         tournament = Tournament.deserialized_tournament(serialized_tournament)
         rounds = tournament.rounds
         for round in rounds:

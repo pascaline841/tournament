@@ -1,5 +1,5 @@
-from models.players import Player
-from models.rounds import Round
+from models.player import Player
+from models.round import Round
 
 
 class Tournament:

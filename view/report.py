@@ -17,12 +17,12 @@ class ReportView:
         boolean = True
         while boolean:
             try:
-                choice = input(message)
-                if choice not in [1, 2, 3, 4, 5]:
+                command = input(message)
+                if command not in [1, 2, 3, 4, 5]:
                     raise ValueError
-                print(f"Your choice ({choice}) has been successfully entered...\n")
+                print(f"Your command ({command}) has been successfully entered...\n")
                 boolean = False
-                return choice
+                return command
             except ValueError:
                 print("The value entered doesn't match the possible choices !\n")
             except TypeError:
