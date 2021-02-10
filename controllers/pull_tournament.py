@@ -1,6 +1,6 @@
 from view.check_input import CheckView as View
-from models.tournament import Tournament as Tournament
-from models.round import Round as Round
+from models.tournament import Tournament
+from models.round import Round
 
 from controllers.tournament_details import TournamentDetails
 
@@ -31,7 +31,7 @@ class PullTournament:
 
     def update(
         self,
-        serialized_tournament,
+        serialized_tournament: str,
         tournaments_table,
         serialized_rounds,
         actors_table,

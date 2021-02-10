@@ -1,6 +1,6 @@
 from view.player_creation import PlayerCreationView as View
 from view.check_input import CheckView
-from models.player import Player as Player
+from models.player import Player
 
 
 class PlayerCreation:
@@ -14,7 +14,8 @@ class PlayerCreation:
 
     def run(self):
         self.display()
-        self.get_command()
+        player = self.get_command()
+        Player.store_actor_data(player)
 
     def get_command(self):
         """Create a new player."""

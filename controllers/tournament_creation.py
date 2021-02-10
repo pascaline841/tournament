@@ -16,7 +16,10 @@ class TournamentCreation:
 
     def run(self):
         self.display()
-        self.get_command()
+        tournament = self.get_command()
+        Tournament.store_data_tournament(
+            tournament, players, user, actors_table, tournaments_table
+        )
 
     def get_command(self):
         """Create a new tournament."""
@@ -29,9 +32,36 @@ class TournamentCreation:
         rounds = []
         description = input("Please enter tournament's description : ")
         # CHOOSE BETWEEN AUTO or MANUAL list of players :
-        players = self.controller.create_auto_players()
-        # players = PlayerDetails.create_list_players(actors_table, user)
+        players = self.create_auto_players()
+        # players = self.create_list_players(actors_table, user)
         return Tournament(name, location, date, mode, rounds, description, players)
+
+    def create_list_players(self, actors_table, user):
+        """Create a list of 8 players from the database."""
+        players = []
+        print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
+        for i in range(1, 9):
+            serialized_player = self.choose_actors(i, actors_table, user)
+            player = Player.deserialized_player(serialized_player)
+            players.append(player)
+        return players
+
+    @staticmethod
+    def choose_actors(i, actors_table, user):
+        "Choose a player from the database to play in a tournament."
+        boolean = True
+        while boolean:
+            command = CheckView.check_str(
+                f"PLAYER {i}: What is the FIRST NAME ? "
+            ).capitalize()
+            try:
+                serialized_player = actors_table.get((user["first name"] == command))
+                if serialized_player is None:
+                    raise TypeError
+                boolean = False
+                return serialized_player
+            except TypeError:
+                print("The value entered doesn't match the possible choices !\n")
 
     @staticmethod
     def create_auto_players():
