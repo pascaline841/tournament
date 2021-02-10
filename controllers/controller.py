@@ -1,11 +1,15 @@
 from tinydb import TinyDB, Query
-from controllers.menu import MenuController
-from controllers.tournament import TournamentController
-from controllers.player import PlayerController
-from models.players import Player
-from models.tournaments import Tournament
 
-from controllers.main_page import MainPageController
+from controllers.main_menu import MainMenu
+from controllers.player_creation import PlayerCreation
+from controllers.tournament_creation import TournamentCreation
+from controllers.tournament_details import TournamentDetails
+from controllers.player_details import PlayerDetails
+from controllers.report import Reports
+from controllers.pull_tournament import PullTournament
+
+from models.player import Player
+from models.tournament import Tournament
 
 
 class MainController:
@@ -13,7 +17,7 @@ class MainController:
 
     def __init__(self):
         self.running = True
-        self.controller = MainPageController()
+        self.controller = MainMenu()
         self.messages = []
 
     def run(self):
@@ -31,15 +35,15 @@ class MainController:
         if command == "quit":
             self.running = False
         elif command == "create player":
-            self.controller = CreatePlayer()
+            self.controller = PlayerCreation()
         elif command == "create tournament":
-            self.controller = CreateTournament()
+            self.controller = TournamentCreation()
         elif command == "pull tournament":
             self.controller = PullTournament()
         elif command == "update rank":
             self.controller = UpdateRank()
         elif command == "display reports":
-            self.controller = ReportsController()
+            self.controller = Reports()
         else:
             print("An error occurred.")
 
@@ -47,22 +51,22 @@ class MainController:
         """Run the program."""
 
         while self.running:
-            choice = MenuController.choose_welcome_menu()
+            choice = MainMenu.get_command()
 
             if choice == "create player":
-                player = PlayerController.create_player()
+                player = PlayerDetails.create_player()
                 Player.store_data_actors(player, user, actors_table)
 
             elif choice == "create tournament":
                 # CHOOSE BETWEEN AUTO or MANUAL list of players :
-                players = TournamentController.create_auto_players()
-                # players = TournamentController.create_list_players(actors_table, user)
-                tournament = TournamentController.create_tournament(players)
+                players = TournamentDetails.create_auto_players()
+                # players = TournamentDetails.create_list_players(actors_table, user)
+                tournament = TournamentDetails.create_tournament(players)
                 Tournament.store_data_tournament(
                     tournament, players, user, actors_table, tournaments_table
                 )
                 print(tournament)
-                TournamentController.progress_first_round(
+                TournamentDetails.progress_first_round(
                     tournament,
                     players,
                     tournaments_table,
@@ -71,7 +75,7 @@ class MainController:
                     serialized_rounds,
                 )
                 nb_rounds = tournament.nb_rounds
-                TournamentController.progress_next_rounds(
+                TournamentDetails.progress_next_rounds(
                     tournament,
                     players,
                     serialized_rounds,
@@ -82,7 +86,7 @@ class MainController:
                 )
 
             elif choice == "pull tournament":
-                TournamentController.pull_tournament(
+                TournamentDetails.pull_tournament(
                     tournaments_table,
                     serialized_rounds,
                     actors_table,
@@ -90,11 +94,11 @@ class MainController:
                 )
 
             elif choice == "update rank":
-                PlayerController.update_rank(actors_table, user)
+                PlayerDetails.update_rank(actors_table, user)
 
             elif choice == "display reports":
-                MenuController.choose_reports(tournaments_table, actors_table, user)
+                Reports.get_command()
 
             elif choice == "program end":
                 print("Program ended ! See you soon !")
-                run_program = False
+                self.running = False

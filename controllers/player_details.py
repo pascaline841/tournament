@@ -1,9 +1,8 @@
-from models.players import Player
-from models.tournaments import Tournament
-from view.check_view import CheckView
+from models.tournament import Tournament
+from view.check_input import CheckView
 
 
-class PlayerController:
+class PlayerDetails:
     """Class controls all the different menus about the player in the program."""
 
     def choose_actors(i, actors_table, user):

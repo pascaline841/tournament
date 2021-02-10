@@ -1,4 +1,4 @@
-class MainPageView:
+class MainMenuView:
     def display(self):
         """Display the main menu."""
         print("\n==================================================")

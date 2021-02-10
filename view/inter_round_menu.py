@@ -1,4 +1,4 @@
-class DisplayInterRoundMenu:
+class InterRoundMenuView:
     def display(self):
         """Display the menu between 2 rounds during a tournament."""
         print("\n==================================================")

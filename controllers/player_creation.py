@@ -1,6 +1,6 @@
-from view.create_player import CreatePlayerView as View
-from view.check_view import CheckView
-from models.players import Player as Player
+from view.player_creation import PlayerCreationView as View
+from view.check_input import CheckView
+from models.player import Player as Player
 
 
 class CreatePlayer:

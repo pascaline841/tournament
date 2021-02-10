@@ -1,8 +1,7 @@
-from view.main_page import MainPageView as View
-from view.menu import CheckView
+from view.main_menu import MainMenuView as View
 
 
-class MainPageController:
+class MainMenu:
     """Main page controller."""
 
     def __init__(self):
@@ -12,9 +11,7 @@ class MainPageController:
         self.view.display()
 
     def get_command(self):
-        choice = CheckView.check_available_choices(
-            "Enter your choice (1, 2, 3, 4, 5) : \n"
-        )
+        choice = View.check_available_choices("Enter your choice (1, 2, 3, 4, 5) : \n")
         if choice == "1":
             return "create player"
         elif choice == "2":

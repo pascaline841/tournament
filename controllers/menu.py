@@ -1,6 +1,6 @@
-from controllers.player import PlayerController
-from view.menu import MenuView
-from view.report import DisplayReport
+from controllers.player_details import PlayerDetails
+from view.inter_round_menu import InterRoundMenuView
+from view.report import ReportView
 import sys
 
 
@@ -15,21 +15,21 @@ class MenuController:
         players,
     ):
         """Display menu between rounds."""
-        MenuView.interround_menu()
+        InterRoundMenuView.display()
         choices = {
             1: "continue tournament",
             2: "update rank",
             3: "program end",
         }
 
-        choice = MenuView.check_available_three_choices(
+        choice = InterRoundMenuView.check_available_three_choices(
             "Enter your choice (1, 2, 3) :\n"
         )
 
         if choices[choice] == "continue tournament":
             pass
         elif choices[choice] == "update rank":
-            PlayerController.update_rank_tournament(
+            PlayerDetails.update_rank_tournament(
                 actors_table, tournaments_table, user, players, tournament
             )
             return MenuController.choose_inter_menu(
@@ -61,21 +61,21 @@ class MenuController:
             4: "players report",
             5: "general menu",
         }
-        DisplayReport.display_reports()
-        choice = MenuView.check_available_five_choices(
+        ReportView.display()
+        choice = ReportView.check_available_choices(
             "Enter your choice (1, 2, 3, 4, 5) :  \n"
         )
         if reports[choice] == "sorted_actors report":
             display_report = MenuController.sorted_actors(actors_table)
-            DisplayReport.report_actors(display_report)
+            ReportView.report_actors(display_report)
         elif reports[choice] == "tournaments report":
             display_report = tournaments_table.all()
-            DisplayReport.report_tournaments(display_report)
+            ReportView.report_tournaments(display_report)
         elif reports[choice] == "rounds report":
             display_report = MenuController.request_rounds(tournaments_table, user)
-            DisplayReport.report_rounds(display_report)
+            ReportView.report_rounds(display_report)
         elif reports[choice] == "players report":
             display_report = MenuController.request_players(tournaments_table, user)
-            DisplayReport.report_players(display_report)
+            ReportView.report_players(display_report)
         elif reports[choice] == "general menu":
-            MenuView.welcome()
+            MainMenu.display()

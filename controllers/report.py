@@ -1,8 +1,8 @@
 from view.report import ReportView as View
-from view.check_view import CheckView  
+from view.check_input import CheckView  
 
 
-class ReportsController:
+class Reports:
     """Main page controller."""
 
     def __init__(self):

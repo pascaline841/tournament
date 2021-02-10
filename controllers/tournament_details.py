@@ -1,13 +1,13 @@
 import datetime
-from models.players import Player
-from models.rounds import Round
-from models.tournaments import Tournament
+from models.player import Player
+from models.round import Round
+from models.tournament import Tournament
 from controllers.menu import MenuController
-from controllers.player import PlayerController
-from view.menu import MenuView
+from controllers.player_details import PlayerDetails
+from view.score import ScoreView
 
 
-class TournamentController:
+class TournamentDetails:
     """Class controls the tournament progress."""
 
     def create_list_players(actors_table, user):
@@ -15,7 +15,7 @@ class TournamentController:
         players = []
         print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
         for i in range(1, 9):
-            ser_player = PlayerController.choose_actors(i, actors_table, user)
+            ser_player = PlayerDetails.choose_actors(i, actors_table, user)
             player = Player.deserialized_player(ser_player)
             players.append(player)
         return players
@@ -43,7 +43,7 @@ class TournamentController:
             print(f"{players[i].first_name} vs {players[i+4].first_name}")
         Round.get_first_opponents(players)
         for player in players:
-            add_point = MenuView.check_score(
+            add_point = ScoreView.check_score(
                 f"Please enter {player.first_name}'s score : "
             )
             player.add_points(add_point)
@@ -72,7 +72,7 @@ class TournamentController:
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = MenuView.check_score(
+            add_point = ScoreView.check_score(
                 f"Please enter {player.first_name}'s score : "
             )
             player.add_points(add_point)
@@ -91,7 +91,7 @@ class TournamentController:
     ):
         """Run the first round."""
         rounds = tournament.rounds
-        round = TournamentController.get_first_round(tournament, rounds, players)
+        round = TournamentDetails.get_first_round(tournament, rounds, players)
         serialized_round = Round.serialized_round(round)
         serialized_rounds.append(serialized_round)
         Tournament.update_round(tournament, serialized_rounds, tournaments_table, user)
@@ -118,7 +118,7 @@ class TournamentController:
         while nb_rounds > 1:
             nb_rounds -= 1
             rounds = tournament.rounds
-            round = TournamentController.get_next_round(tournament, rounds, players)
+            round = TournamentDetails.get_next_round(tournament, rounds, players)
             serialized_round = Round.serialized_round(round)
             serialized_rounds.append(serialized_round)
             Tournament.update_round(
@@ -144,4 +144,4 @@ class TournamentController:
         for player in players:
             score = player.add_final_score(player.points, player.score)
             Player.update_score(player, actors_table, score, user)
-        MenuView.display_final_score(tournament, players)
+        ScoreView.display_final_score(tournament, players)

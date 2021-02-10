@@ -1,7 +1,7 @@
-from view.inter_round_menu import DisplayInterRoundMenu as View
+from view.inter_round_menu import InterRoundMenuView as View
 
 
-class InterRoundController:
+class InterRoundMenu:
     """Class controls all the menus between 2 rounds during a tournament."""
 
     def __init__(self):

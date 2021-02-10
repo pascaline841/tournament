@@ -1,6 +1,6 @@
 from view.display_create_tournament import CreateTournamentView as View
-from view.check_view import CheckView
-from models.tournaments import Tournament as Tournament
+from view.check_input import CheckView
+from models.tournament import Tournament as Tournament
 
 import datetime
 

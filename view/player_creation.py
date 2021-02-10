@@ -1,4 +1,4 @@
-class CreatePlayerView:
+class PlayerCreationView:
     def display(self):
         """Display the creation of a new player."""
         print("\n==================================================")

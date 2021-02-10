@@ -1,14 +1,15 @@
-from view.menu import MenuView as View
-from models.tournaments import Tournament as Tournament
-from models.rounds import Round as Round
+from view.check_input import MenuView as View
+from models.tournament import Tournament as Tournament
+from models.round import Round as Round
 
-from controller.tournament import TournamentController
+from controller.tournament import TournamentDetails
 
 
 class PullTournament:
     """To continue an unfinished tournament."""
 
     def __init__(self):
+        self.view = View()
         self.tournament = Tournament()
         self.round = Round()
 
@@ -40,7 +41,7 @@ class PullTournament:
         rounds_done = len(rounds)
         total_rounds = tournament.nb_rounds
         nb_rounds = total_rounds - rounds_done
-        TournamentController.progress_next_rounds(
+        TournamentDetails.progress_next_rounds(
             tournament,
             players,
             serialized_rounds,
