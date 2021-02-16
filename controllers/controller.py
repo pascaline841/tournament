@@ -4,16 +4,9 @@ from controllers.tournament_creation import TournamentCreation
 from controllers.report import Reports
 from controllers.pull_tournament import PullTournament
 
-from tinydb import TinyDB, Query
-
 
 class MainController:
     """Main class to control the program."""
-
-    tournaments_table = TinyDB("TOURNAMENTS.json")
-    actors_table = TinyDB("ACTORS.json")
-    user = Query()
-    serialized_rounds = []
 
     def __init__(self):
         self.running = True
@@ -29,6 +22,8 @@ class MainController:
 
     def update(self, command: str):
         """Update the application."""
+        command = self.controller.update(command)
+
         if command == "quit":
             print("Program ended ! See you soon !")
             self.running = False
