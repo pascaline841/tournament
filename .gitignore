@@ -1,0 +1,7 @@
+.git
+ACTORS.json
+TOURNAMENTS.json
+.venv
+.vscode
+.mypy_cache
+__pycache__
