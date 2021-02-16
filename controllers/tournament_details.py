@@ -1,9 +1,12 @@
 import datetime
+
+from .inter_round_controller import InterRoundController
+from .tournament_creation import TournamentCreation
+
 from models.player import Player
 from models.round import Round
 from models.tournament import Tournament
-from controllers.inter_round_controller import InterRoundController
-from controllers.tournament_creation import TournamentCreation
+
 from view.score import ScoreView
 
 
@@ -22,7 +25,7 @@ class TournamentDetails:
         tournament,
         players,
         tournaments_table,
-        user,
+        query,
         actors_table,
         serialized_rounds,
     ):
@@ -30,9 +33,6 @@ class TournamentDetails:
         self.progress_first_round(
             tournament,
             players,
-            tournaments_table,
-            user,
-            actors_table,
             serialized_rounds,
         )
         nb_rounds = tournament.nb_rounds
@@ -40,9 +40,6 @@ class TournamentDetails:
             tournament,
             players,
             serialized_rounds,
-            tournaments_table,
-            user,
-            actors_table,
             nb_rounds,
         )
 
@@ -70,9 +67,6 @@ class TournamentDetails:
         self,
         tournament,
         players,
-        tournaments_table,
-        user,
-        actors_table,
         serialized_rounds,
     ):
         """Run the first round."""
@@ -80,8 +74,8 @@ class TournamentDetails:
         round = self.get_first_round(tournament, rounds, players)
         serialized_round = Round.serialized_round(round)
         serialized_rounds.append(serialized_round)
-        Tournament.update_round(tournament, serialized_rounds, tournaments_table, user)
-        Tournament.update_players(tournament, players, tournaments_table, user)
+        Tournament.update_round(tournament, serialized_rounds)
+        Tournament.update_players(tournament, players)
         InterRoundController.run()
 
     def get_next_round(self, tournament, rounds, players):
@@ -117,9 +111,6 @@ class TournamentDetails:
         tournament,
         players,
         serialized_rounds,
-        tournaments_table,
-        user,
-        actors_table,
         nb_rounds,
     ):
         """Run the following rounds."""
@@ -129,10 +120,8 @@ class TournamentDetails:
             round = self.get_next_round(tournament, rounds, players)
             serialized_round = Round.serialized_round(round)
             serialized_rounds.append(serialized_round)
-            Tournament.update_round(
-                tournament, serialized_rounds, tournaments_table, user
-            )
-            Tournament.update_players(tournament, players, tournaments_table, user)
+            Tournament.update_round(tournament, serialized_rounds)
+            Tournament.update_players(tournament, players)
             InterRoundController.run()
             players = sorted(
                 sorted(
@@ -144,7 +133,7 @@ class TournamentDetails:
             )
         for player in players:
             score = player.add_final_score(player.points, player.score)
-            Player.update_score(player, actors_table, score, user)
+            Player.update_score(player, score)
         ScoreView.display_final_score(tournament, players)
 
     @staticmethod

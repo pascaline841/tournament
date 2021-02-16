@@ -1,5 +1,7 @@
-from view.report import ReportView as View
+from tinydb import TinyDB, Query
+
 from view.check_input import CheckView
+from view.report import ReportView as View
 
 
 class Reports:
@@ -11,12 +13,6 @@ class Reports:
 
     def display(self):
         self.view.display()
-
-    def run(self):
-        while self.running:
-            self.display()
-            command = self.get_command()
-            self.update(command)
 
     def get_command(self):
         """Display the reports' menu."""
@@ -34,21 +30,24 @@ class Reports:
         elif command == "5":
             return "general menu"
 
-    @staticmethod
-    def sorted_actors(actors_table):
+    @classmethod
+    def sorted_actors(cls):
         """Sort all actors by alphabetic order or by rank."""
-        actors = actors_table.all()
+        db = TinyDB("ACTORS.json")
+        actors = db.all()
         sorted_choice = CheckView.check_int("Sorted by Last Name (1) or by Rank (2) ? ")
         if sorted_choice == 1:
             return sorted(actors, key=lambda actor: actor["last name"])
         else:
             return sorted(actors, key=lambda actor: actor["rank"])
 
-    @staticmethod
-    def request_players(tournaments_table, user):
+    @classmethod
+    def request_players(cls):
         """Request for a tournament to display its players by alpha order or rank."""
+        db = TinyDB("TOURNAMENT.json")
+        query = Query()
         name = CheckView.check_str("What is it name ? ")
-        command = tournaments_table.search(user["name"] == name)
+        command = db.search(query["name"] == name)
         players = command[0].get("players")
         sorted_choice = CheckView.check_int("Sorted by Last Name (1) or by Rank (2) ? ")
         if sorted_choice == 1:
@@ -56,9 +55,11 @@ class Reports:
         else:
             return sorted(players, key=lambda players: players["rank"])
 
-    @staticmethod
-    def request_rounds(tournaments_table, user):
+    @classmethod
+    def request_rounds(cls):
         """Request for a tournament to display its rounds or matchs."""
+        db = TinyDB("TOURNAMENT.json")
+        query = Query()
         name = CheckView.check_str("What is it name ? ")
-        command = tournaments_table.search(user["name"] == name)
+        command = db.search(query["name"] == name)
         return command[0].get("rounds")

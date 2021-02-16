@@ -1,5 +1,6 @@
-from view.main_menu import MainMenuView as View
 from .abstract import ABSController
+
+from view.main_menu import MainMenuView as View
 
 
 class MainMenu(ABSController):

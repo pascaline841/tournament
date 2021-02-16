@@ -1,5 +1,6 @@
+from tinydb import TinyDB, Query
+
 from models.player import Player
-from models.round import Round
 
 
 class Tournament:
@@ -31,71 +32,34 @@ class Tournament:
             f"DESCRIPTION : {self.description}\n PLAYERS :{self.players}\n"
         )
 
-    def serialized_tournament(self):
-        """Serialize tournament's data."""
-        return {
-            "name": self.name,
-            "location": self.location,
-            "date": self.date,
-            "mode": self.mode,
-            "rounds": self.rounds,
-            "description": self.description,
-            "players": self.players,
-        }
-
-    def deserialized_tournament(serialized_tournament):
-        """Pull tournament's informations from the database to continue it."""
-        name = serialized_tournament["name"]
-        location = serialized_tournament["location"]
-        date = serialized_tournament["date"]
-        mode = serialized_tournament["mode"]
-        rounds = [
-            Round.deserialized_round(serialized_round)
-            for serialized_round in serialized_tournament["rounds"]
-        ]
-        description = serialized_tournament["description"]
-        players = [
-            Player.deserialized_player(serialized_player)
-            for serialized_player in serialized_tournament["players"]
-        ]
-        return Tournament(name, location, date, mode, rounds, description, players)
-
-    def store_data_tournament(self, players, user, actors_table, tournaments_table):
+    def save(self, players):
         """Store tournament's informations in the database."""
+        db = TinyDB("TOURNAMENTS.json")
         serialized_players = []
-        serialized_rounds = []
         for player in players:
-            serialized_player = Player.store_data_actors(player, user, actors_table)
+            serialized_player = Player.save(player)
             serialized_players.append(serialized_player)
-        Tournament.serialized_tournament(self)
-        tournaments_table.insert(
-            {
-                "name": self.name,
-                "location": self.location,
-                "date": self.date,
-                "mode": self.mode,
-                "rounds": serialized_rounds,
-                "description": self.description,
-                "players": serialized_players,
-            }
-        )
+        serialized_tournament = vars(self)
+        db.insert(serialized_tournament)
 
-    def update_round(self, serialized_rounds, tournaments_table, user):
+    def update_round(self, serialized_rounds):
         """Update round's informations in the database."""
-        tournaments_table.update(
-            {"rounds": serialized_rounds}, user["name"] == self.name
-        )
+        db = TinyDB("TOURNAMENTS.json")
+        query = Query()
+        db.update({"rounds": serialized_rounds}, query["name"] == self.name)
 
-    def update_players(self, players, tournaments_table, user):
+    def update_players(self, players):
         """Update players' informations in the database."""
+        db = TinyDB("TOURNAMENTS.json")
+        query = Query()
         serialized_players = []
         for player in players:
-            serialized_player = Player.serialized_player(player)
+            serialized_player = Player.save(player)
             serialized_players.append(serialized_player)
-        tournaments_table.update(
+        db.update(
             {
                 "players": serialized_players,
             },
-            user["name"] == self.name,
+            query["name"] == self.name,
         )
         del serialized_players[:]

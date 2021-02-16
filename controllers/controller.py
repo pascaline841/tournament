@@ -1,8 +1,8 @@
-from controllers.main_menu import MainMenu
-from controllers.player_creation import PlayerCreation
-from controllers.tournament_creation import TournamentCreation
-from controllers.report import Reports
-from controllers.pull_tournament import PullTournament
+from .main_menu import MainMenu
+from .player_creation import PlayerCreation
+from .pull_tournament import PullTournament
+from .tournament_creation import TournamentCreation
+from .report import Reports
 
 
 class MainController:

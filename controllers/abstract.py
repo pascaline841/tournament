@@ -1,7 +1,6 @@
-"""Abstract controller class."""
-
-
 class ABSController:
+    """Abstract controller class."""
+
     def display(self):
         pass
 

@@ -1,8 +1,9 @@
-from view.player_creation import PlayerCreationView as View
-from view.check_input import CheckView
+from .abstract import ABSController
+
 from models.player import Player
 
-from .abstract import ABSController
+from view.player_creation import PlayerCreationView as View
+from view.check_input import CheckView
 
 
 class PlayerCreation(ABSController):

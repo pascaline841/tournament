@@ -1,4 +1,7 @@
-from controllers.report import Report
+from tinydb import TinyDB
+
+from .report import Report
+
 from view.report import ReportView as View
 
 
@@ -16,18 +19,19 @@ class ReportController:
             command = self.get_command()
             self.update(command)
 
-    def update(self, command: str, tournaments_table, actors_table, user):
+    def update(self, command: str):
+        db = TinyDB("TOURNAMENT.json")
         if command == "sorted_actors report":
-            display_report = self.controller.sorted_actors(actors_table)
+            display_report = self.controller.sorted_actors()
             View.report_actors(display_report)
         elif command == "tournaments report":
-            display_report = tournaments_table.all()
+            display_report = db.all()
             View.report_tournaments(display_report)
         elif command == "rounds report":
-            display_report = self.controller.request_rounds(tournaments_table, user)
+            display_report = self.controller.request_rounds()
             View.report_rounds(display_report)
         elif command == "players report":
-            display_report = self.controller.request_players(tournaments_table, user)
+            display_report = self.controller.request_players()
             View.report_players(display_report)
         elif command == "general menu":
             self.running = False

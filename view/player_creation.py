@@ -13,7 +13,6 @@ class PlayerCreationView:
                 gender = input(message).lower()
                 if gender not in ["m", "f"]:
                     raise ValueError
-                print("Gender entered successfully...")
                 boolean = False
                 return gender
             except TypeError:

@@ -1,4 +1,5 @@
 import datetime
+
 from view.score import ScoreView
 
 
@@ -27,20 +28,7 @@ class Round:
 
     def serialized_round(self):
         """Serialize round's data."""
-        return {
-            "name": self.name,
-            "start": self.start,
-            "matchs": self.matchs,
-            "end": self.end,
-        }
-
-    def deserialized_round(serialized_round):
-        """Pull round's informations from the database to continue a tournament."""
-        name = serialized_round["name"]
-        start = serialized_round["start"]
-        matchs = serialized_round["matchs"]
-        end = serialized_round["end"]
-        return Round(name, start, matchs, end)
+        return vars(self)
 
     def first_matchs(self, players):
         """

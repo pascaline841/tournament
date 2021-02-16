@@ -1,15 +1,15 @@
 import datetime
 
-# lib tierce part
+from .abstract import ABSController
 
-from models.tournament import Tournament
 from models.player import Player
+from models.tournament import Tournament
 
-from view.tournament_creation import TournamentCreationView as View
 from view.check_input import CheckView
+from view.tournament_creation import TournamentCreationView as View
 
 
-class TournamentCreation:
+class TournamentCreation(ABSController):
     """Create a new tournament controller."""
 
     def __init__(self):
@@ -17,13 +17,6 @@ class TournamentCreation:
 
     def display(self):
         self.view.display()
-
-    def run(self):
-        self.display()
-        tournament = self.get_command()
-        Tournament.store_data_tournament(
-            tournament, players, user, actors_table, tournaments_table
-        )
 
     def get_command(self):
         """Create a new tournament."""
@@ -43,7 +36,7 @@ class TournamentCreation:
         tournament = Tournament(
             name, location, date, mode, rounds, description, players
         )
-        tournament.save()
+        tournament.save(players)
 
     def create_list_players(self):
         """Create a list of 8 players from the database."""
@@ -77,4 +70,6 @@ class TournamentCreation:
         players.append(Player("Manon", "Tremblay", "f", "13/06/1999", 6, 990))
         players.append(Player("Claire", "Beaulieu", "f", "17/11/1992", 7, 988))
         players.append(Player("Julie", "Stefen", "f", "14/05/1993", 8, 986))
+        for player in players:
+            player.save()  # A REPRENDRE NE MARCHE PAS
         return players

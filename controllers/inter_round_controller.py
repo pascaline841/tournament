@@ -1,5 +1,5 @@
-from controllers.inter_round_menu import InterRoundMenu
-from controllers.player_details import PlayerDetails
+from .inter_round_menu import InterRoundMenu
+from .player_details import PlayerDetails
 
 
 class InterRoundController:
@@ -17,21 +17,11 @@ class InterRoundController:
             command = self.controller.get_command()
             self.update(command)
 
-    def update(
-        self,
-        command: str,
-        actors_table,
-        tournaments_table,
-        user,
-        tournament,
-        players,
-    ):
+    def update(self, command: str, tournament, players):
         """Display menu between rounds."""
         if command == "quit":
             self.running = False
         elif command == "continue tournament":
             pass
         elif command == "update rank":
-            self.controller = PlayerDetails.update_rank_tournament(
-                actors_table, tournaments_table, user, players, tournament
-            )
+            self.controller = PlayerDetails.update_rank_tournament(players, tournament)
