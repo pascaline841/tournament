@@ -2,8 +2,10 @@ from view.player_creation import PlayerCreationView as View
 from view.check_input import CheckView
 from models.player import Player
 
+from .abstract import ABSController
 
-class PlayerCreation:
+
+class PlayerCreation(ABSController):
     """Create a new player controller."""
 
     def __init__(self):
@@ -11,11 +13,6 @@ class PlayerCreation:
 
     def display(self):
         self.view.display()
-
-    def run(self):
-        self.display()
-        player = self.get_command()
-        Player.store_actor_data(player)
 
     def get_command(self):
         """Create a new player."""
@@ -30,4 +27,6 @@ class PlayerCreation:
         rank = CheckView.check_int("Please enter player's rank : ")
         score = CheckView.check_int("Please enter player's total score : ")
         print("\n A player has been created. \n")
-        return Player(first_name, last_name, birth_date, gender, rank, score)
+
+        player = Player(first_name, last_name, birth_date, gender, rank, score)
+        player.save()

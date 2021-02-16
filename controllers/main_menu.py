@@ -1,7 +1,8 @@
 from view.main_menu import MainMenuView as View
+from .abstract import ABSController
 
 
-class MainMenu:
+class MainMenu(ABSController):
     """Display Main menu."""
 
     def __init__(self):

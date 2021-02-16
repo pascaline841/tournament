@@ -1,8 +1,12 @@
+import datetime
+
+# lib tierce part
+
+from models.tournament import Tournament
+from models.player import Player
+
 from view.tournament_creation import TournamentCreationView as View
 from view.check_input import CheckView
-from models.tournament import Tournament as Tournament
-from models.player import Player as Player
-import datetime
 
 
 class TournamentCreation:
@@ -30,41 +34,40 @@ class TournamentCreation:
             "How would you like to play ? bullet / blitz / fast : "
         )
         rounds = []
+
         description = input("Please enter tournament's description : ")
         # CHOOSE BETWEEN AUTO or MANUAL list of players :
         players = self.create_auto_players()
-        # players = self.create_list_players(actors_table, user)
-        return Tournament(name, location, date, mode, rounds, description, players)
+        # players = self.create_list_players()
 
-    def create_list_players(self, actors_table, user):
+        tournament = Tournament(
+            name, location, date, mode, rounds, description, players
+        )
+        tournament.save()
+
+    def create_list_players(self):
         """Create a list of 8 players from the database."""
         players = []
         print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
-        for i in range(1, 9):
-            serialized_player = self.choose_actors(i, actors_table, user)
-            player = Player.deserialized_player(serialized_player)
+
+        for index in range(1, 9):
+            player = self.choose_actors(index)
             players.append(player)
         return players
 
-    @staticmethod
-    def choose_actors(i, actors_table, user):
+    def choose_actors(self, index):
         "Choose a player from the database to play in a tournament."
-        boolean = True
-        while boolean:
-            command = CheckView.check_str(
-                f"PLAYER {i}: What is the FIRST NAME ? "
-            ).capitalize()
+        player = None
+        while not player:
+            message = f"PLAYER {index}: What is the FIRST NAME ? "
+            first_name = CheckView.check_str(message).capitalize()
             try:
-                serialized_player = actors_table.get((user["first name"] == command))
-                if serialized_player is None:
-                    raise TypeError
-                boolean = False
-                return serialized_player
+                player = Player.get(first_name=first_name)
             except TypeError:
                 print("The value entered doesn't match the possible choices !\n")
+        return player
 
-    @staticmethod
-    def create_auto_players():
+    def create_auto_players(self):
         """Create 8 players for a demo."""
         players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
         players.append(Player("William", "Smith", "m", "03/11/1980", 2, 998))
