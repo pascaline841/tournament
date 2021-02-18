@@ -1,7 +1,8 @@
 from .main_menu import MainMenu
-from .player_creation import PlayerCreation
+from .player import PlayerController
 from .pull_tournament import PullTournament
-from .tournament_creation import TournamentCreation
+from .tournament import TournamentController
+
 from .report import Reports
 
 
@@ -28,9 +29,9 @@ class MainController:
             print("Program ended ! See you soon !")
             self.running = False
         elif command == "create player":
-            self.controller = PlayerCreation()
+            self.controller = PlayerController()
         elif command == "create tournament":
-            self.controller = TournamentCreation()
+            self.controller = TournamentController()
         elif command == "pull tournament":
             self.controller = PullTournament()
         elif command == "update rank":

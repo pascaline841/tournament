@@ -30,7 +30,7 @@ class Reports:
             return "main menu"
 
     def update(self, command: str):
-        db = TinyDB("TOURNAMENT.json")
+        db = TinyDB("TOURNAMENTS.json")
         if command == "sorted_actors report":
             display_report = self.sorted_actors()
             View.report_actors(display_report)
@@ -60,7 +60,7 @@ class Reports:
     @classmethod
     def request_players(cls):
         """Request for a tournament to display its players by alpha order or rank."""
-        db = TinyDB("TOURNAMENT.json")
+        db = TinyDB("TOURNAMENTS.json")
         query = Query()
         name = CheckView.check_str("What is it name ? ")
         command = db.search(query["name"] == name)
@@ -74,7 +74,7 @@ class Reports:
     @classmethod
     def request_rounds(cls):
         """Request for a tournament to display its rounds or matchs."""
-        db = TinyDB("TOURNAMENT.json")
+        db = TinyDB("TOURNAMENTS.json")
         query = Query()
         name = CheckView.check_str("What is it name ? ")
         command = db.search(query["name"] == name)

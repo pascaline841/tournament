@@ -33,6 +33,7 @@ class Round:
     def first_matchs(self, players):
         """
         First Round : The players are ranked by best ranking.
+        index = number of matchs by round = 4
         The matchs are :
         player[0] vs players[4]
         player[1] vs players[5]
@@ -40,47 +41,18 @@ class Round:
         player[3] vs players[5].
         """
         players = sorted(players, key=lambda player: player.rank)
-        match1 = (
-            (
-                players[0].first_name,
-                players[0].points,
-            ),
-            (
-                players[4].first_name,
-                players[4].points,
-            ),
-        )
-        match2 = (
-            (
-                players[1].first_name,
-                players[1].points,
-            ),
-            (
-                players[5].first_name,
-                players[5].points,
-            ),
-        )
-        match3 = (
-            (
-                players[2].first_name,
-                players[2].points,
-            ),
-            (
-                players[6].first_name,
-                players[6].points,
-            ),
-        )
-        match4 = (
-            (
-                players[3].first_name,
-                players[3].points,
-            ),
-            (
-                players[7].first_name,
-                players[7].points,
-            ),
-        )
-        self.matchs.extend([match1, match2, match3, match4])
+        for index in range(4):
+            match = (
+                (
+                    players[index].first_name,
+                    players[index].points,
+                ),
+                (
+                    players[index + 4].first_name,
+                    players[index + 4].points,
+                ),
+            )
+            self.matchs.append(match)
         return self.matchs
 
     def get_opponents(self, players):

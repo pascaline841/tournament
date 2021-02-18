@@ -1,4 +1,4 @@
-class TournamentCreationView:
+class TournamentView:
     def display(self):
         """Display the creation of a new tournament."""
         print("\n==================================================")

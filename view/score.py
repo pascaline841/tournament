@@ -14,7 +14,7 @@ class ScoreView:
         boolean = True
         while boolean:
             try:
-                add_point = input(message)
+                add_point = int(input(message))
                 if add_point not in [0, 0.5, 1]:
                     raise ValueError
                 boolean = False

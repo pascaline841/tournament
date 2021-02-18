@@ -1,6 +1,6 @@
 from tinydb import TinyDB, Query
 
-from .tournament_details import TournamentDetails
+from .tournament import TournamentController
 
 from models.round import Round
 from models.tournament import Tournament
@@ -14,9 +14,8 @@ class PullTournament:
     def __init__(self):
         self.view = View()
 
-    def run(self):
-        serialized_tournament = self.get_command()
-        self.update(serialized_tournament)
+    def display(self):
+        self.view.display(self)
 
     def get_command(self):
         "Choose a uncompleted tournament in the database."
@@ -47,7 +46,7 @@ class PullTournament:
         rounds_done = len(rounds)
         total_rounds = tournament.nb_rounds
         nb_rounds = total_rounds - rounds_done
-        TournamentDetails.progress_next_rounds(
+        self.controller = TournamentController.progress_next_rounds(
             tournament,
             players,
             serialized_rounds,
