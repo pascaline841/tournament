@@ -71,5 +71,5 @@ class TournamentCreation(ABSController):
         players.append(Player("Claire", "Beaulieu", "f", "17/11/1992", 7, 988))
         players.append(Player("Julie", "Stefen", "f", "14/05/1993", 8, 986))
         for player in players:
-            player.save()  # A REPRENDRE NE MARCHE PAS
+            player.save()
         return players

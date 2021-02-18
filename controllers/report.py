@@ -8,7 +8,6 @@ class Reports:
     """Display report menu."""
 
     def __init__(self):
-        self.running = True
         self.view = View()
 
     def display(self):
@@ -28,7 +27,24 @@ class Reports:
         elif command == "4":
             return "players report"
         elif command == "5":
-            return "general menu"
+            return "main menu"
+
+    def update(self, command: str):
+        db = TinyDB("TOURNAMENT.json")
+        if command == "sorted_actors report":
+            display_report = self.sorted_actors()
+            View.report_actors(display_report)
+        elif command == "tournaments report":
+            display_report = db.all()
+            View.report_tournaments(display_report)
+        elif command == "rounds report":
+            display_report = self.request_rounds()
+            View.report_rounds(display_report)
+        elif command == "players report":
+            display_report = self.request_players()
+            View.report_players(display_report)
+        elif command == "main menu":
+            self.running = False
 
     @classmethod
     def sorted_actors(cls):
@@ -37,7 +53,7 @@ class Reports:
         actors = db.all()
         sorted_choice = CheckView.check_int("Sorted by Last Name (1) or by Rank (2) ? ")
         if sorted_choice == 1:
-            return sorted(actors, key=lambda actor: actor["last name"])
+            return sorted(actors, key=lambda actor: actor["last_name"])
         else:
             return sorted(actors, key=lambda actor: actor["rank"])
 
@@ -51,7 +67,7 @@ class Reports:
         players = command[0].get("players")
         sorted_choice = CheckView.check_int("Sorted by Last Name (1) or by Rank (2) ? ")
         if sorted_choice == 1:
-            return sorted(players, key=lambda players: players["last name"])
+            return sorted(players, key=lambda players: players["last_name"])
         else:
             return sorted(players, key=lambda players: players["rank"])
 

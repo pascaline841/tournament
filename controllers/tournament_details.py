@@ -24,9 +24,6 @@ class TournamentDetails:
         self,
         tournament,
         players,
-        tournaments_table,
-        query,
-        actors_table,
         serialized_rounds,
     ):
         print(tournament)
@@ -43,14 +40,14 @@ class TournamentDetails:
             nb_rounds,
         )
 
-    def get_first_round(self, tournament, rounds, players):
+    def get_first_round(self, rounds, players):
         """Create the first round of a tournament."""
         players = sorted(players, key=lambda player: player.rank)
         round = Round(
             "Round 1", datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), matchs=[]
         )
-        for i in range(4):
-            print(f"{players[i].first_name} vs {players[i+4].first_name}")
+        for index in range(4):
+            print(f"{players[index].first_name} vs {players[index+4].first_name}")
         self.get_first_opponents(players)
         for player in players:
             add_point = ScoreView.check_score(
@@ -71,7 +68,7 @@ class TournamentDetails:
     ):
         """Run the first round."""
         rounds = tournament.rounds
-        round = self.get_first_round(tournament, rounds, players)
+        round = self.get_first_round(rounds, players)
         serialized_round = Round.serialized_round(round)
         serialized_rounds.append(serialized_round)
         Tournament.update_round(tournament, serialized_rounds)
