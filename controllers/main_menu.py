@@ -1,6 +1,9 @@
+from tinydb import TinyDB, Query
+
 from .abstract import ABSController
 
 from view.main_menu import MainMenuView as View
+from view.check_input import CheckView
 
 
 class MainMenu(ABSController):
@@ -28,3 +31,17 @@ class MainMenu(ABSController):
             return "display reports"
         elif command == "6":
             return "quit"
+
+    @staticmethod
+    def update_rank(cls):
+        db = TinyDB("ACTORS.json")
+        query = Query()
+        """Update actor's rank in the database."""
+        first_name = CheckView.check_str("First name ? ").capitalize()
+        last_name = CheckView.check_str("Last name ? ").capitalize()
+        new_rank = CheckView.check_int("Please enter player's  new rank : ")
+        db.update(
+            {"rank": new_rank},
+            query["first_name"] == first_name and query["last_name"] == last_name,
+        )
+        print("Rank updated !")

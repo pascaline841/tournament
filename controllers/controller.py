@@ -12,7 +12,6 @@ class MainController:
     def __init__(self):
         self.running = True
         self.controller = MainMenu()
-        self.messages = []
 
     def run(self):
         """Run the program."""
@@ -24,7 +23,6 @@ class MainController:
     def update(self, command: str):
         """Update the application."""
         command = self.controller.update(command)
-
         if command == "quit":
             print("Program ended ! See you soon !")
             self.running = False
@@ -35,8 +33,6 @@ class MainController:
         elif command == "pull tournament":
             self.controller = PullTournament()
         elif command == "update rank":
-            self.controller = UpdateRank()
+            self.controller.update_rank()
         elif command == "display reports":
             self.controller = Reports()
-        else:
-            print("An error occurred.")

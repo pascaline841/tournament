@@ -44,7 +44,7 @@ class Reports:
             display_report = self.request_players()
             View.report_players(display_report)
         elif command == "main menu":
-            self.running = False
+            self.running = False  # NE MARCHE PAS
 
     @classmethod
     def sorted_actors(cls):

@@ -1,14 +1,13 @@
 import datetime
 
 from .abstract import ABSController
-from .inter_round import InterRoundController
+from .player import PlayerController
 
 from models.player import Player
 from models.round import Round
 from models.tournament import Tournament
 
 from view.check_input import CheckView
-from view.score import ScoreView
 from view.tournament import TournamentView as View
 
 
@@ -39,13 +38,14 @@ class TournamentController(ABSController):
         tournament = Tournament(
             name, location, date, mode, rounds, description, players
         )
-        # tournament.save() NE MARCHE PAS
+        # tournament.save()  # NE MARCHE PAS / ERROR
         print(tournament)
         self.progress_first_round(
             tournament,
             players,
             serialized_rounds,
         )
+
         nb_rounds = tournament.nb_rounds
         self.progress_next_rounds(
             tournament,
@@ -54,11 +54,23 @@ class TournamentController(ABSController):
             nb_rounds,
         )
 
+    def update(self, players, tournament):
+        """Display the Inter Menu between 2 rounds during a tournament."""
+        self.view.display_menu()
+        command = view.check_available_three_choices(
+            "Enter your command (1, 2, 3) : \n"
+        )
+        if command == "1":
+            pass
+        elif command == "2":
+            PlayerController.update_rank_tournament(players, tournament)
+        elif command == "3":
+             return self.running = False  #NE MARCHE PAS, RECOMMENCE LA BOUCLE/NO ERROR
+
     def create_list_players(self):
         """Create a list of 8 players from the database."""
         players = []
         print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
-
         for index in range(1, 9):
             player = self.choose_actors(index)
             players.append(player)
@@ -92,15 +104,18 @@ class TournamentController(ABSController):
 
     def get_first_round(self, rounds, players):
         """Create the first round of a tournament."""
-        players = sorted(players, key=lambda player: player.rank)
+        print(f"\n*******************ROUND {len(rounds)+1}******************\n")
         round = Round(
-            "Round 1", datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), matchs=[]
+            f"Round {len(rounds)+ 1}",
+            datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            matchs=[],
         )
+        players = sorted(players, key=lambda player: player.rank)
         for index in range(4):
             print(f"{players[index].first_name} vs {players[index+4].first_name}")
         self.get_first_opponents(players)
         for player in players:
-            add_point = ScoreView.check_score(
+            add_point = TournamentView.check_score(
                 f"Please enter {player.first_name}'s score : "
             )
             player.add_points(add_point)
@@ -121,9 +136,9 @@ class TournamentController(ABSController):
         round = self.get_first_round(rounds, players)
         serialized_round = Round.serialized_round(round)
         serialized_rounds.append(serialized_round)
-        Tournament.update_round(tournament, serialized_rounds)
-        Tournament.update_players(tournament, players)
-        self.controller = InterRoundController
+        tournament.update_round(serialized_rounds)
+        tournament.update_players(players)
+        self.update(players, tournament)
 
     def get_next_round(self, tournament, rounds, players):
         """Create Round 2, 3 , 4."""
@@ -144,7 +159,7 @@ class TournamentController(ABSController):
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = ScoreView.check_score(
+            add_point = TournamentView.check_score(
                 f"Please enter {player.first_name}'s score : "
             )
             player.add_points(add_point)
@@ -167,9 +182,9 @@ class TournamentController(ABSController):
             round = self.get_next_round(tournament, rounds, players)
             serialized_round = Round.serialized_round(round)
             serialized_rounds.append(serialized_round)
-            Tournament.update_round(tournament, serialized_rounds)
-            Tournament.update_players(tournament, players)
-            self.controller = InterRoundController
+            tournament.update_round(serialized_rounds)
+            tournament.update_players(players)
+            self.update(players, tournament)
             players = sorted(
                 sorted(
                     players,
@@ -181,7 +196,7 @@ class TournamentController(ABSController):
         for player in players:
             score = player.add_final_score(player.points, player.score)
             Player.update_score(player, score)
-        ScoreView.display_final_score(tournament, players)
+        TournamentView.display_final_score(tournament, players)
 
     @staticmethod
     def get_first_opponents(players):

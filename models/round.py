@@ -1,6 +1,6 @@
 import datetime
 
-from view.score import ScoreView
+from view.tournament import TournamentView as View
 
 
 class Round:
@@ -84,6 +84,6 @@ class Round:
                 self.matchs.append(match)
                 self.players_paired.append(players[i].first_name)
                 self.players_paired.append(players[j].first_name)
-                ScoreView.display_next_round(players, i, j)
+                View.display_next_round(players, i, j)
             i += 1
         return self.matchs

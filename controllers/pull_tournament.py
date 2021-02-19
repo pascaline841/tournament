@@ -29,16 +29,11 @@ class PullTournament:
                 if serialized_tournament is None:
                     raise TypeError
                 boolean = False
-                return serialized_tournament
             except TypeError:
                 print("The value entered doesn't match any tournament !\n")
-
-    def update(self, serialized_tournament: str):
-        """To continue an unfinished tournament."""
-        serialized_rounds = []
-        tournament = Tournament.deserialized_tournament(serialized_tournament)
+        tournament = Tournament(serialized_tournament)
         rounds = tournament.rounds
-
+        serialized_rounds = []
         for round in rounds:
             serialized_round = Round.serialized_round(round)
             serialized_rounds.append(serialized_round)

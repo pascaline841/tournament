@@ -60,7 +60,7 @@ class Player:
         """Get a player from the database if exists."""
         db = TinyDB("ACTORS.json")
         query = Query()
-        player_data = db.get(query["first name"] == first_name)
+        player_data = db.get(query["first_name"] == first_name)
         if player_data:
             return Player(**player_data)
         return None
@@ -71,8 +71,8 @@ class Player:
         query = Query()
         db.update(
             {"rank": self.rank, "score": self.score},
-            query["first name"] == self.first_name
-            and query["last name"] == self.last_name,
+            query["first_name"] == self.first_name
+            and query["last_name"] == self.last_name,
         )
         serialized_player = vars(self)
         if serialized_player not in db:
@@ -84,8 +84,8 @@ class Player:
         query = Query()
         db.update(
             {"score": score},
-            query["first name"] == self.first_name
-            and query["last name"] == self.last_name,
+            query["first_name"] == self.first_name
+            and query["last_name"] == self.last_name,
         )
 
     def add_points(self, add_point):
