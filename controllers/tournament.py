@@ -33,12 +33,13 @@ class TournamentController(ABSController):
         description = input("Please enter tournament's description : ")
         # CHOOSE BETWEEN AUTO or MANUAL list of players :
         players = self.create_auto_players()
-        # players = self.create_list_players()
 
+        # players = self.create_list_players()
+        players = Player.list()
         tournament = Tournament(
             name, location, date, mode, rounds, description, players
         )
-        # tournament.save()  # NE MARCHE PAS / ERROR
+        tournament.save()  # NE MARCHE PAS / ERROR
         print(tournament)
         self.progress_first_round(
             tournament,
@@ -56,8 +57,8 @@ class TournamentController(ABSController):
 
     def update(self, players, tournament):
         """Display the Inter Menu between 2 rounds during a tournament."""
-        self.view.display_menu()
-        command = view.check_available_three_choices(
+        self.View.display_menu()
+        command = View.check_available_three_choices(
             "Enter your command (1, 2, 3) : \n"
         )
         if command == "1":
@@ -65,7 +66,7 @@ class TournamentController(ABSController):
         elif command == "2":
             PlayerController.update_rank_tournament(players, tournament)
         elif command == "3":
-             return self.running = False  #NE MARCHE PAS, RECOMMENCE LA BOUCLE/NO ERROR
+            self.running = False  # NE MARCHE PAS, RECOMMENCE LA BOUCLE/NO ERROR
 
     def create_list_players(self):
         """Create a list of 8 players from the database."""
@@ -84,6 +85,7 @@ class TournamentController(ABSController):
             first_name = CheckView.check_str(message).capitalize()
             try:
                 player = Player.get(first_name=first_name)
+                player.deserialized_player()
             except TypeError:
                 print("The value entered doesn't match the possible choices !\n")
         return player
@@ -115,9 +117,7 @@ class TournamentController(ABSController):
             print(f"{players[index].first_name} vs {players[index+4].first_name}")
         self.get_first_opponents(players)
         for player in players:
-            add_point = TournamentView.check_score(
-                f"Please enter {player.first_name}'s score : "
-            )
+            add_point = View.check_score(f"Please enter {player.first_name}'s score : ")
             player.add_points(add_point)
         Round.first_matchs(round, players)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
@@ -159,7 +159,7 @@ class TournamentController(ABSController):
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = TournamentView.check_score(
+            add_point = View.check_score(
                 f"Please enter {player.first_name}'s score : "
             )
             player.add_points(add_point)
@@ -196,7 +196,7 @@ class TournamentController(ABSController):
         for player in players:
             score = player.add_final_score(player.points, player.score)
             Player.update_score(player, score)
-        TournamentView.display_final_score(tournament, players)
+        View.display_final_score(tournament, players)
 
     @staticmethod
     def get_first_opponents(players):
