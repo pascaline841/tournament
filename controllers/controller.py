@@ -1,9 +1,8 @@
 from .main_menu import MainMenu
 from .player import PlayerController
 from .pull_tournament import PullTournament
-from .tournament import TournamentController
-
 from .report import Reports
+from .tournament import TournamentController
 
 
 class MainController:
@@ -36,3 +35,5 @@ class MainController:
             self.controller.update_rank()
         elif command == "display reports":
             self.controller = Reports()
+        elif command == "main menu":
+            self.controller = MainMenu()

@@ -41,7 +41,7 @@ class Player:
             f"Points : {self.points}\n"
         )
 
-    def serialized_player(self):
+    def serialized(self):
         """Serialize player's data."""
         return vars(self)
 
@@ -74,9 +74,9 @@ class Player:
             query["first_name"] == self.first_name
             and query["last_name"] == self.last_name,
         )
-        serialized_player = vars(self)
-        if serialized_player not in db:
-            db.insert(serialized_player)
+        serialized = vars(self)
+        if serialized not in db:
+            db.insert(serialized)
 
     def update_score(self, score):
         """Update actor's score in the database."""

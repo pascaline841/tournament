@@ -1,21 +1,20 @@
 from tinydb import TinyDB, Query
 
+from .check_input import CheckInputController as CheckInput
 from .tournament import TournamentController
 
 from models.round import Round
 from models.tournament import Tournament
-
-from view.check_input import CheckView as View
 
 
 class PullTournament:
     """To continue an unfinished tournament."""
 
     def __init__(self):
-        self.view = View()
+        self.view = CheckInput()
 
     def display(self):
-        self.view.display(self)
+        pass
 
     def get_command(self):
         "Choose a uncompleted tournament in the database."
@@ -23,7 +22,7 @@ class PullTournament:
         query = Query()
         boolean = True
         while boolean:
-            name = View.check_str("Name of an UNcompleted tournament ? ")
+            name = self.view.check_str("Name of an UNcompleted tournament ? ")
             try:
                 serialized_tournament = db.get(query["name"] == name)
                 if serialized_tournament is None:

@@ -11,23 +11,6 @@ class ReportView:
         print("4 - List of all players for a tournament")
         print("5 - return to the general menu")
 
-    @staticmethod
-    def check_available_choices(message):
-        """Check the input value when the choices are from 1 to 5."""
-        boolean = True
-        while boolean:
-            try:
-                command = input(message)
-                if command not in ["1", "2", "3", "4", "5"]:
-                    raise ValueError
-                print(f"Your command ({command}) has been successfully entered...\n")
-                boolean = False
-                return command
-            except ValueError:
-                print("The value entered doesn't match the possible choices !\n")
-            except TypeError:
-                print("Incorrect value, it has to be a positive number !")
-
     def report_actors(display_report):
         """Display a list of all the actors."""
         for actor in display_report:

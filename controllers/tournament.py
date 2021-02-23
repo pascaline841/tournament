@@ -1,13 +1,13 @@
 import datetime
 
 from .abstract import ABSController
+from .check_input import CheckInputController as CheckInput
 from .player import PlayerController
 
 from models.player import Player
 from models.round import Round
 from models.tournament import Tournament
 
-from view.check_input import CheckView
 from view.tournament import TournamentView as View
 
 
@@ -22,10 +22,10 @@ class TournamentController(ABSController):
 
     def get_command(self):
         """Create a new tournament."""
-        name = CheckView.check_str("Please enter tournament's name : ")
-        location = CheckView.check_str("Please enter tournament's location : ")
+        name = CheckInput.check_str("Please enter tournament's name : ")
+        location = CheckInput.check_str("Please enter tournament's location : ")
         date = datetime.date.today().strftime("%d/%m/%Y")
-        mode = CheckView.check_str(
+        mode = CheckInput.check_str(
             "How would you like to play ? bullet / blitz / fast : "
         )
         rounds = []
@@ -39,7 +39,7 @@ class TournamentController(ABSController):
         tournament = Tournament(
             name, location, date, mode, rounds, description, players
         )
-        tournament.save()  # NE MARCHE PAS / ERROR
+        tournament.save()
         print(tournament)
         self.progress_first_round(
             tournament,
@@ -54,11 +54,12 @@ class TournamentController(ABSController):
             serialized_rounds,
             nb_rounds,
         )
+        return "main menu"
 
     def update(self, players, tournament):
         """Display the Inter Menu between 2 rounds during a tournament."""
-        self.View.display_menu()
-        command = View.check_available_three_choices(
+        self.view.display_menu()
+        command = CheckInput.check_available_three_choices(
             "Enter your command (1, 2, 3) : \n"
         )
         if command == "1":
@@ -66,7 +67,7 @@ class TournamentController(ABSController):
         elif command == "2":
             PlayerController.update_rank_tournament(players, tournament)
         elif command == "3":
-            self.running = False  # NE MARCHE PAS, RECOMMENCE LA BOUCLE/NO ERROR
+            return "quit"
 
     def create_list_players(self):
         """Create a list of 8 players from the database."""
@@ -82,10 +83,10 @@ class TournamentController(ABSController):
         player = None
         while not player:
             message = f"PLAYER {index}: What is the FIRST NAME ? "
-            first_name = CheckView.check_str(message).capitalize()
+            first_name = CheckInput.check_str(message).capitalize()
             try:
                 player = Player.get(first_name=first_name)
-                player.deserialized_player()
+                player.deserialized()
             except TypeError:
                 print("The value entered doesn't match the possible choices !\n")
         return player
@@ -117,7 +118,9 @@ class TournamentController(ABSController):
             print(f"{players[index].first_name} vs {players[index+4].first_name}")
         self.get_first_opponents(players)
         for player in players:
-            add_point = View.check_score(f"Please enter {player.first_name}'s score : ")
+            add_point = CheckInput.check_score(
+                f"Please enter {player.first_name}'s score : "
+            )
             player.add_points(add_point)
         Round.first_matchs(round, players)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
@@ -159,7 +162,7 @@ class TournamentController(ABSController):
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = View.check_score(
+            add_point = CheckInput.check_score(
                 f"Please enter {player.first_name}'s score : "
             )
             player.add_points(add_point)
@@ -198,8 +201,7 @@ class TournamentController(ABSController):
             Player.update_score(player, score)
         View.display_final_score(tournament, players)
 
-    @staticmethod
-    def get_first_opponents(players):
+    def get_first_opponents(self, players):
         """
         First Round : The players are ranked by best ranking.
         Add oppponent's name to the player's opponents list.

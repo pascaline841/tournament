@@ -35,7 +35,17 @@ class Tournament:
     def save(self):
         """Store tournament's informations in the database."""
         db = TinyDB("TOURNAMENTS.json")
-        serialized_tournament = vars(self)
+        players = [player.serialized() for player in self.players]
+        tournament_copy = Tournament(
+            self.name,
+            self.location,
+            self.date,
+            self.mode,
+            self.rounds,
+            self.description,
+            players=players,
+        )
+        serialized_tournament = vars(tournament_copy)
         db.insert(serialized_tournament)
 
     def update_round(self, serialized_rounds):
@@ -50,7 +60,7 @@ class Tournament:
         query = Query()
         serialized_players = []
         for player in players:
-            serialized_player = Player.serialized_player(player)
+            serialized_player = Player.serialized(player)
             serialized_players.append(serialized_player)
         db.update(
             {
