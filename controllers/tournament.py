@@ -2,6 +2,7 @@ import datetime
 
 from .abstract import ABSController
 from .check_input import CheckInputController as CheckInput
+from .main_menu import MainMenu
 from .player import PlayerController
 
 from models.player import Player
@@ -35,7 +36,8 @@ class TournamentController(ABSController):
         players = self.create_auto_players()
 
         # players = self.create_list_players()
-        players = Player.list()
+
+        # players = Player.list() INSERE TOUS LES ACTEURS DANS LE TOURNOIS
         tournament = Tournament(
             name, location, date, mode, rounds, description, players
         )
@@ -66,8 +68,8 @@ class TournamentController(ABSController):
             pass
         elif command == "2":
             PlayerController.update_rank_tournament(players, tournament)
-        elif command == "3":
-            return "quit"
+        elif command == "3":  # NE MARCHE PAS
+            MainMenu()
 
     def create_list_players(self):
         """Create a list of 8 players from the database."""
@@ -84,10 +86,8 @@ class TournamentController(ABSController):
         while not player:
             message = f"PLAYER {index}: What is the FIRST NAME ? "
             first_name = CheckInput.check_str(message).capitalize()
-            try:
-                player = Player.get(first_name=first_name)
-                player.deserialized()
-            except TypeError:
+            player = Player.get(first_name=first_name)
+            if not player:
                 print("The value entered doesn't match the possible choices !\n")
         return player
 

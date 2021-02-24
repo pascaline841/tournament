@@ -46,16 +46,6 @@ class Player:
         return vars(self)
 
     @classmethod
-    def list(cls):
-        """List of players for a demo."""
-        db = TinyDB("ACTORS.json")
-        players = []
-        for player_data in db.all():
-            player = Player(**player_data)
-            players.append(player)
-        return players
-
-    @classmethod
     def get(cls, first_name):
         """Get a player from the database if exists."""
         db = TinyDB("ACTORS.json")
@@ -74,9 +64,9 @@ class Player:
             query["first_name"] == self.first_name
             and query["last_name"] == self.last_name,
         )
-        serialized = vars(self)
-        if serialized not in db:
-            db.insert(serialized)
+        serialized_player = vars(self)
+        if serialized_player not in db:
+            db.insert(serialized_player)
 
     def update_score(self, score):
         """Update actor's score in the database."""
