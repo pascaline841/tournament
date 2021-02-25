@@ -29,17 +29,16 @@ class TournamentController(ABSController):
         mode = CheckInput.check_str(
             "How would you like to play ? bullet / blitz / fast : "
         )
+        nb_rounds = 4
         rounds = []
         serialized_rounds = []
         description = input("Please enter tournament's description : ")
         # CHOOSE BETWEEN AUTO or MANUAL list of players :
         players = self.create_auto_players()
-
         # players = self.create_list_players()
 
-        # players = Player.list() INSERE TOUS LES ACTEURS DANS LE TOURNOIS
         tournament = Tournament(
-            name, location, date, mode, rounds, description, players
+            name, location, date, mode, nb_rounds, rounds, description, players
         )
         tournament.save()
         print(tournament)
@@ -56,7 +55,10 @@ class TournamentController(ABSController):
             serialized_rounds,
             nb_rounds,
         )
-        return "main menu"
+        return "main menu"  # NE MARCHE PAS/
+        # File "controllers\controller.py", line 24,
+        # command = self.controller.update(command)
+        # TypeError: update() missing 1 required positional argument: 'tournament'
 
     def update(self, players, tournament):
         """Display the Inter Menu between 2 rounds during a tournament."""
@@ -68,8 +70,8 @@ class TournamentController(ABSController):
             pass
         elif command == "2":
             PlayerController.update_rank_tournament(players, tournament)
-        elif command == "3":  # NE MARCHE PAS
-            MainMenu()
+        elif command == "3":  # NE MARCHE PAS, continue le tournois
+            return "main menu"
 
     def create_list_players(self):
         """Create a list of 8 players from the database."""
@@ -137,7 +139,7 @@ class TournamentController(ABSController):
         """Run the first round."""
         rounds = tournament.rounds
         round = self.get_first_round(rounds, players)
-        serialized_round = Round.serialized_round(round)
+        serialized_round = Round.serialized(round)
         serialized_rounds.append(serialized_round)
         tournament.update_round(serialized_rounds)
         tournament.update_players(players)
@@ -183,7 +185,7 @@ class TournamentController(ABSController):
             nb_rounds -= 1
             rounds = tournament.rounds
             round = self.get_next_round(tournament, rounds, players)
-            serialized_round = Round.serialized_round(round)
+            serialized_round = Round.serialized(round)
             serialized_rounds.append(serialized_round)
             tournament.update_round(serialized_rounds)
             tournament.update_players(players)

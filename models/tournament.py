@@ -1,12 +1,15 @@
 from tinydb import TinyDB, Query
 
-from models.player import Player
+from .player import Player
+from .round import Round
 
 
 class Tournament:
     """Define the characteristics of a chess tournament."""
 
-    def __init__(self, name, location, date, mode, rounds, description, players):
+    def __init__(
+        self, name, location, date, mode, nb_rounds, rounds, description, players
+    ):
         """
         Name :
         Location :
@@ -41,12 +44,43 @@ class Tournament:
             self.location,
             self.date,
             self.mode,
+            self.nb_rounds,
             self.rounds,
             self.description,
             players=players,
         )
         serialized_tournament = vars(tournament_copy)
         db.insert(serialized_tournament)
+
+    @classmethod
+    def deserialized(cls, serialized_tournament):
+        """Pull tournament's informations from the database to continue it."""
+        name = serialized_tournament["name"]
+        location = serialized_tournament["location"]
+        date = serialized_tournament["date"]
+        mode = serialized_tournament["mode"]
+        rounds = [
+            Round.deserialized(serialized_round)
+            for serialized_round in serialized_tournament["rounds"]
+        ]
+        nb_rounds = serialized_tournament["nb_rounds"] - len(rounds)
+        description = serialized_tournament["description"]
+        players = [
+            Player.deserialized(serialized_player)
+            for serialized_player in serialized_tournament["players"]
+        ]
+        return Tournament(
+            name, location, date, mode, nb_rounds, rounds, description, players
+        )
+
+    @classmethod
+    def get(cls, name):
+        db = TinyDB("TOURNAMENTS.json")
+        query = Query()
+        serialized_tournament = db.get(query["name"] == name)
+        if serialized_tournament:
+            return serialized_tournament
+        return None
 
     def update_round(self, serialized_rounds):
         """Update round's informations in the database."""

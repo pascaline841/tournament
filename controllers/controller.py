@@ -35,5 +35,3 @@ class MainController:
             self.controller.update_rank()
         elif command == "display reports":
             self.controller = Reports()
-        elif command == "main menu":
-            self.controller = MainMenu()

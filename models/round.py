@@ -26,7 +26,7 @@ class Round:
             f"MATCHS : {self.matchs} "
         )
 
-    def serialized_round(self):
+    def serialized(self):
         """Serialize round's data."""
         return vars(self)
 

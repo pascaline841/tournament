@@ -46,6 +46,16 @@ class Player:
         return vars(self)
 
     @classmethod
+    def list(cls):
+        """List of players for a demo."""
+        db = TinyDB("ACTORS.json")
+        players = []
+        for player_data in db.all():
+            player = Player(**player_data)
+            players.append(player)
+        return players
+
+    @classmethod
     def get(cls, first_name):
         """Get a player from the database if exists."""
         db = TinyDB("ACTORS.json")
