@@ -23,7 +23,7 @@ pip install -r requirements
 ## Use FLAKE8
 In order to generate a flake8 report, run the following command :
 ```
-flake8 --format=html --htmldir=flake-report --exclude=env
+flake8 --ignore=E501,W503 --format=html --htmldir=flake-report --exclude=venv
 ```
 Open the html file into the flake-report repertory to show the report.
 
@@ -32,7 +32,7 @@ Run
 ```
 python main.py
 ```
-1. Add 8 players. <br>
+1. Create 8 players. <br>
 2. Create a new tournament. <br>
 3. The computer generates pairs of players for the first round. <br>
 4. When the round is finished, enter the results. <br>

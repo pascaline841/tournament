@@ -2,7 +2,6 @@ import datetime
 
 from .abstract import ABSController
 from .check_input import CheckInputController as CheckInput
-from .main_menu import MainMenu
 from .player import PlayerController
 
 from models.player import Player
