@@ -33,9 +33,9 @@ class MainMenu(ABSController):
             return "quit"
 
     def update_rank(self):
-        db = TinyDB("ACTORS.json")
+        db = TinyDB("USERS.json")
         query = Query()
-        """Update actor's rank in the database."""
+        """Update user's rank in the database."""
         first_name = CheckInput.check_str("First name ? ").capitalize()
         last_name = CheckInput.check_str("Last name ? ").capitalize()
         new_rank = CheckInput.check_int("Please enter player's  new rank : ")

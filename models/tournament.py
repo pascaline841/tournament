@@ -79,7 +79,7 @@ class Tournament:
         query = Query()
         serialized_tournament = db.get(query["name"] == name)
         if serialized_tournament:
-            return serialized_tournament
+            return serialized_tournament.deserialized()
         return None
 
     def update_round(self, serialized_rounds):

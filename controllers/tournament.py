@@ -54,10 +54,7 @@ class TournamentController(ABSController):
             serialized_rounds,
             nb_rounds,
         )
-        return "main menu"  # NE MARCHE PAS/
-        # File "controllers\controller.py", line 24,
-        # command = self.controller.update(command)
-        # TypeError: update() missing 1 required positional argument: 'tournament'
+        return "main menu"
 
     def update(self, players, tournament):
         """Display the Inter Menu between 2 rounds during a tournament."""
@@ -69,7 +66,7 @@ class TournamentController(ABSController):
             pass
         elif command == "2":
             PlayerController.update_rank_tournament(players, tournament)
-        elif command == "3":  # NE MARCHE PAS, continue le tournois
+        elif command == "3":
             return "main menu"
 
     def create_list_players(self):
@@ -115,7 +112,7 @@ class TournamentController(ABSController):
             matchs=[],
         )
         players = sorted(players, key=lambda player: player.rank)
-        for index in range(4):
+        for index in range(len(nb_rounds)):
             print(f"{players[index].first_name} vs {players[index+4].first_name}")
         self.get_first_opponents(players)
         for player in players:
@@ -123,7 +120,7 @@ class TournamentController(ABSController):
                 f"Please enter {player.first_name}'s score : "
             )
             player.add_points(add_point)
-        Round.first_matchs(round, players)
+        Round.display_first_matchs(round, players)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
         print(f"\n{round}")

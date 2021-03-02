@@ -18,13 +18,12 @@ class PullTournament(TournamentController):
 
     def get_command(self):
         "Choose a uncompleted tournament in the database."
-        serialized_tournament = None
-        while not serialized_tournament:
+        tournament = None
+        while not tournament:
             name = CheckInput.check_str("Name of an UNcompleted tournament ? ")
-            serialized_tournament = Tournament.get(name)
-            if serialized_tournament is None:
+            tournament = Tournament.get(name)
+            if not tournament:
                 print("The value entered doesn't match any tournament !\n")
-        tournament = Tournament.deserialized(serialized_tournament)
         rounds = tournament.rounds
         serialized_rounds = []
         for round in rounds:
@@ -38,4 +37,4 @@ class PullTournament(TournamentController):
             serialized_rounds,
             nb_rounds,
         )
-        return "main menu"  # NE MARCHE PAS/meme erreur que dans controllers.tournament
+        return "main menu"

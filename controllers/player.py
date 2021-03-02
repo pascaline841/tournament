@@ -38,7 +38,7 @@ class PlayerController(ABSController):
     @classmethod
     def update_rank_tournament(cls, players, tournament):
         """Update player's rank in the database and in the current tournament."""
-        db = TinyDB("ACTORS.json")
+        db = TinyDB("USERS.json")
         query = Query()
         first_name = CheckInput.check_str("First name ? ").capitalize()
         last_name = CheckInput.check_str("Last name ? ").capitalize()

@@ -47,21 +47,19 @@ class Reports:
         elif command == "main menu":
             return "main menu"
 
-    @classmethod
-    def sorted_actors(cls):
-        """Sort all actors by alphabetic order or by rank."""
-        db = TinyDB("ACTORS.json")
-        actors = db.all()
+    def sorted_actors(self):
+        """Sort all users by alphabetic order or by rank."""
+        db = TinyDB("USERS.json")
+        users = db.all()
         sorted_choice = CheckInput.check_int(
             "Sorted by Last Name (1) or by Rank (2) ? "
         )
         if sorted_choice == 1:
-            return sorted(actors, key=lambda actor: actor["last_name"])
+            return sorted(users, key=lambda user: user["last_name"])
         else:
-            return sorted(actors, key=lambda actor: actor["rank"])
+            return sorted(users, key=lambda user: user["rank"])
 
-    @classmethod
-    def request_players(cls):
+    def request_players(self):
         """Request for a tournament to display its players by alpha order or rank."""
         db = TinyDB("TOURNAMENTS.json")
         query = Query()
@@ -76,8 +74,7 @@ class Reports:
         else:
             return sorted(players, key=lambda players: players["rank"])
 
-    @classmethod
-    def request_rounds(cls):
+    def request_rounds(self):
         """Request for a tournament to display its rounds or matchs."""
         db = TinyDB("TOURNAMENTS.json")
         query = Query()

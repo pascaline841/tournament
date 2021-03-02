@@ -30,7 +30,7 @@ class Round:
         """Serialize round's data."""
         return vars(self)
 
-    def first_matchs(self, players):
+    def display_first_matchs(self, players):
         """
         First Round : The players are ranked by best ranking.
         index = number of matchs by round = 4
