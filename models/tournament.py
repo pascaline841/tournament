@@ -32,7 +32,7 @@ class Tournament:
         return (
             f"NAME : {self.name}\n LOCATION : {self.location}\n MODE : {self.mode}\n"
             f"DATE : {self.date}\n ROUNDS : {self.rounds}\n "
-            f"DESCRIPTION : {self.description}\n PLAYERS :{self.players}\n"
+            f"DESCRIPTION : {self.description}\n PLAYERS :\n{self.players}\n"
         )
 
     def save(self):
@@ -54,7 +54,7 @@ class Tournament:
 
     @classmethod
     def deserialized(cls, serialized_tournament):
-        """Pull tournament's informations from the database to continue it."""
+        """Pull tournament's datas from the database to continue it."""
         name = serialized_tournament["name"]
         location = serialized_tournament["location"]
         date = serialized_tournament["date"]
@@ -75,11 +75,12 @@ class Tournament:
 
     @classmethod
     def get(cls, name):
+        """Get a tournament from the database if exists."""
         db = TinyDB("TOURNAMENTS.json")
         query = Query()
         serialized_tournament = db.get(query["name"] == name)
         if serialized_tournament:
-            return serialized_tournament.deserialized()
+            return Tournament.deserialized(serialized_tournament)
         return None
 
     def update_round(self, serialized_rounds):

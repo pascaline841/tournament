@@ -1,6 +1,6 @@
 from tinydb import TinyDB, Query
 
-from .check_input import CheckInputController as CheckInput
+from .helpers import Input
 
 from view.report import ReportView as View
 
@@ -16,18 +16,18 @@ class Reports:
 
     def get_command(self):
         """Display the reports' menu."""
-        command = CheckInput.check_available_five_choices(
-            "Enter your command (1, 2, 3, 4, 5) : \n"
+        command = Input.for_range(
+            "Enter your command (1, 2, 3, 4, 5) : \n", [1, 2, 3, 4, 5]
         )
-        if command == "1":
+        if command == 1:
             return "sorted_actors report"
-        elif command == "2":
+        elif command == 2:
             return "tournaments report"
-        elif command == "3":
+        elif command == 3:
             return "rounds report"
-        elif command == "4":
+        elif command == 4:
             return "players report"
-        elif command == "5":
+        elif command == 5:
             return "main menu"
 
     def update(self, command: str):
@@ -51,9 +51,7 @@ class Reports:
         """Sort all users by alphabetic order or by rank."""
         db = TinyDB("USERS.json")
         users = db.all()
-        sorted_choice = CheckInput.check_int(
-            "Sorted by Last Name (1) or by Rank (2) ? "
-        )
+        sorted_choice = Input.for_integer("Sorted by Last Name (1) or by Rank (2) ? ")
         if sorted_choice == 1:
             return sorted(users, key=lambda user: user["last_name"])
         else:
@@ -63,12 +61,10 @@ class Reports:
         """Request for a tournament to display its players by alpha order or rank."""
         db = TinyDB("TOURNAMENTS.json")
         query = Query()
-        name = CheckInput.check_str("What is it name ? ")
+        name = Input.for_string("What is it name ? ")
         command = db.search(query["name"] == name)
         players = command[0].get("players")
-        sorted_choice = CheckInput.check_int(
-            "Sorted by Last Name (1) or by Rank (2) ? "
-        )
+        sorted_choice = Input.for_integer("Sorted by Last Name (1) or by Rank (2) ? ")
         if sorted_choice == 1:
             return sorted(players, key=lambda players: players["last_name"])
         else:
@@ -78,6 +74,6 @@ class Reports:
         """Request for a tournament to display its rounds or matchs."""
         db = TinyDB("TOURNAMENTS.json")
         query = Query()
-        name = CheckInput.check_str("What is it name ? ")
+        name = Input.for_string("What is it name ? ")
         command = db.search(query["name"] == name)
         return command[0].get("rounds")

@@ -1,5 +1,5 @@
 from .tournament import TournamentController
-from .check_input import CheckInputController as CheckInput
+from .helpers import Input
 
 from models.round import Round
 from models.tournament import Tournament
@@ -20,7 +20,7 @@ class PullTournament(TournamentController):
         "Choose a uncompleted tournament in the database."
         tournament = None
         while not tournament:
-            name = CheckInput.check_str("Name of an UNcompleted tournament ? ")
+            name = Input.for_string("Name of an UNcompleted tournament ? ")
             tournament = Tournament.get(name)
             if not tournament:
                 print("The value entered doesn't match any tournament !\n")

@@ -1,7 +1,7 @@
 import datetime
 
 from .abstract import ABSController
-from .check_input import CheckInputController as CheckInput
+from .helpers import Input
 from .player import PlayerController
 
 from models.player import Player
@@ -22,12 +22,10 @@ class TournamentController(ABSController):
 
     def get_command(self):
         """Create a new tournament."""
-        name = CheckInput.check_str("Please enter tournament's name : ")
-        location = CheckInput.check_str("Please enter tournament's location : ")
+        name = Input.for_string("Please enter tournament's name : ")
+        location = Input.for_string("Please enter tournament's location : ")
         date = datetime.date.today().strftime("%d/%m/%Y")
-        mode = CheckInput.check_str(
-            "How would you like to play ? bullet / blitz / fast : "
-        )
+        mode = Input.for_string("How would you like to play ? bullet / blitz / fast : ")
         nb_rounds = 4
         rounds = []
         serialized_rounds = []
@@ -59,15 +57,13 @@ class TournamentController(ABSController):
     def update(self, players, tournament):
         """Display the Inter Menu between 2 rounds during a tournament."""
         self.view.display_menu()
-        command = CheckInput.check_available_three_choices(
-            "Enter your command (1, 2, 3) : \n"
-        )
-        if command == "1":
+        command = Input.for_range("Enter your command (1, 2, 3) : \n", [1, 2, 3])
+        if command == 1:
             pass
-        elif command == "2":
+        elif command == 2:
             PlayerController.update_rank_tournament(players, tournament)
-        elif command == "3":
-            return "main menu"
+        elif command == 3:
+            return "quit"
 
     def create_list_players(self):
         """Create a list of 8 players from the database."""
@@ -83,22 +79,25 @@ class TournamentController(ABSController):
         player = None
         while not player:
             message = f"PLAYER {index}: What is the FIRST NAME ? "
-            first_name = CheckInput.check_str(message).capitalize()
+            first_name = Input.for_string(message).capitalize()
             player = Player.get(first_name=first_name)
             if not player:
                 print("The value entered doesn't match the possible choices !\n")
         return player
 
-    def create_auto_players(self):
+    @classmethod
+    def create_auto_players(cls):
         """Create 8 players for a demo."""
-        players = [Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000)]
-        players.append(Player("William", "Smith", "m", "03/11/1980", 2, 998))
-        players.append(Player("Damien", "Billard", "m", "10/08/1978", 3, 996))
-        players.append(Player("Mickael", "Fitz", "m", "25/06/2000", 4, 994))
-        players.append(Player("Ricardo", "Gagnon", "m", "29/02/1988", 5, 992))
-        players.append(Player("Manon", "Tremblay", "f", "13/06/1999", 6, 990))
-        players.append(Player("Claire", "Beaulieu", "f", "17/11/1992", 7, 988))
-        players.append(Player("Julie", "Stefen", "f", "14/05/1993", 8, 986))
+        players = [
+            Player("Romain", "Turgeon", "m", "01/12/1989", 1, 1000),
+            Player("William", "Smith", "m", "03/11/1980", 2, 998),
+            Player("Damien", "Billard", "m", "10/08/1978", 3, 996),
+            Player("Mickael", "Fitz", "m", "25/06/2000", 4, 994),
+            Player("Ricardo", "Gagnon", "m", "29/02/1988", 5, 992),
+            Player("Manon", "Tremblay", "f", "13/06/1999", 6, 990),
+            Player("Claire", "Beaulieu", "f", "17/11/1992", 7, 988),
+            Player("Julie", "Stefen", "f", "14/05/1993", 8, 986),
+        ]
         for player in players:
             player.save()
         return players
@@ -112,13 +111,12 @@ class TournamentController(ABSController):
             matchs=[],
         )
         players = sorted(players, key=lambda player: player.rank)
-        for index in range(len(nb_rounds)):
+        nb_matchs = 4
+        for index in range(nb_matchs):
             print(f"{players[index].first_name} vs {players[index+4].first_name}")
         self.get_first_opponents(players)
         for player in players:
-            add_point = CheckInput.check_score(
-                f"Please enter {player.first_name}'s score : "
-            )
+            add_point = Input.for_score(f"Please enter {player.first_name}'s score : ")
             player.add_points(add_point)
         Round.display_first_matchs(round, players)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
@@ -160,9 +158,7 @@ class TournamentController(ABSController):
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = CheckInput.check_score(
-                f"Please enter {player.first_name}'s score : "
-            )
+            add_point = Input.for_score(f"Please enter {player.first_name}'s score : ")
             player.add_points(add_point)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
@@ -185,15 +181,16 @@ class TournamentController(ABSController):
             serialized_rounds.append(serialized_round)
             tournament.update_round(serialized_rounds)
             tournament.update_players(players)
-            self.update(players, tournament)
-            players = sorted(
-                sorted(
-                    players,
-                    key=lambda player: player.rank,
-                ),
-                key=lambda player: player.points,
-                reverse=True,
-            )
+            if nb_rounds > 1:
+                self.update(players, tournament)
+                players = sorted(
+                    sorted(
+                        players,
+                        key=lambda player: player.rank,
+                    ),
+                    key=lambda player: player.points,
+                    reverse=True,
+                )
         for player in players:
             score = player.add_final_score(player.points, player.score)
             Player.update_score(player, score)
@@ -206,7 +203,6 @@ class TournamentController(ABSController):
         """
         for index in range(4):
             players[index].opponents.append(players[index + 4].first_name)
-
         for index in range(4, 8):
             players[index].opponents.append(players[index - 4].first_name)
         return players

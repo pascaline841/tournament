@@ -2,7 +2,17 @@ from tinydb import Query, TinyDB
 
 
 class Player:
-    """Define the characteristics of a player."""
+    """Define the characteristics of a player.
+    Attrs:
+    first_name (str)
+    last_name (str)
+    date_of_birth (str)
+    gender (str): 'm' or 'f'
+    rank (int)
+    score (int)
+    points (int)
+    opponents (list): opponents already met during a tournament
+    """
 
     def __init__(
         self,
@@ -15,16 +25,7 @@ class Player:
         points=0,
         opponents=[],
     ):
-        """
-        First name :
-        Last Name :
-        Date of birth :
-        Gender :
-        Ranking :
-        Score :
-        Points : 0
-        Opponents : list of opponents already met during a tournament.
-        """
+        """Init."""
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
@@ -44,6 +45,28 @@ class Player:
     def serialized(self):
         """Serialize player's data."""
         return vars(self)
+
+    @classmethod
+    def deserialized(cls, serialized_player):
+        """Pull player's datas from the database to continue a tournament."""
+        first_name = serialized_player["first_name"]
+        last_name = serialized_player["last_name"]
+        birth_date = serialized_player["birth_date"]
+        gender = serialized_player["gender"]
+        rank = serialized_player["rank"]
+        score = serialized_player["score"]
+        points = serialized_player["points"]
+        opponents = serialized_player["opponents"]
+        return Player(
+            first_name,
+            last_name,
+            birth_date,
+            gender,
+            rank,
+            score,
+            points,
+            opponents,
+        )
 
     @classmethod
     def get(cls, first_name):
@@ -79,8 +102,10 @@ class Player:
         )
 
     def add_points(self, add_point):
-        """At the end of all the rounds.
-        Add match score to player's points."""
+        """
+        At the end of all the rounds.
+        Add match score to player's points.
+        """
 
         self.points += add_point
         return self.points

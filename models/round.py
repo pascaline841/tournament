@@ -1,18 +1,19 @@
 import datetime
 
-from view.tournament import TournamentView as View
+from view.tournament import TournamentView
 
 
 class Round:
-    """Define a round."""
+    """
+    Define a round.
+    Name : Round 1, Round 2, Round 3, Round 4
+    Start date and time :  AUTO
+    End date and time : AUTO
+    List of matchs : 4 by Round.
+    """
 
     def __init__(self, name, start, matchs, end=0):
-        """
-        Name : Round 1, Round 2, Round 3, Round 4
-        Start date and time :  AUTO
-        End date and time : AUTO
-        List of matchs : 4 by Round.
-        """
+        """Init."""
         self.name = name
         self.start = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         self.matchs = matchs
@@ -29,6 +30,14 @@ class Round:
     def serialized(self):
         """Serialize round's data."""
         return vars(self)
+
+    def deserialized(serialized_round):
+        """Pull round's datas from the database to continue a tournament."""
+        name = serialized_round["name"]
+        start = serialized_round["start"]
+        matchs = serialized_round["matchs"]
+        end = serialized_round["end"]
+        return Round(name, start, matchs, end)
 
     def display_first_matchs(self, players):
         """
@@ -54,6 +63,13 @@ class Round:
             )
             self.matchs.append(match)
         return self.matchs
+
+    def is_paired(self, player):
+        """
+        Add player's first name in the players_paired list
+        to avoid it playes twice in a round.
+        """
+        return player.first_name in self.players_paired
 
     def get_opponents(self, players):
         """
@@ -84,6 +100,6 @@ class Round:
                 self.matchs.append(match)
                 self.players_paired.append(players[i].first_name)
                 self.players_paired.append(players[j].first_name)
-                View.display_next_round(players, i, j)
+                TournamentView.display_next_round(players, i, j)
             i += 1
         return self.matchs
