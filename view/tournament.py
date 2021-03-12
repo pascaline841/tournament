@@ -12,7 +12,7 @@ class TournamentView:
         print("\n What would you like to do ?")
         print("1 - CONTINUE THE TOURNAMENT")
         print("2 - Change the ranking from a player ?")
-        print("3 - End the program")
+        print("3 - End the tournament and return to the general menu")
 
     def display_final_score(self, players):
         """Display the final menu with the final score of the tournament."""

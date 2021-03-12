@@ -39,19 +39,22 @@ class TournamentController(ABSController):
         )
         tournament.save()
         print(tournament)
-        self.progress_first_round(
+        first_round = self.progress_first_round(
             tournament,
             players,
             serialized_rounds,
         )
-
+        if first_round == "main menu":
+            return "main menu"
         nb_rounds = tournament.nb_rounds
-        self.progress_next_rounds(
+        next_round = self.progress_next_rounds(
             tournament,
             players,
             serialized_rounds,
             nb_rounds,
         )
+        if next_round == "main menu":
+            return "main menu"
         return "main menu"
 
     def update(self, players, tournament):
@@ -63,7 +66,7 @@ class TournamentController(ABSController):
         elif command == 2:
             PlayerController.update_rank_tournament(players, tournament)
         elif command == 3:
-            return "quit"
+            return "main menu"
 
     def create_list_players(self):
         """Create a list of 8 players from the database."""
@@ -137,7 +140,7 @@ class TournamentController(ABSController):
         serialized_rounds.append(serialized_round)
         tournament.update_round(serialized_rounds)
         tournament.update_players(players)
-        self.update(players, tournament)
+        return self.update(players, tournament)
 
     def get_next_round(self, tournament, rounds, players):
         """Create Round 2, 3 , 4."""
@@ -182,7 +185,9 @@ class TournamentController(ABSController):
             tournament.update_round(serialized_rounds)
             tournament.update_players(players)
             if nb_rounds > 1:
-                self.update(players, tournament)
+                command = self.update(players, tournament)
+                if command == "main menu":
+                    return "main menu"
                 players = sorted(
                     sorted(
                         players,
