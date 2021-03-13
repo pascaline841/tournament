@@ -11,6 +11,7 @@ class PullTournament(TournamentController):
     """To continue an unfinished tournament."""
 
     def __init__(self):
+        """Init."""
         self.view = View()
 
     def display(self):

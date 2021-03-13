@@ -5,20 +5,22 @@ from .round import Round
 
 
 class Tournament:
-    """Define the characteristics of a chess tournament."""
+    """
+    Define the characteristics of a chess tournament.
+    Attrs:
+        name (str)
+        location (str)
+        date (int) : AUTOMATIC
+        mode (str)
+        nb_rounds (int): 4 (by default)
+        description (str)
+        players (list) : list of player's  stored in the database.
+    """
 
     def __init__(
         self, name, location, date, mode, nb_rounds, rounds, description, players
     ):
-        """
-        Name :
-        Location :
-        Date : AUTO
-        Mode : bullet / blitz / fast
-        Nb_Rounds : 4 (default)
-        Description : general remarks from the tournament director.
-        Players : list of player's  stored in the database.
-        """
+        """Init."""
         self.name = name
         self.location = location
         self.date = date

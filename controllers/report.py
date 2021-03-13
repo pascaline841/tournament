@@ -9,6 +9,7 @@ class Reports:
     """Display report menu."""
 
     def __init__(self):
+        """Init."""
         self.view = View()
 
     def display(self):

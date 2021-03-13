@@ -9,6 +9,7 @@ class MainController:
     """Main class to control the program."""
 
     def __init__(self):
+        """Init."""
         self.running = True
         self.controller = MainMenu()
 

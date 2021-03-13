@@ -5,11 +5,12 @@ from view.tournament import TournamentView
 
 class Round:
     """
-    Define a round.
-    Name : Round 1, Round 2, Round 3, Round 4
-    Start date and time :  AUTO
-    End date and time : AUTO
-    List of matchs : 4 by Round.
+    Define a round
+    Attrs :
+        Name (str)
+        Start date and time (int):  AUTOMATIC
+        End date and time (int) : AUTOMATIC
+        list of matchs (list) : 4 by round.
     """
 
     def __init__(self, name, start, matchs, end=0):
@@ -32,7 +33,7 @@ class Round:
         return vars(self)
 
     def deserialized(serialized_round):
-        """Pull round's datas from the database to continue a tournament."""
+        """Pull round's informations from the database to continue a tournament."""
         name = serialized_round["name"]
         start = serialized_round["start"]
         matchs = serialized_round["matchs"]
@@ -98,8 +99,8 @@ class Round:
                     (players[j].first_name, players[j].points),
                 )
                 self.matchs.append(match)
-                self.players_paired.append(players[i].first_name)
-                self.players_paired.append(players[j].first_name)
+                self.players_paired.extend(
+                    [players[i].first_name, players[j].first_name]
+                )
                 TournamentView.display_next_round(players, i, j)
             i += 1
-        return self.matchs

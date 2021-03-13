@@ -4,14 +4,14 @@ from tinydb import Query, TinyDB
 class Player:
     """Define the characteristics of a player.
     Attrs:
-    first_name (str)
-    last_name (str)
-    date_of_birth (str)
-    gender (str): 'm' or 'f'
-    rank (int)
-    score (int)
-    points (int)
-    opponents (list): opponents already met during a tournament
+        first_name (str)
+        last_name (str)
+        date_of_birth (str)
+        gender (str): 'm' or 'f'
+        rank (int)
+        score (int)
+        points (int)
+        opponents (list): opponents already met during a tournament
     """
 
     def __init__(
@@ -106,13 +106,13 @@ class Player:
         At the end of all the rounds.
         Add match score to player's points.
         """
-
         self.points += add_point
         return self.points
 
     def add_final_score(self, points, score):
-        """Last round only.
-        Add tournament score to player's total score."""
-
+        """
+        Last round only.
+        Add tournament score to player's total score.
+        """
         self.score = points + score
         return self.score

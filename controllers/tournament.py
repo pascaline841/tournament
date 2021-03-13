@@ -15,6 +15,7 @@ class TournamentController(ABSController):
     """Create a new tournament controller."""
 
     def __init__(self):
+        """Init."""
         self.view = View()
 
     def display(self):
