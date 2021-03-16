@@ -31,7 +31,7 @@ class PullTournament(TournamentController):
             serialized_round = Round.serialized(round)
             serialized_rounds.append(serialized_round)
         players = tournament.players
-        nb_rounds = 5 - len(rounds)
+        nb_rounds = 4 - len(rounds)
         super().progress_next_rounds(
             tournament,
             players,

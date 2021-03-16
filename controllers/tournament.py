@@ -73,12 +73,12 @@ class TournamentController(ABSController):
         """Create a list of 8 players from the database."""
         players = []
         print("CHOOSE 8 PLAYERS FROM THE DATABASE\n")
-        for index in range(1, 9):
-            player = self.choose_actors(index)
+        for index in range(8):
+            player = self.choose_users(index)
             players.append(player)
         return players
 
-    def choose_actors(self, index):
+    def choose_users(self, index):
         "Choose a player from the database to play in a tournament."
         player = None
         while not player:
@@ -162,7 +162,9 @@ class TournamentController(ABSController):
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = Input.for_score(f"Please enter {player.first_name}'s score : ")
+            add_point = Input.for_score(
+                f"\n Please enter {player.first_name}'s score : "
+            )
             player.add_points(add_point)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
@@ -177,8 +179,7 @@ class TournamentController(ABSController):
         nb_rounds,
     ):
         """Run the following rounds."""
-        while nb_rounds > 1:
-            nb_rounds -= 1
+        while nb_rounds > 0:
             rounds = tournament.rounds
             round = self.get_next_round(tournament, rounds, players)
             serialized_round = Round.serialized(round)
@@ -197,6 +198,7 @@ class TournamentController(ABSController):
                     key=lambda player: player.points,
                     reverse=True,
                 )
+            nb_rounds = 4 - len(rounds)
         for player in players:
             score = player.add_final_score(player.points, player.score)
             Player.update_score(player, score)
@@ -206,6 +208,10 @@ class TournamentController(ABSController):
         """
         First Round : The players are ranked by best ranking.
         Add oppponent's name to the player's opponents list.
+        player[0] vs player[4]
+        player[1] vs player[5]
+        player[2] vs player[6]
+        player[3] vs player[7]
         """
         for index in range(4):
             players[index].opponents.append(players[index + 4].first_name)
