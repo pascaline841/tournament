@@ -18,7 +18,6 @@ class Round:
         self.name = name
         self.start = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         self.matchs = matchs
-        self.players_paired = []
         self.end = end
 
     def __repr__(self):
@@ -32,13 +31,10 @@ class Round:
         """Serialize round's data."""
         return vars(self)
 
-    def deserialized(serialized_round):
+    @classmethod
+    def deserialized(cls, data):
         """Pull round's informations from the database to continue a tournament."""
-        name = serialized_round["name"]
-        start = serialized_round["start"]
-        matchs = serialized_round["matchs"]
-        end = serialized_round["end"]
-        return Round(name, start, matchs, end)
+        return Round(**data)
 
     def display_first_matchs(self, players):
         """
@@ -65,13 +61,6 @@ class Round:
             self.matchs.append(match)
         return self.matchs
 
-    def is_paired(self, player):
-        """
-        Add player's first name in the players_paired list
-        to avoid it playes twice in a round.
-        """
-        return player.first_name in self.players_paired
-
     def get_opponents(self, players):
         """
         Rounds 2 3 4 : The players are ranked by best score then best rank.
@@ -82,12 +71,13 @@ class Round:
         player[4] vs players[5]
         player[6] vs players[7].
         """
+        players_paired = []
         for i in range(len(players)):
-            while players[i].first_name not in self.players_paired:
+            while players[i].first_name not in players_paired:
                 j = i + 1
                 while (
                     j < len(players)
-                    and players[j].first_name in self.players_paired
+                    and players[j].first_name in players_paired
                     or players[j].first_name in players[i].opponents
                     or players[i].first_name in players[j].opponents
                 ):
@@ -99,8 +89,7 @@ class Round:
                     (players[j].first_name, players[j].points),
                 )
                 self.matchs.append(match)
-                self.players_paired.extend(
-                    [players[i].first_name, players[j].first_name]
-                )
+                players_paired.extend([players[i].first_name, players[j].first_name])
                 TournamentView.display_next_round(players, i, j)
             i += 1
+        del players_paired[:]

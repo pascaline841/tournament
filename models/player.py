@@ -47,35 +47,18 @@ class Player:
         return vars(self)
 
     @classmethod
-    def deserialized(cls, serialized_player):
+    def deserialized(cls, data):
         """Pull player's datas from the database to continue a tournament."""
-        first_name = serialized_player["first_name"]
-        last_name = serialized_player["last_name"]
-        birth_date = serialized_player["birth_date"]
-        gender = serialized_player["gender"]
-        rank = serialized_player["rank"]
-        score = serialized_player["score"]
-        points = serialized_player["points"]
-        opponents = serialized_player["opponents"]
-        return Player(
-            first_name,
-            last_name,
-            birth_date,
-            gender,
-            rank,
-            score,
-            points,
-            opponents,
-        )
+        return Player(**data)
 
     @classmethod
     def get(cls, first_name):
         """Get a player from the database if exists."""
         db = TinyDB("USERS.json")
         query = Query()
-        player_data = db.get(query["first_name"] == first_name)
-        if player_data:
-            return Player(**player_data)
+        data = db.get(query["first_name"] == first_name)
+        if data:
+            return Player(**data)
         return None
 
     def save(self):

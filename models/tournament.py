@@ -14,7 +14,7 @@ class Tournament:
         mode (str)
         nb_rounds (int): 4 (by default)
         description (str)
-        players (list) : list of player's  stored in the database.
+        layers (list) : list of player's  stored in the database.
     """
 
     def __init__(
@@ -51,25 +51,24 @@ class Tournament:
             self.description,
             players=players,
         )
-        serialized_tournament = vars(tournament_copy)
-        db.insert(serialized_tournament)
+        data = vars(tournament_copy)
+        db.insert(data)
 
     @classmethod
-    def deserialized(cls, serialized_tournament):
+    def deserialized(cls, data):
         """Pull tournament's datas from the database to continue it."""
-        name = serialized_tournament["name"]
-        location = serialized_tournament["location"]
-        date = serialized_tournament["date"]
-        mode = serialized_tournament["mode"]
+        name = data["name"]
+        location = data["location"]
+        date = data["date"]
+        mode = data["mode"]
         rounds = [
-            Round.deserialized(serialized_round)
-            for serialized_round in serialized_tournament["rounds"]
+            Round.deserialized(serialized_round) for serialized_round in data["rounds"]
         ]
-        nb_rounds = serialized_tournament["nb_rounds"] - len(rounds)
-        description = serialized_tournament["description"]
+        nb_rounds = data["nb_rounds"] - len(rounds)
+        description = data["description"]
         players = [
             Player.deserialized(serialized_player)
-            for serialized_player in serialized_tournament["players"]
+            for serialized_player in data["players"]
         ]
         return Tournament(
             name, location, date, mode, nb_rounds, rounds, description, players
@@ -80,9 +79,9 @@ class Tournament:
         """Get a tournament from the database if exists."""
         db = TinyDB("TOURNAMENTS.json")
         query = Query()
-        serialized_tournament = db.get(query["name"] == name)
-        if serialized_tournament:
-            return Tournament.deserialized(serialized_tournament)
+        data = db.get(query["name"] == name)
+        if data:
+            return Tournament.deserialized(data)
         return None
 
     def update_round(self, serialized_rounds):
