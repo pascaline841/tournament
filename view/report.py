@@ -1,8 +1,7 @@
 class ReportView:
     """Display the different reports."""
 
-    @classmethod
-    def display(cls):
+    def display(self):
         """Display the menu of the reports."""
         print("\n==================================================")
         print("\n************REPORTS**************\n")
@@ -12,34 +11,30 @@ class ReportView:
         print("4 - List of all players for a tournament")
         print("5 - Back to the general menu")
 
-    @classmethod
-    def report_users(cls, display_report):
+    def report_users(self):
         """Display a list of all the users."""
-        for user in display_report:
+        for user in self:
             print(
                 f"{user['last_name']} {user['first_name']} RANK: {user['rank']} "
                 f"TOTAL SCORE: {user['score']}"
             )
 
-    @classmethod
-    def report_tournaments(cls, display_report):
+    def report_tournaments(self):
         """Display a list of all the tournaments."""
-        for tournament in display_report:
+        for tournament in self:
             print(
                 f"{tournament['name']} DATE : {tournament['date']} LOCATION : "
                 f"{tournament['location']} MODE : {tournament['mode']}"
             )
 
-    @classmethod
-    def report_rounds(cls, display_report):
+    def report_rounds(self):
         """Display a list of all the rounds of a tournament."""
-        for round in display_report:
+        for round in self:
             print(f"{round['name']} {round['start']} {round['end']}")
 
-    @classmethod
-    def report_players(cls, display_report):
+    def report_players(self):
         """Display a list of all the players of a tournament."""
-        for player in display_report:
+        for player in self:
             print(
                 f"{player['first_name']} {player['last_name']} RANK : {player['rank']}"
                 f" POINTS: {player['points']}"

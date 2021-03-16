@@ -1,7 +1,8 @@
 from tinydb import TinyDB, Query
 
 from .abstract import ABSController
-from .helpers import Input
+
+from helpers import Input
 
 from view.main_menu import MainMenuView as View
 

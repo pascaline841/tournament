@@ -1,12 +1,10 @@
 class TournamentView:
-    @classmethod
-    def display(cls):
+    def display(self):
         """Display the creation of a new tournament."""
         print("\n==================================================")
         print("************CREATE A NEW TOURNAMENT**************\n")
 
-    @classmethod
-    def display_menu(cls):
+    def display_menu(self):
         """Display the menu between 2 rounds during a tournament."""
         print("\n==================================================")
         print("\n What would you like to do ?")
@@ -22,7 +20,6 @@ class TournamentView:
             print(f"SCORE : {player.points}, {player.first_name} {player.last_name}")
         print("\n==================================================")
 
-    @classmethod
-    def display_next_round(cls, players, i, j):
+    def display_next_round(self, i, j):
         """Display a match of a round different to the 1st round."""
-        print(f"{players[i].first_name} vs {players[j].first_name}")
+        print(f"{self[i].first_name} vs {self[j].first_name}")

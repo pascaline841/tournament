@@ -1,6 +1,5 @@
 class MainMenuView:
-    @classmethod
-    def display(cls):
+    def display(self):
         """Display the main menu."""
         print("\n==================================================")
         print("\n************ WELCOME TO CHESS TOURNEMENT MANAGER **************\n")

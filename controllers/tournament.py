@@ -1,8 +1,9 @@
 import datetime
 
 from .abstract import ABSController
-from .helpers import Input
 from .player import PlayerController
+
+from helpers import Input
 
 from models.player import Player
 from models.round import Round
@@ -162,9 +163,7 @@ class TournamentController(ABSController):
         print(players)
         round.get_opponents(players)
         for player in players:
-            add_point = Input.for_score(
-                f"\n Please enter {player.first_name}'s score : "
-            )
+            add_point = Input.for_score(f"Please enter {player.first_name}'s score : ")
             player.add_points(add_point)
         round.end = str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         rounds.append(round)
@@ -208,10 +207,11 @@ class TournamentController(ABSController):
         """
         First Round : The players are ranked by best ranking.
         Add oppponent's name to the player's opponents list.
-        player[0] vs player[4]
-        player[1] vs player[5]
-        player[2] vs player[6]
-        player[3] vs player[7]
+        The matchs are :
+            player[0] vs player[4]
+            player[1] vs player[5]
+            player[2] vs player[6]
+            player[3] vs player[7]
         """
         for index in range(4):
             players[index].opponents.append(players[index + 4].first_name)

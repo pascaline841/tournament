@@ -1,6 +1,6 @@
 from tinydb import TinyDB, Query
 
-from .helpers import Input
+from helpers import Input
 
 from view.report import ReportView as View
 

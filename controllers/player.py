@@ -1,7 +1,8 @@
 from tinydb import TinyDB, Query
 
 from .abstract import ABSController
-from .helpers import Input
+
+from helpers import Input
 
 from models.player import Player
 
